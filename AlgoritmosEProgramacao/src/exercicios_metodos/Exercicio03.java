@@ -6,7 +6,7 @@ public class Exercicio03 {
 
 	public static void main(String[] args) {
 		//  3 - Desenvolva um sistema para monitorar a temperatura de uma sala de servidores. 
-		// O sistema deve: (usando modularização, usando métodos, usando scanner) usando scanner
+		// O sistema deve:
  		// • Perguntar qual é o limite inferior e superior de temperatura.
  		// • Registrar uma única medição de temperatura.
  		// • Informar se a temperatura registrada está dentro dos limites seguros.
