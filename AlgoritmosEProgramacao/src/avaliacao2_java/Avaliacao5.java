@@ -20,20 +20,21 @@ public class Avaliacao5 {
 			
 			numero = lerInt("Informe um número positivo ou negativo (Informe '0' para sair): ", sc);
 			
-			if (numero > 0) {
+			if (numero >= 0) {
 				contadorPositivo++;
 			} else {
 				contadorNegativo++;
 			}
 			
 		} while (numero != 0);
+		contadorPositivo--;
 		exibeResultado(contadorPositivo, contadorNegativo);
 	}
 
 	public static void exibeResultado(int contadorPositivo, int contadorNegativo) {
 		if (contadorPositivo > 0 || contadorNegativo > 0) {
 			exibeMsg("Numeros positivos informados: " + contadorPositivo);
-			exibeMsg("Numeros positivos informados: " + (contadorNegativo - 1));
+			exibeMsg("Numeros positivos informados: " + (contadorNegativo));
 		} else {
 			exibeMsg("Nenhum número foi informado.");
 		}

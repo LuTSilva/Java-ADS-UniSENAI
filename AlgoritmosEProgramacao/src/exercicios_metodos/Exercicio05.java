@@ -42,23 +42,13 @@ public class Exercicio05 {
     }
     public static void realizarConversao(int op, Scanner sc) {
         switch (op) {
-            case 1:
-                paraOutro(5.67, "Dólar", sc);
-                break;
-            case 2:
-                paraReal(5.67, "Dólar", sc);
-                break;
-            case 3:
-                paraOutro(6.46, "Euro", sc);
-                break;
-            case 4:
-                paraReal(6.46, "Euro", sc);
-                break;
-            case 5:
-                paraOutro(0.79, "Yuan", sc);
-                break;
-            default:
-                System.out.println("Opção inválida.");
+            case 1 -> paraOutro(5.67, "Dólar", sc);
+            case 2 -> paraReal(5.67, "Dólar", sc);
+            case 3 -> paraOutro(6.46, "Euro", sc);
+            case 4 -> paraReal(6.46, "Euro", sc);
+            case 5 -> paraOutro(0.79, "Yuan", sc);
+            default -> System.out.println("Opção inválida.");
+            // feito usando lambda
         }
     }
     public static void iniciarConversor() {

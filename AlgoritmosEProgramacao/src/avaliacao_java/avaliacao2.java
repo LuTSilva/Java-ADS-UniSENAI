@@ -3,6 +3,15 @@ package avaliacao_java;
 import java.util.Scanner;
 
 public class avaliacao2 {
+	// Em um shopping de 5 andares, cada andar é identificado como:
+	// 1 - Garagem
+	// 2 - Praça de alimentação
+	// 3 - Parque
+	// 4 - Lojas 1
+	// 5 - Lojas 2
+	// Utilizando “SWITCH”, faça um programa onde o usuário informe o número do andar que deseja ir 
+	// e o programa exiba o que tem no respectivo andar. 
+	// Caso o usuário informe um andar inválido dê uma mensagem adequada.
 
 	public static void main(String[] args) {
 		

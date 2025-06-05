@@ -9,8 +9,7 @@ public class Avaliacao1 {
 		Scanner sc = new Scanner(System.in);
 		
 		int n = lerInt("Informe o numero N: ", sc);
-		int soma = 0;
-		somatorio (n, sc);
+		int soma = somatorio (n, sc);
 		exibeMsg("Resultado: " + calculaMedia(soma, n));
 		
 		
@@ -27,7 +26,7 @@ public class Avaliacao1 {
 		int soma = 0;
 		
 		for (int i = 1; i <= n; i++) {
-			lerInt("Informe o próximo numero: ", sc);
+			numero = lerInt("Informe o próximo numero: ", sc);
 			soma += numero;
 		}
 		return soma;

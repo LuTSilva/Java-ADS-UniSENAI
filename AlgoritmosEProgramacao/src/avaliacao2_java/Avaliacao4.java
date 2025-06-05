@@ -21,15 +21,15 @@ public class Avaliacao4 {
 	}
 	public static int calculaMaior(int num1, int num2, int num3) {
 		
-		if (num1 > num2 && num1 > num3) {return num1; } 
-		if (num2 > num3 && num2 > num1) {return num2; } 
-		else return num3;
+		if (num1 >= num2 && num1 >= num3) return num1;
+		if (num2 >= num3 && num2 >= num1) return num2; 
+		return num3;
 	}
 	public static int calculaMenor(int num1, int num2, int num3) {
 		
-		if (num1 < num2 && num1 < num3) {return num1; } 
-		if (num2 < num3 && num2 < num1) {return num2; } 
-		else return num3;
+		if (num1 <= num2 && num1 <= num3) return num1;
+		if (num2 <= num3 && num2 <= num1) return num2;
+		return num3;
 	}
 	public static boolean verificaIgual(int num1, int num2, int num3) {
 		return (num1 == num2 || num1 == num3 || num2 == num3);
