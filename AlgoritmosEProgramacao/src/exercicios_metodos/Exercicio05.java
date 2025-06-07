@@ -11,7 +11,7 @@ public class Exercicio05 {
         // 4 – Euro para Real
         // 5 – Sair
         // Para cada operação solicite o valor a ser convertido e exiba a resposta
-
+        // [Alterado posteriormente para incluir a conversão de Real para Yuan e Yuan para Real.]
         iniciarConversor();
     }
     public static double lerDouble(String msg, Scanner sc) {
@@ -25,7 +25,8 @@ public class Exercicio05 {
         System.out.println("3 - Real para Euro");
         System.out.println("4 - Euro para Real");
         System.out.println("5 - Real para Yuan");
-        System.out.println("6 - Sair");
+        System.out.println("6 - Yuan para Real");
+        System.out.println("7 - Sair");
     }
     public static void paraReal(double cotacao, String nome, Scanner sc) {
         double moeda = lerDouble("Valor em " + nome, sc);
@@ -47,6 +48,8 @@ public class Exercicio05 {
             case 3 -> paraOutro(6.46, "Euro", sc);
             case 4 -> paraReal(6.46, "Euro", sc);
             case 5 -> paraOutro(0.79, "Yuan", sc);
+            case 6 -> paraReal(0.79, "Yuan", sc);
+            case 7 -> System.out.println("Saindo do conversor...");
             default -> System.out.println("Opção inválida.");
             // feito usando lambda
         }
@@ -56,10 +59,9 @@ public class Exercicio05 {
         int op;
         do {
             op = escolheMenu(sc);
-            if (op != 6) {
-                realizarConversao(op, sc);
-            }
-        } while (op != 5);
+            realizarConversao(op, sc);
+
+        } while (op != 7);
         sc.close();
     }
 }

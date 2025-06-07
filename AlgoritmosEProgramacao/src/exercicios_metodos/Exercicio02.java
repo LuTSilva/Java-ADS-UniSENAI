@@ -15,14 +15,14 @@ public class Exercicio02 {
 
         Scanner sc = new Scanner(System.in);
 
-        int n = lerInt("Quantas pessoas deseja cadastrar? ", sc);
         String resultado = "";
+        int n = lerInt("Quantas pessoas deseja cadastrar? ", sc);
         for (int i = 0; i < n; i++) {
             String nome = lerString("Informe o nome: ", sc);
             int idade = lerInt("Idade de " + nome + ": ", sc);
             resultado += "\n" + nome + " - " + verificaCategoria(idade);
         }
-
+        exibeMsg("Resultado: " + resultado);
         sc.close();
         
     }
@@ -44,6 +44,6 @@ public class Exercicio02 {
     
     public static String lerString(String msg, Scanner sc) {
         System.out.print(msg);
-        return sc.nextLine();
+        return sc.next();
     }
 }

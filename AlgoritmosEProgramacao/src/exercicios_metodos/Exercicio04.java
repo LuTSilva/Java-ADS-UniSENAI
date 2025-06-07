@@ -10,13 +10,7 @@ public class Exercicio04 {
     // Verifique se a senha tem um @
     // Imprima uma mensagem indicando se a senha passou ou não pelos critérios de segurança
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String senha1 = lerString("Digite a primeira senha: ", sc);
-        String senha2 = lerString("Digite a segunda senha: ", sc);
-        String resultado = validarSenha(senha1, senha2);
-        exibirResultado(resultado);
-
-        sc.close();
+        solicitarSenhas();
     }
     public static String lerSenha(String msg, Scanner sc) {
         System.out.print(msg + ": ");
@@ -46,13 +40,16 @@ public class Exercicio04 {
     public static void exibirResultado(String resultado) {
         System.out.println(resultado);
     }
-    public static void solicitarSenhas(Scanner sc) {
+    public static void solicitarSenhas() {
+        Scanner sc = new Scanner(System.in);
         String senha1 = lerSenha("Digite a primeira senha", sc);
         String senha2 = lerSenha("Digite a segunda senha", sc);
         String resultado = validarSenha(senha1, senha2);
         exibirResultado(resultado);
+        sc.close();
     }
     public static String lerString(String msg, Scanner sc) {
         System.out.print(msg);
         return sc.nextLine();
-}}
+    }
+}

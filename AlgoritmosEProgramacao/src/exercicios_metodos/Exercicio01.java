@@ -14,10 +14,15 @@ public class Exercicio01 {
 		do {
 			opcao = menu(sc);
 			switch(opcao) {
-			case 1 -> System.out.printf("Resultado: %.2f%n", soma(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
-			case 2 -> System.out.printf("Resultado: %.2f%n", subtracao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
-			case 3 -> System.out.printf("Resultado: %.2f%n", multiplicacao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
-			case 4 -> System.out.printf("Resultado: %.2f%n", divisao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
+			case 1 -> System.out.printf("Resultado: %.2f%n", 
+			soma(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
+			case 2 -> System.out.printf("Resultado: %.2f%n", 
+			subtracao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
+			case 3 -> System.out.printf("Resultado: %.2f%n", 
+			multiplicacao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
+			case 4 -> System.out.printf("Resultado: %.2f%n", 
+			divisao(lerDouble("Numero 1: ", sc), lerDouble("Numero 2: ", sc)));
+			case 5 -> System.out.println("Saindo da calculadora...");
 			default -> System.out.println("Opção Inválida!");
 			}
 		} while (opcao !=5);
@@ -37,11 +42,16 @@ public class Exercicio01 {
 	}
 
 	public static double divisao(double a, double b) {
+		if (b == 0) {
+			System.out.println("Erro: Divisão por zero não é permitida.");
+			return Double.NaN; // Retorna NaN (Not a Number) para indicar erro
+		}
 		return (double) a / b;
 	}
 
 	public static int menu(Scanner sc) {
-		System.out.println("Escolha uma operação: 1 - Soma \n"
+		System.out.println("Escolha uma operação: \n"
+				+ "1 - Soma \n"
 				+ "2 - Subtração \n"
 				+ "3 - Multiplicação \n"
 				+ "4 - Divisão \n"
