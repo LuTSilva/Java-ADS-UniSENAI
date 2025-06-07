@@ -1,6 +1,8 @@
 package avaliacao_java;
 
 import java.util.Scanner;
+	// Utilizando a estrutura de repetição “FOR”, crie um programa em Java que leia 
+	// a altura (em cm) de N pessoas. No final, exiba a média das alturas
 
 public class avaliacao4 {
 

@@ -3,7 +3,12 @@ package avaliacao_java;
 import java.util.Scanner;
 
 public class avaliacao5 {
-
+//	Utilizando do-while, faça um programa para ler o número de uma conta bancária e o seu saldo atual. 
+//	Após, exiba um menu para o usuário onde ele possa depositar, sacar ou sair. 
+//	Para depósito e saque deverá perguntar o valor da operação e somar ou diminuir do saldo. 
+//	Quando o usuário desejar sair, exibir o número da conta e o saldo final. 
+//	Observação: Saques só podem ser realizados caso haja saldo na conta 
+//	suficiente para o valor de saque. Caso contrário, exibir uma mensagem para o usuário.
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
