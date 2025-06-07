@@ -21,5 +21,7 @@ public class exercicio15 {
 		} else {
 			System.out.print("Desconto normal!");
 		}
+
+		sc.close();
 	}
 }
