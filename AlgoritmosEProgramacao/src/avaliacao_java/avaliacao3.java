@@ -27,22 +27,16 @@ public class avaliacao3 {
 			case 'A':
 				System.out.println("romance");
 				contadorA ++;
-
-				System.out.println("Informe a próxima opção: ");
 				opcao = sc.next().charAt(0);
 				break;
 			case 'B':
 				System.out.println("Drama");
 				contadorB++;
-
-				System.out.println("Informe a próxima opção: ");
 				opcao = sc.next().charAt(0);
 				break;
 			case 'C':
 				System.out.println("Terror");
 				contadorC++;
-
-				System.out.println("Informe a próxima opção: ");
 				opcao = sc.next().charAt(0);
 			default:
 				System.out.println("Opção Inválida!");

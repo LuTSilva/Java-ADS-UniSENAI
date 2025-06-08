@@ -3,7 +3,17 @@ package avaliacao2_java;
 import java.util.Scanner;
 
 public class Avaliacao4 {
-
+	// Enunciado 4: Maior, Menor e Repetições
+	// Crie um programa que leia três números inteiros e determine:
+	// ● Qual é o maior número
+	// ● Qual é o menor número
+	// ● Se há pelo menos dois números iguais
+	// ● O programa precisa ter no mínimo os seguintes métodos:
+	// ● Ler número
+	// ● Encontrar maior número
+	// ● Encontrar menor número
+	// ● Verificar se existem números repetidos
+	// ● Exibir mensagem
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
@@ -14,7 +24,7 @@ public class Avaliacao4 {
 		
 		exibeMsg("O numero maior é: " + calculaMaior(num1, num2, num3));
 		exibeMsg("O numero menor é: " + calculaMenor(num1, num2, num3));
-		exibeMsg(validarIgual(num1, num2, num3));;
+		exibeMsg(validarIgual(num1, num2, num3));
 		
 		sc.close();
 
@@ -35,9 +45,8 @@ public class Avaliacao4 {
 		return (num1 == num2 || num1 == num3 || num2 == num3);
 	}
 	public static String validarIgual(int num1, int num2, int num3) {
-		if (!verificaIgual(num1, num2, num3)) {
+		if (!verificaIgual(num1, num2, num3))
 			return "Nenhum numero igual!";
-		}
 		return "Número igual encontrado!";
 	}
 	
