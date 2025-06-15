@@ -49,6 +49,10 @@ public class exercicio00cadastroPessoas {
 	}
     public static int lerInt(String msg, Scanner sc) {
         System.out.print(msg);
+		while (!sc.hasNextInt()) { // Verifica se a entrada é um número válido
+			sc.next(); // descarta a entrada inválida
+			System.out.print("Entrada inválida. " + msg);
+		}
         return sc.nextInt();
     }
     public static void exibeMsg(String msg) {
