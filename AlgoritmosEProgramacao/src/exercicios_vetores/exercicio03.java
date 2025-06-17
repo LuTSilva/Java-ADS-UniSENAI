@@ -25,27 +25,19 @@ static List<Double> salarios = new ArrayList<>();
 		int n = lerInt("Quantos funcionários deseja cadastrar? ", sc);
 		
         cadastrarFuncionario(n, sc);
-		
 		exibeMsg("\nFuncionários e seus salários:");
+		atualizaSalario(n);
+		sc.close();
+	}
+
+	public static void atualizaSalario(int n) {
 		for (int i = 0; i < n; i++) {
 			double salarioAntigo = salarios.get(i);
 			double salarioNovo = calcularNovoSalario(salarioAntigo);
 			
 			exibeMsg("Nome: %s, Salário Antigo: %.2f, Salário Novo: %.2f%n", nomes.get(i), salarioAntigo, salarioNovo);
 		}
-		sc.close();
 	}
-
-    private static void cadastrarFuncionario(int n, Scanner sc) {
-        for (int i = 0; i < n; i++) {		
-            sc.nextLine(); // Consumir a quebra de linha pendente
-            String nome = lerString("Informe o nome do funcionário " + (i + 1) + ": ", sc);
-            double salario = lerDouble("Informe o salário de " + nome + ": ", sc);
-            
-            nomes.add(nome);
-            salarios.add(salario);
-        }
-    }
 	public static double calcularNovoSalario(double salario) {
 		if (salario <= 400.00) {
 			return salario * 1.25; // + 25%
@@ -57,6 +49,16 @@ static List<Double> salarios = new ArrayList<>();
 			return salario * 1.10; // + 10%
 		}
 	}
+    public static void cadastrarFuncionario(int n, Scanner sc) {
+        for (int i = 0; i < n; i++) {		
+            sc.nextLine(); // Consumir a quebra de linha pendente
+            String nome = lerString("Informe o nome do funcionário " + (i + 1) + ": ", sc);
+            double salario = lerDouble("Informe o salário de " + nome + ": ", sc);
+            
+            nomes.add(nome);
+            salarios.add(salario);
+        }
+    }
 	public static void exibeMsg(String msg) {
 		System.out.println(msg);
 	}
