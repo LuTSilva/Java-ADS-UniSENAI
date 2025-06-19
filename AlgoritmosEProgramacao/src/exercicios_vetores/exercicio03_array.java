@@ -1,8 +1,10 @@
 package exercicios_vetores;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class exercicio03 {
+public class exercicio03_array {
 // Exercício 3 - Faça um algoritmo e um programa que leia nome e salário
 // de N funcionários de uma empresa e armazene todos na memória (utilize vetores).
 // Após o cadastro de todos os dados, 
@@ -14,29 +16,26 @@ public class exercicio03 {
 // Após exiba todos os nomes, 
 // o salário antes da alteração e o salário após a alteração.
 
-static String[] nomes;
-static double[] salarios;
-static double[] salariosFinais;
+static List<String> nomes = new ArrayList<>();
+static List<Double> salarios = new ArrayList<>();
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 
 		int n = lerInt("Quantos funcionários deseja cadastrar? ", sc);
-		nomes = new String[n];
-		salarios = new double[n];
-		salariosFinais = new double[n];
-
+		
         cadastrarFuncionario(n, sc);
 		exibeMsg("\nFuncionários e seus salários:");
-		atualizaSalario(n, sc);
+		atualizaSalario(n);
 		sc.close();
 	}
 
-	public static void atualizaSalario(int n, Scanner sc) {
+	public static void atualizaSalario(int n) {
 		for (int i = 0; i < n; i++) {
-			salariosFinais[i] = calcularNovoSalario(salarios[i]);
+			double salarioAntigo = salarios.get(i);
+			double salarioNovo = calcularNovoSalario(salarioAntigo);
 			
-			exibeMsg("Nome: %s, Salário Antigo: %.2f, Salário Novo: %.2f%n", nomes[i], salarios[i], salariosFinais[i]);
+			exibeMsg("Nome: %s, Salário Antigo: %.2f, Salário Novo: %.2f%n", nomes.get(i), salarioAntigo, salarioNovo);
 		}
 	}
 	public static double calcularNovoSalario(double salario) {
@@ -53,8 +52,11 @@ static double[] salariosFinais;
     public static void cadastrarFuncionario(int n, Scanner sc) {
         for (int i = 0; i < n; i++) {		
             sc.nextLine(); // Consumir a quebra de linha pendente
-            nomes[i] = lerString("Informe o nome do funcionário " + (i + 1) + ": ", sc);
-            salarios[i] = lerDouble("Informe o salário de " + nomes[i] + ": ", sc);
+            String nome = lerString("Informe o nome do funcionário " + (i + 1) + ": ", sc);
+            double salario = lerDouble("Informe o salário de " + nome + ": ", sc);
+            
+            nomes.add(nome);
+            salarios.add(salario);
         }
     }
 	public static void exibeMsg(String msg) {
