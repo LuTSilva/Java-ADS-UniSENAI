@@ -22,16 +22,17 @@ static double[] salariosFinais;
 		Scanner sc = new Scanner(System.in);
 
 		int n = lerInt("Quantos funcionários deseja cadastrar? ", sc);
-		nomes = new String[n];
-		salarios = new double[n];
-		salariosFinais = new double[n];
-
+		instanciaVetor(n);
         cadastrarFuncionario(n, sc);
 		exibeMsg("\nFuncionários e seus salários:");
 		atualizaSalario(n, sc);
 		sc.close();
 	}
-
+	public static void instanciaVetor(int n) {
+		nomes = new String[n];
+		salarios = new double[n];
+		salariosFinais = new double[n];
+	}
 	public static void atualizaSalario(int n, Scanner sc) {
 		for (int i = 0; i < n; i++) {
 			salariosFinais[i] = calcularNovoSalario(salarios[i]);

@@ -1,6 +1,5 @@
 package exercicios_vetores;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Scanner;
 public class exercicio05 {
 // Exercício 5
@@ -11,39 +10,46 @@ public class exercicio05 {
 // 3 - Qual mercadoria com menor preço.
 // 4 - Qual a mercadoria com maior estoque.
 // 5 - Qual mercadoria com menor estoque.
-static List<String> nomes = new ArrayList<>();
-static List<Double> precos = new ArrayList<>();
-static List<Integer> estoques = new ArrayList<>();
+static String[] nomes;
+static double[] precos;
+static int[] estoques;
 static int count = 0;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
+
+		int n = lerInt("Quantas mercadorias deseja cadastrar? ", sc);
+		instanciaVetor(n);
+		processaEntrada(sc);
+		
+		sc.close();
+	}
+	private static void processaEntrada(Scanner sc) {
 		int op;
 		do {
 			op = menu(sc);
 			switch (op) {
 				case 1 -> cadastrarMercadoria(sc);
-				case 2 -> exibeMsg("Mercadoria com maior preço: " + mercadoriaMaiorPreco());
-				case 3 -> exibeMsg("Mercadoria com menor preço: " + mercadoriaMenorPreco());
-				case 4 -> exibeMsg("Mercadoria com maior estoque: " + mercadoriaMaiorEstoque());
-				case 5 -> exibeMsg("Mercadoria com menor estoque: " + mercadoriaMenorEstoque());
+				case 2 -> preco(true);
+				case 3 -> preco(false);
+				case 4 -> estoque(true);
+				case 5 -> estoque(false);
 				case 6 -> exibeMsg("Finalizando");
 				default -> exibeMsg("Opção inválida");
 			}
 		} while (op != 6);
-		
-		sc.close();
+	}
+		public static void instanciaVetor(int n) {
+		nomes = new String[n];
+		precos = new double[n];
+		estoques = new int[n];
 	}
 	public static void cadastrarMercadoria(Scanner sc) {
-		if (nomes.size() < 50) { // .size() retorna o número de elementos na lista
+		if (count < 50) {
 			sc.nextLine(); // Consumir a quebra de linha pendente
-			String nome = lerString("Informe o nome da mercadoria: ", sc);
-			double preco = lerDouble("Informe o preço da mercadoria: ", sc);
-			int estoque = lerInt("Informe o estoque da mercadoria: ", sc);
+			nomes[count] = lerString("Informe o nome da mercadoria: ", sc);
+			precos[count] = lerDouble("Informe o preço da mercadoria: ", sc);
+			estoques[count] = lerInt("Informe o estoque da mercadoria: ", sc);
 			count++;
-			
-			nomes.add(nome);
-			precos.add(preco);
-			estoques.add(estoque);
 		} else {
 			exibeMsg("Limite de mercadorias cadastradas atingido.");
 		}
@@ -81,52 +87,34 @@ static int count = 0;
 		System.out.println("6 - Sair");
 		return lerInt("Escolha uma opção: ", sc);
 	}
-	public static String mercadoriaMaiorPreco() {
-		if (precos.isEmpty()) return "Nenhuma mercadoria cadastrada.";
-		double maiorPreco = precos.get(0);
-		String nomeMaiorPreco = nomes.get(0);
-		for (int i = 1; i < precos.size(); i++) {
-			if (precos.get(i) > maiorPreco) {
-				maiorPreco = precos.get(i);
-				nomeMaiorPreco = nomes.get(i);
+	public static void preco(boolean maior) {
+		if (count == 0) {
+			exibeMsg("Nenhuma mercadoria cadastrada.");
+			return;
+		}
+		double preco = precos[0];
+		String nome = nomes[0];
+		for (int i = 1; i < count; i++) {
+			if ((maior && precos[i] > preco) || (!maior && precos[i] < preco)) {
+				preco = precos[i];
+				nome = nomes[i];
 			}
 		}
-		return nomeMaiorPreco + " - R$" + maiorPreco;
+		exibeMsg(nome + " - Preço: R$" + preco);
 	}
-public static String mercadoriaMenorPreco() {
-		if (precos.isEmpty()) return "Nenhuma mercadoria cadastrada.";
-		double menorPreco = precos.get(0);
-		String nomeMenorPreco = nomes.get(0);
-		for (int i = 1; i < precos.size(); i++) {
-			if (precos.get(i) < menorPreco) {
-				menorPreco = precos.get(i);
-				nomeMenorPreco = nomes.get(i);
+	public static void estoque(boolean maior) {
+		if (count == 0) {
+			exibeMsg("Nenhuma mercadoria cadastrada.");
+			return;
+		}
+		int estoque = estoques[0];
+		String nome = nomes[0];
+		for (int i = 1; i < count; i++) {
+			if ((maior && estoques[i] > estoque) || (!maior && estoques[i] < estoque)) {
+				estoque = estoques[i];
+				nome = nomes[i];
 			}
 		}
-		return nomeMenorPreco + " - R$" + menorPreco;
-	}
-public static String mercadoriaMaiorEstoque() {
-		if (estoques.isEmpty()) return "Nenhuma mercadoria cadastrada.";
-		int maiorEstoque = estoques.get(0);
-		String nomeMaiorEstoque = nomes.get(0);
-		for (int i = 1; i < estoques.size(); i++) {
-			if (estoques.get(i) > maiorEstoque) {
-				maiorEstoque = estoques.get(i);
-				nomeMaiorEstoque = nomes.get(i);
-			}
-		}
-		return nomeMaiorEstoque + " - Estoque: " + maiorEstoque;
-	}
-public static String mercadoriaMenorEstoque() {
-		if (estoques.isEmpty()) return "Nenhuma mercadoria cadastrada.";
-		int menorEstoque = estoques.get(0);
-		String nomeMenorEstoque = nomes.get(0);
-		for (int i = 1; i < estoques.size(); i++) {
-			if (estoques.get(i) < menorEstoque) {
-				menorEstoque = estoques.get(i);
-				nomeMenorEstoque = nomes.get(i);
-			}
-		}
-		return nomeMenorEstoque + " - Estoque: " + menorEstoque;
+		exibeMsg(nome + " - Estoque: " + estoque);
 	}
 }

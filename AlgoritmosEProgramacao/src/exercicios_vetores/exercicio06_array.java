@@ -1,7 +1,8 @@
 package exercicios_vetores;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-public class exercicio06 {
+public class exercicio06_array {
 // Exercício 6
 // Faça um algoritmo para cadastro de nomes e telefones de pessoas e
 // que apresente o seguinte menu (com as respectivas funcionalidades):
@@ -11,9 +12,8 @@ public class exercicio06 {
 // 4 - Sair
 // Observação: Caso não exista o contato buscado, deve ser apresentada
 // uma mensagem indicando a inexistência.
-static String[] nomes = new String[100];
-static String[] telefones = new String[100];
-static int count = 0;
+static List<String> nomes = new ArrayList<>();
+static List<String> telefones = new ArrayList<>();
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int op;
@@ -21,8 +21,8 @@ static int count = 0;
 			op = menu(sc);
 			switch (op) {
 				case 1 -> cadastrarContato(sc);
-				case 2 -> busca("nome", sc);
-				case 3 -> busca("telefone", sc);
+				case 2 -> buscarContatoPorNome(sc);
+				case 3 -> buscarContatoPorTelefone(sc);
 				case 4 -> exibeMsg("Finalizando");
 				default -> exibeMsg("Opção inválida");
 			}
@@ -52,48 +52,22 @@ static int count = 0;
 		System.out.println(msg);
 	}
 	public static void cadastrarContato(Scanner sc) {
-		if (count >= 100){
-			sc.nextLine(); // Consumir a quebra de linha pendente
-			nomes[count] = lerString("Digite o nome do contato: ", sc);
-			nomes[count] = normalizarNome(nomes[count]); // Normaliza o nome para armazenamento
-			telefones[count] = lerString("Digite o telefone do contato: ", sc);
-			telefones[count] = normalizarTelefone(telefones[count]); // Normaliza o telefone para armazenamento
-			count++;
-			exibeMsg("Contato cadastrado com sucesso!");
-		} else {
-			exibeMsg("Limite de contatos atingido. Não é possível cadastrar mais contatos.");
-		}
-	}
-	public static void busca(String tipo, Scanner sc){
 		sc.nextLine(); // Consumir a quebra de linha pendente
-		String busca = lerString("Qual " + tipo + " deseja buscar? ", sc);
-		String result = "";
-		for (int i = 0; i < count; i++) {
-			if ((tipo.equals("nome") && nomes[i].equals(busca)) ||
-			 (tipo.equals("telefone") && telefones[i].equals(busca))) {
-				result += nomes[i] + " - " + telefones[i] + "\n";
-			}
-		}
-		if (result.isEmpty()) {
-			exibeMsg("Contato não encontrado.");
-		} else {
-			exibeMsg(result);
-		}
+		String nome = lerString("Digite o nome do contato: ", sc);
+		nome = normalizarNome(nome); // Normaliza o nome para armazenamento
+		String telefone = lerString("Digite o telefone do contato: ", sc);
+		telefone = normalizarTelefone(telefone); // Normaliza o telefone para armazenamento
+		nomes.add(nome);
+		telefones.add(telefone);
+		exibeMsg("Contato cadastrado com sucesso!");
 	}
-
 	public static void buscarContatoPorNome(Scanner sc) {
 		sc.nextLine(); // Consumir a quebra de linha pendente
 		String nome = lerString("Digite o nome do contato a ser buscado: ", sc);
 		nome = normalizarNome(nome); // Normaliza o nome para comparação
-		int index = -1;
-		for (int i = 0; i < count; i++) {
-			if (nomes[i].equals(nome)) {
-				index = i;
-				break;
-			}
-		}
+		int index = nomes.indexOf(nome);
 		if (index != -1) {
-			exibeMsg("Contato encontrado: " + nomes[index] + " - " + telefones[index]);
+			exibeMsg("Contato encontrado: " + nomes.get(index) + " - " + telefones.get(index));
 		} else {
 			exibeMsg("Contato não encontrado.");
 		}
@@ -102,15 +76,9 @@ static int count = 0;
 		sc.nextLine(); // Consumir a quebra de linha pendente
 		String telefone = lerString("Digite o telefone do contato a ser buscado: ", sc);
 		telefone = normalizarTelefone(telefone); // Normaliza o telefone para comparação
-		int index = -1;
-		for (int i = 0; i < count; i++) {
-			if (telefones[i].equals(telefone)) {
-				index = i;
-				break;
-			}
-		}
+		int index = telefones.indexOf(telefone);
 		if (index != -1) {
-			exibeMsg("Contato encontrado: " + nomes[index] + " - " + telefones[index]);
+			exibeMsg("Contato encontrado: " + nomes.get(index) + " - " + telefones.get(index));
 		} else {
 			exibeMsg("Contato não encontrado.");
 		}
