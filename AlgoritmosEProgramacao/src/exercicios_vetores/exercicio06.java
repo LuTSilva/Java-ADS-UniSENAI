@@ -52,7 +52,7 @@ static int count = 0;
 		System.out.println(msg);
 	}
 	public static void cadastrarContato(Scanner sc) {
-		if (count >= 100){
+		if (count <= 100){
 			sc.nextLine(); // Consumir a quebra de linha pendente
 			nomes[count] = lerString("Digite o nome do contato: ", sc);
 			nomes[count] = normalizarNome(nomes[count]); // Normaliza o nome para armazenamento
