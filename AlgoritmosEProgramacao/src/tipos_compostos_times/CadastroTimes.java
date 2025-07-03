@@ -1,4 +1,4 @@
-package tipos_compostos;
+package tipos_compostos_times;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,6 @@ public class CadastroTimes {
 				return;
 			}
 		}
-		
 	}
 	static int menu(Scanner sc) {
 		String m = "1 - Cadastrar \n"

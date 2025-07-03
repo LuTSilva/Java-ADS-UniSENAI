@@ -1,4 +1,4 @@
-package tipos_compostos;
+package tipos_compostos_times;
 
 public class Time {
 	String nome;
