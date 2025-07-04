@@ -9,6 +9,13 @@ static List<String> nomes = new ArrayList<>();
 static double contadorADS = 0;
 static double contadorOutros = 0;
 	public static void main(String[] args) {
+		// Faça um programa que crie um cadastro com o nome do curso de N
+		// alunos. Após o cadastro, exiba o percentual de alunos que cursam “ADS”.
+		// O programa precisa ter no mínimo os seguintes métodos:
+		// ● Ler número inteiro
+		// ● Ler uma string
+		// ● Exibir mensagem final
+		// ● Calcular o percentual
 		
 		Scanner sc = new Scanner(System.in);
 		int op;
@@ -47,15 +54,16 @@ static double contadorOutros = 0;
 		return sc.nextLine();
 	}
 	public static void cadastrarAluno(Scanner sc) {
-		sc.nextLine();
-		String nome = lerString("Digite o nome do aluno: ", sc);
-		char opcao = lerChar("Digite 'A' caso o aluno curse Análise e Desenvolvimento de Sistemas (ADS), \n"
-				+ "digite outra letra caso seja outro curso! ", sc);
-		if (opcao != 'A') {
-			contadorOutros++;
+		sc.nextLine(); // Limpa o buffer do scanner
+		String nome = lerString("Informe o nome do aluno: ", sc);
+		String curso = lerString("Informe o curso (ADS ou outro): ", sc);
+		
+		if (curso.equalsIgnoreCase("ADS")) {
+			contadorADS++;
 		} else {
-			contadorADS++;		
+			contadorOutros++;
 		}
+		
 		nomes.add(nome);
 		exibeMsg("Aluno cadastrado com sucesso!");
 	}
@@ -67,8 +75,10 @@ static double contadorOutros = 0;
 	}
 	public static void listarTodos() {
 		exibeMsg("Cursos cadastrados: %.0f\n", (contadorADS + contadorOutros));
-		exibeMsg("Alunos que cursam ADS: %.2f\n", ((contadorADS / (contadorADS + contadorOutros)) * 100));
-		exibeMsg("Alunos que cursam outros cursos: %.2f\n", ((contadorOutros / (contadorADS + contadorOutros)) * 100));
+		exibeMsg("Alunos que cursam ADS: %.2f\n", 
+		((contadorADS / (contadorADS + contadorOutros)) * 100));
+		exibeMsg("Alunos que cursam outros cursos: %.2f\n", 
+		((contadorOutros / (contadorADS + contadorOutros)) * 100));
 	}
 
 }

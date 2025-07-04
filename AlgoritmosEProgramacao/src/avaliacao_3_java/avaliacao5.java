@@ -8,6 +8,23 @@ public class avaliacao5 {
 static List<String> nomes = new ArrayList<>();
 static List<Integer> quantidades = new ArrayList<>();
 	public static void main(String[] args) {
+		// Faça um programa para cadastro de uma lista de compras. A lista é composta pelo
+		// nome do produto e a quantidade que deve ser comprada. Na lista poderá ter no
+		// máximo 100 itens no caso de utilizar vetores ou no caso de utilizar ArrayList não
+		// precisa ter limite. Apresente um menu com as opções:
+		// 1 – Cadastrar
+		// 2 – Buscar por nome e mostrar a quantidade que precisa ser comprada
+		// 3 – Listar todos os produtos que necessitam mais de 10 unidades.
+		// 4 – Sair
+		// Observação: na busca por nome caso o produto não seja encontrado deve exibir uma
+		// mensagem avisando o usuário
+		// O programa precisa ter no mínimo os seguintes métodos:
+		// ● Exibir menu
+		// ● Ler uma string
+		// ● Ler um inteiro
+		// ● Exibir mensagem
+		// ● Um método para cada opção do menu (1,2 e 3)
+
 		Scanner sc = new Scanner(System.in);
 		int op;
 		do {
@@ -26,11 +43,11 @@ static List<Integer> quantidades = new ArrayList<>();
 		return sc.nextLine();
 	}
 	public static int menu(Scanner sc) {
-		System.out.println("Menu:");
-		System.out.println("1 - Cadastrar produto");
-		System.out.println("2 - Buscar produto por nome");
-		System.out.println("3 - Listar produtos com mais de 10 unidades");
-		System.out.println("4 - Sair");
+		exibeMsg("Menu:");
+		exibeMsg("1 - Cadastrar produto");
+		exibeMsg("2 - Buscar produto por nome");
+		exibeMsg("3 - Listar produtos com mais de 10 unidades");
+		exibeMsg("4 - Sair");
 		return lerInt("Escolha uma opção: ", sc);
 	}
 	public static int lerInt(String msg, Scanner sc) {
@@ -49,6 +66,7 @@ static List<Integer> quantidades = new ArrayList<>();
 		String nome = lerString("Digite o nome do produto: ", sc);
 		nome = normalizarNome(nome);
 		int quantidade = lerInt("Digite a quantidade do produto: ", sc);
+		
 		nomes.add(nome);
 		quantidades.add(quantidade);
 		exibeMsg("produto cadastrado com sucesso!");

@@ -3,15 +3,18 @@ package avaliacao_3_java;
 import java.util.Scanner;
 
 public class avaliacao3 {
-	// 
-	
 	public static void main(String[] args) {
-		
+		// Faça um algoritmo para ler o saldo atual de uma conta bancária. Após,
+		// exiba um menu onde o usuário possa fazer depósitos ou retiradas. Para cada
+		// operação exiba o saldo remanescente. Observação: Somente podem ser feitas
+		// retiradas se possuir saldo.
+		// **Utilize o máximo que conseguir de modularização
+
 		Scanner sc = new Scanner (System.in);
 
-		double saldo = 0;
-		saldo = lerDouble("Informe o saldo atual da conta: ", sc);
+		double saldo = lerDouble("Informe o saldo atual da conta: ", sc);
 		operadorBancario(saldo, sc);
+		
 		sc.close();
 	}
 	public static void operadorBancario(double saldo, Scanner sc) {
@@ -20,7 +23,6 @@ public class avaliacao3 {
 			menu();
 			opcao = lerInt("Informe a opção desejada: ", sc);
 			saldo = operacoesBancarias(saldo, opcao, sc);
-			
 		} while (opcao != 3);
 	}
 	public static void menu() {
@@ -30,30 +32,29 @@ public class avaliacao3 {
 		exibeMsg("3 - Sair");
 	}
 	public static double operacoesBancarias(double saldo, int opcao, Scanner sc) {
-		switch (opcao) {
-			case 1:
-				exibeMsg("Informe o valor a ser depositado: ");
-				double valorDeposito = sc.nextDouble();
+		switch(opcao) {
+			case 1 -> {
+				double valorDeposito = lerDouble("Informe o valor a ser depositado: ", sc);
 				saldo += valorDeposito;
 				exibeMsg("Saldo antes do depósito: %.2f\n", saldo - valorDeposito);
 				exibeMsg("Saldo após o depósito: %.2f\n", saldo);
-				break;
-			case 2:
-				exibeMsg("Informe o valor a ser sacado: ");
-				double valorSaque = sc.nextDouble();
-				if (valorSaque <= saldo) {
-					saldo -= valorSaque;
-					exibeMsg("Saldo antes do saque: %.2f\n", saldo + valorSaque);
-					exibeMsg("Saldo após o saque: %.2f\n", saldo);
-				} else {
-					exibeMsg("Saldo insuficiente, operação inválida!");
-				}
-				break;
-			case 3:
-				exibeMsg("Saindo...");
-				break;
-			default:
-				exibeMsg("Opção inválida. Tente novamente.");
+                }
+			case 2 -> {
+				double valorSaque = lerDouble("Informe o valor a ser sacado: ", sc);
+				saldo = validadorSaque(saldo, valorSaque);
+                }
+			case 3 -> exibeMsg("Saindo...");
+			default -> exibeMsg("Opção inválida. Tente novamente.");
+		}
+		return saldo;
+	}
+	private static double validadorSaque(double saldo, double valorSaque) {
+		if (valorSaque <= saldo) {
+			saldo -= valorSaque;
+			exibeMsg("Saldo antes do saque: %.2f\n", saldo + valorSaque);
+			exibeMsg("Saldo após o saque: %.2f\n", saldo);
+		} else {
+			exibeMsg("Saldo insuficiente, operação inválida!");
 		}
 		return saldo;
 	}

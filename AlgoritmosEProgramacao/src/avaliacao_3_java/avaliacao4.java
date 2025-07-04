@@ -3,10 +3,12 @@ package avaliacao_3_java;
 import java.util.Scanner;
 
 public class avaliacao4 {
-	// 
-	
 	public static void main(String[] args) {
-		
+		// Faça um programa que leia o salário e número de dependentes de um
+		// funcionário. Sabendo que funcionários recebem um abono de R$100.00 por
+		// dependente, mostre ao final o valor a receber.
+		// **Utilize o máximo que conseguir de modularização
+
 		iniciaPrograma();
 	}
 	public static void iniciaPrograma() {
