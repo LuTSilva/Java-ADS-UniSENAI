@@ -54,6 +54,8 @@ public class CadastroTimes {
 				mais = t;
 			}
 		}
+		System.out.println("Time com mais gols:");
+		mostraDados(mais);
 	}
 	static void mostraDados(Time t) {
 		String msg = "Nome do Time: " + t.nome + "\n"
