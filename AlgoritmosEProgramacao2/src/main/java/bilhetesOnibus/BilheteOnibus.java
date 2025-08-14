@@ -29,10 +29,10 @@ public class BilheteOnibus {
     }
     public void conferirSaldo(double valor) {
         if (valor <= 0) {
-            exibeMsg("Valor inválido. O saldo deve ser positivo.");
+            exibeMsg("Valor inválido. O saldo deve ser positivo. \n");
         } else {
             this.saldo += valor;
-            exibeMsg("Adicionado R$ " + valor + " ao saldo do bilhete %d.\n", getNumeroBilhete());
+            exibeMsg("Adicionado R$ %.2f ao saldo do bilhete %d.\n", valor, getNumeroBilhete());
         }
     }
     public boolean utilizarBilhete() {
@@ -51,7 +51,7 @@ public class BilheteOnibus {
         }
     }
     public void consultarSaldo() {
-        exibeMsg("Saldo atual do bilhete " + this.numeroBilhete + ": R$ " + this.saldo);
+        exibeMsg("Saldo atual do bilhete %d: R$ %.2f\n", this.numeroBilhete, this.saldo);
     }
     public void adicionarSaldo(Scanner sc) {
         double valor;
@@ -59,11 +59,11 @@ public class BilheteOnibus {
         while (!opcao.equalsIgnoreCase("n")) {
             valor = lerDouble("Digite o valor para adicionar ao saldo: ", sc);
             if (valor < 0) {
-            exibeMsg("Valor negativo não permitido. Tente novamente.");
+            exibeMsg("Valor negativo não permitido. Tente novamente. \n");
             continue;
             }
             conferirSaldo(valor);
-            exibeMsg("\n%s, Deseja adicionar mais saldo? (digite 'n' caso não): ", 
+            exibeMsg("%s, Deseja adicionar mais saldo? (informe 'n' caso não): ", 
             getPassageiro());
             opcao = sc.next();
             sc.nextLine();

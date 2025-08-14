@@ -33,6 +33,11 @@ public class Cofrinho {
     }
 
     public void setSaldo(double saldo) {
+        Scanner sc = new Scanner(System.in);
+        while (saldo < 0) {
+            System.out.print("Saldo não pode ser negativo. Digite novamente: ");
+            saldo = sc.nextDouble();
+        }
         this.saldo = saldo;
     }
 
@@ -41,6 +46,11 @@ public class Cofrinho {
     }
 
     public void setMeta(double meta) {
+        Scanner sc = new Scanner(System.in);
+        while (meta < this.saldo) {
+            System.out.print("A meta não pode ser menor que o saldo atual. Digite novamente: ");
+            meta = sc.nextDouble();
+        }
         this.meta = meta;
     }
     public void depositar(double valor) {
@@ -87,7 +97,7 @@ public class Cofrinho {
         System.out.println("2. Retirar dinheiro");
         System.out.println("3. Alterar meta");
         System.out.println("4. Verificar se a meta foi atingida");
-        System.out.println("5. Sair");
+        System.out.println("0. Sair");
         return lerInt("Escolha uma opção: ", sc);
     }
     static int lerInt(String msg, Scanner sc) {

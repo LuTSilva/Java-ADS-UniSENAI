@@ -39,6 +39,8 @@ public class Main {
     }
 
     private static void detalhesPassageiro(BilheteOnibus bilhete) {
+        exibeMsg("Confirme os detalhes do bilhete:");
+        exibeMsg("----------------------------");
         exibeMsg("Número do Bilhete: " + bilhete.getNumeroBilhete());
         exibeMsg("Passageiro: " + bilhete.getPassageiro());
         exibeMsg("Saldo Inicial: R$ " + bilhete.getSaldo());

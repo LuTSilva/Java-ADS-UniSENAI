@@ -20,7 +20,7 @@ public class Estoque {
 
     public Estoque(String nome, int quantidade, double precoUnitario) {
         this.nome = nome;
-        this.quantidade = quantidade;
+        setQuantidade(quantidade);
         setPrecoUnitario(precoUnitario);
     }
 
@@ -34,6 +34,13 @@ public class Estoque {
 
     public double getPrecoUnitario() {
         return precoUnitario;
+    }
+    private void setQuantidade(int quantidade) {
+        if (quantidade >= 0) {
+            this.quantidade = quantidade;
+        } else {
+            System.out.println("Quantidade não pode ser negativa.");
+        }
     }
 
     public void setPrecoUnitario(double precoUnitario) {
@@ -52,13 +59,13 @@ public class Estoque {
         }
     }
 
-    public boolean saidaEstoque(int quantidade) {
+    public void saidaEstoque(int quantidade) {
         if (quantidade > 0 && quantidade <= this.quantidade) {
             this.quantidade -= quantidade;
-            return true;
+        } else if (quantidade > this.quantidade) {
+            System.out.println("Não é possível realizar a saída, quantidade insuficiente.");
         } else {
-            System.out.println("Saída inválida: quantidade maior que a disponível.");
-            return false;
+            System.out.println("Quantidade de saída deve ser positiva.");
         }
     }
 

@@ -2,8 +2,8 @@ package cofrinhoDigital;
 
 import java.util.Scanner;
 /*
- * Você foi contratado para criar um Cofrinho Digital para crianças 
- * aprenderem a guardar dinheiro.
+ Você foi contratado para criar um Cofrinho Digital para crianças 
+aprenderem a guardar dinheiro.
 O cofrinho deve ter:
 Nome do dono
 Saldo (não pode ser negativo)
@@ -49,7 +49,7 @@ public class Main {
                 case 4 -> {
                     cofre.metaAtingida();
                 }
-                case 5 -> {
+                case 0 -> {
                     System.out.println("Saindo...");
                     return;
                 }
