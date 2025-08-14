@@ -2,7 +2,8 @@ package cofrinhoDigital;
 
 import java.util.Scanner;
 /*
- * Você foi contratado para criar um Cofrinho Digital para crianças aprenderem a guardar dinheiro.
+ * Você foi contratado para criar um Cofrinho Digital para crianças 
+ * aprenderem a guardar dinheiro.
 O cofrinho deve ter:
 Nome do dono
 Saldo (não pode ser negativo)
@@ -23,57 +24,42 @@ public class Main {
         System.out.print("Digite o nome do dono do cofre: ");
         cofre.setNome(sc.nextLine());
 
-        // Definir meta antes de depositar
-        double meta;
-        while (true) {
-            System.out.print("Defina uma meta de economia: ");
-            meta = sc.nextDouble();
-            if (meta < 0) {
-            System.out.println("Meta inválida. Deve ser positiva.");
-            } else {
-            cofre.setMeta(meta);
-            break;
+        cofre.setSaldo(lerDouble("Digite o saldo inicial do cofre: ", sc));
+        cofre.setMeta(lerDouble("Digite a meta de economia do cofre: ", sc));
+        sc.nextLine();
+        
+        int op;
+        do {
+            op = cofre.menu(sc);
+            sc.nextLine(); // Limpar o buffer do scanner
+            
+            switch (op) {
+                case 1 -> {
+                    double deposito = lerDouble("Digite o valor a ser depositado: ", sc);
+                    cofre.depositar(deposito);
+                }
+                case 2 -> {
+                    double retirada = lerDouble("Digite o valor a ser retirado: ", sc);
+                    cofre.retirar(retirada);
+                }
+                case 3 -> {
+                    double novaMeta = lerDouble("Digite a nova meta de economia: ", sc);
+                    cofre.alterarMeta(novaMeta);
+                }
+                case 4 -> {
+                    cofre.metaAtingida();
+                }
+                case 5 -> {
+                    System.out.println("Saindo...");
+                    return;
+                }
+                default -> System.out.println("Opção inválida, tente novamente.");
             }
-        }
-
-        double valor;
-        while (true) {
-            System.out.print("Digite um valor para depositar no cofre: ");
-            valor = sc.nextDouble();
-            if (valor < 0) {
-            System.out.println("Valor inválido. O depósito deve ser positivo.");
-            } else {
-            cofre.depositar(valor);
-            System.out.println("Saldo atual: R$ " + cofre.getSaldo());
-            }
-
-            System.out.print("Deseja depositar mais? (s/n): ");
-            String opcao = sc.next();
-            if (!opcao.equalsIgnoreCase("s")) {
-            break;
-            }
-        }
-
-        // Perguntar se deseja alterar a meta
-        System.out.print("Deseja alterar a meta? (s/n): ");
-        String alterarMeta = sc.next();
-        if (alterarMeta.equalsIgnoreCase("s")) {
-            while (true) {
-            System.out.print("Informe a nova meta de economia: ");
-            double novaMeta = sc.nextDouble();
-            if (novaMeta < cofre.getSaldo()) {
-                System.out.println("A meta não pode ser menor que o saldo atual (R$ " + cofre.getSaldo() + ").");
-            } else {
-                cofre.setMeta(novaMeta);
-                break;
-            }
-            }
-        }
-
-        if (cofre.getSaldo() >= cofre.getMeta()) {
-            System.out.println("Parabéns! Você atingiu sua meta de economia!");
-        } else {
-            System.out.println("Você ainda não atingiu sua meta. Continue economizando!");
-        }
+        }  while (op != 5);
+        sc.close();
+    } 
+    static double lerDouble(String msg, Scanner sc) {
+        System.out.print(msg);
+        return sc.nextDouble();
     }
 }

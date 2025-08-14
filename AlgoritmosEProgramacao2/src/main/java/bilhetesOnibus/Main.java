@@ -30,52 +30,26 @@ Criar uma classe Main para testar.
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Bilhetes bilhete = new Bilhetes(lerString("Digite o nome do passageiro: ", sc));
+        BilheteOnibus bilhete = new BilheteOnibus(lerString("Digite o nome do passageiro: ", sc));
+        detalhesPassageiro(bilhete);
+        bilhete.adicionarSaldo(sc);
+        bilhete.consultarSaldo();
+        bilhete.utilizarBilhete();
+        sc.close();
+    }
+
+    private static void detalhesPassageiro(BilheteOnibus bilhete) {
         exibeMsg("Número do Bilhete: " + bilhete.getNumeroBilhete());
         exibeMsg("Passageiro: " + bilhete.getPassageiro());
         exibeMsg("Saldo Inicial: R$ " + bilhete.getSaldo());
         exibeMsg("Tarifa da passagem: R$ " + bilhete.getTarifa());
-        
-        double valor;
-        String opcao;
-        while (true) {
-            valor = lerDouble("Digite o valor para adicionar ao saldo: ", sc);
-            if (valor < 0) {
-            exibeMsg("Valor negativo não permitido. Tente novamente.");
-            continue;
-            }
-            bilhete.adicionarSaldo(valor);
-            exibeMsg("Saldo após adicionar R$ " + valor + ": R$ " + bilhete.getSaldo());
-            exibeMsg("Deseja adicionar mais saldo? (s/n): ");
-            opcao = sc.next();
-            if (!opcao.equalsIgnoreCase("s")) {
-            break;
-            }
-        }
-
-        // Tentando utilizar o bilhete
-        if (bilhete.utilizarBilhete()) {
-            exibeMsg("Viagem realizada com sucesso!");
-        } else {
-            exibeMsg("Saldo insuficiente para realizar a viagem.");
-        }
-
-        // Consultando saldo
-        exibeMsg("Saldo restante: R$ " + bilhete.getSaldo());
-        sc.close();
     }
-        public static double lerDouble(String msg, Scanner sc) {
-        System.out.print(msg);
-        return sc.nextDouble();
-    }
-    public static String lerString(String msg, Scanner sc) {
+ 
+    static String lerString(String msg, Scanner sc) {
 		System.out.print(msg);
 		return sc.nextLine();
 	}
-    public static void exibeMsg(String msg) {
+    static void exibeMsg(String msg) {
 		System.out.println(msg);
 	}
-    public static void exibeMsg(String msg, Object... args) {
-        System.out.printf(msg, args);
-    }
 }

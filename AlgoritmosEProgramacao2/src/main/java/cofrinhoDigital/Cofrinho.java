@@ -12,6 +12,7 @@ O saldo não pode ser alterado diretamente.
 A meta pode ser alterada, mas não pode ser menor que o saldo atual.
 Criar método que diga se a meta foi atingida.
  */
+
 import java.util.Scanner;
 
 public class Cofrinho {
@@ -42,36 +43,55 @@ public class Cofrinho {
     public void setMeta(double meta) {
         this.meta = meta;
     }
-    public void depositar(double valor){
-        if (valor >0){
-            this.saldo+=valor;
+    public void depositar(double valor) {
+        if (valor > 0) {
+            this.saldo += valor;
+            System.out.println("Depósito realizado com sucesso! Saldo atual: R$ " + this.saldo);
         } else {
-            System.out.println("Valor inválido para depósito!");
+            System.out.println("Valor de depósito inválido. Deve ser positivo.");
         }
     }
-    public void sacar(double valor){
-        if (valor >0 && valor <= saldo){
-            this.saldo-=valor;
+    public void retirar(double valor) {
+        if (valor > 0 && valor <= this.saldo) {
+            this.saldo -= valor;
+            System.out.println("Retirada realizada com sucesso! Saldo atual: R$ " + this.saldo);
+        } else if (valor > this.saldo) {
+            System.out.println("Saldo insuficiente para a retirada.");
         } else {
-            System.out.println("Saldo insuficiente ou valor inválido!");
+            System.out.println("Valor de retirada inválido. Deve ser positivo.");
         }
     }
-    public void verificaMeta(){
-        if (meta > 0 && meta <= saldo){
-            System.out.println("Meta atingida!");
+    public void metaAtingida() {
+        if (this.saldo >= this.meta) {
+            System.out.println("""
+                               Parabéns!
+                               A meta de R$ """ + this.meta + " foi atingida com sucesso!");
         } else {
-            System.out.println("Meta não atingida!");
+            System.out.println("A meta de R$ " + this.meta + " ainda não foi atingida. \n"+
+            "Saldo atual: R$ " + this.saldo);
         }
     }
-    public void meta(){
-        Scanner sc = new Scanner(System.in);
-        while (meta < 0 || meta <= saldo){
-            System.out.println("Informe um ");
+    public void alterarMeta(double novaMeta) {
+        if (novaMeta >= this.saldo) {
+            this.meta = novaMeta;
+            System.out.println("Meta alterada com sucesso! Nova meta: R$ " + this.meta);
+        } else {
+            System.out.println("""
+                               A nova meta não pode ser menor que o saldo atual
+                               (R$ """ + this.saldo + ").");
         }
-        sc.close();
     }
-    public static double lerDouble(String msg, Scanner sc) {
+    public int menu(Scanner sc) {
+        System.out.println("\nMenu:");
+        System.out.println("1. Depositar dinheiro");
+        System.out.println("2. Retirar dinheiro");
+        System.out.println("3. Alterar meta");
+        System.out.println("4. Verificar se a meta foi atingida");
+        System.out.println("5. Sair");
+        return lerInt("Escolha uma opção: ", sc);
+    }
+    static int lerInt(String msg, Scanner sc) {
         System.out.print(msg);
-        return sc.nextDouble();
+        return sc.nextInt();
     }
 }

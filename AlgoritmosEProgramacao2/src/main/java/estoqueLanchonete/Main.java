@@ -2,19 +2,13 @@ package estoqueLanchonete;
 /*
  * Uma lanchonete quer controlar seu estoque de produtos.
 Cada produto tem:
-
 Nome
-
 Quantidade em estoque
-
 Preço unitário
 
 Regras:
-
 A quantidade só pode ser alterada por métodos de entrada e saída de estoque.
-
 Não permitir saída maior que a quantidade disponível.
-
 O preço unitário pode ser alterado, mas não pode ser negativo.
 
 Criar método para calcular o valor total em estoque.
