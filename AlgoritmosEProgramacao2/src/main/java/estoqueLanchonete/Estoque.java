@@ -1,4 +1,7 @@
 package estoqueLanchonete;
+
+import java.util.Scanner;
+
 /*
  * Uma lanchonete quer controlar seu estoque de produtos.
 Cada produto tem:
@@ -33,22 +36,24 @@ public class Estoque {
     }
 
     public double getPrecoUnitario() {
-        return precoUnitario;
+        return this.precoUnitario;
     }
-    private void setQuantidade(int quantidade) {
-        if (quantidade >= 0) {
-            this.quantidade = quantidade;
-        } else {
-            System.out.println("Quantidade não pode ser negativa.");
+    public void setQuantidade(int quantidade) {
+        Scanner sc = new Scanner(System.in);
+        while(quantidade < 0) {
+            System.err.print("Quantidade não pode ser negativa. Digite novamente: ");
+            quantidade = sc.nextInt();
         }
+        this.quantidade = quantidade;
     }
 
     public void setPrecoUnitario(double precoUnitario) {
-        if (precoUnitario >= 0) {
-            this.precoUnitario = precoUnitario;
-        } else {
-            System.out.println("Preço unitário não pode ser negativo.");
+        Scanner sc = new Scanner(System.in);
+        while(precoUnitario <= 0) {
+            System.err.print("Preço unitário não pode ser negativo ou zero. Digite novamente: ");
+            precoUnitario = sc.nextDouble();
         }
+        this.precoUnitario = precoUnitario;
     }
 
     public void entradaEstoque(int quantidade) {

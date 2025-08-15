@@ -16,8 +16,8 @@ O preço unitário pode ser alterado, mas não pode ser negativo.
 Criar método para calcular o valor total em estoque.
  */
 public class Main {
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
         String nome = lerString("Informe o nome do produto: ", sc);
         int quantidade = lerInt("Informe a quantidade em estoque: ", sc);
@@ -33,13 +33,13 @@ public class Main {
     private static void menu(Scanner sc, Estoque produto) {
         int opcao;
         do {
-            exibirMsg("\n--- Menu ---");
-            exibirMsg("1. Entrada de estoque");
-            exibirMsg("2. Saída de estoque");
-            exibirMsg("3. Alterar preço unitário");
-            exibirMsg("4. Mostrar dados do produto");
-            exibirMsg("5. Calcular valor total em estoque");
-            exibirMsg("0. Sair");
+            exibirMsg("\n--- Menu --- \n");
+            exibirMsg("1. Entrada de estoque \n");
+            exibirMsg("2. Saída de estoque \n");
+            exibirMsg("3. Alterar preço unitário \n");
+            exibirMsg("4. Mostrar dados do produto \n");
+            exibirMsg("5. Calcular valor total em estoque \n");
+            exibirMsg("0. Sair \n");
             opcao = lerInt("Escolha uma opção: ", sc);
 
             switch (opcao) {
@@ -56,9 +56,9 @@ public class Main {
                     exibirMsg("Preço atualizado: R$ " + produto.getPrecoUnitario());
                 }
                 case 4 -> {
-                    exibirMsg("Produto: " + produto.getNome());
-                    exibirMsg("Quantidade em estoque: " + produto.getQuantidade());
-                    exibirMsg("Preço unitário: R$ " + produto.getPrecoUnitario());
+                    exibirMsg("Produto: %s\n", produto.getNome());
+                    exibirMsg("Quantidade em estoque: %s\n", produto.getQuantidade());
+                    exibirMsg("Preço unitário: R$ %s\n", produto.getPrecoUnitario());
                 }
                 case 5 -> {
                     double valorTotal = produto.calcularValorTotal();
@@ -73,7 +73,7 @@ public class Main {
     private static int lerInt(String msg, Scanner sc) {
         exibirMsg(msg);
         while (!sc.hasNextInt()) {
-            exibirMsg("Valor inválido. Tente novamente.");
+            exibirMsg("Valor inválido. Tente novamente. \n");
             sc.next();
             exibirMsg(msg);
         }
@@ -83,7 +83,7 @@ public class Main {
     private static double lerDouble(String msg, Scanner sc) {
         exibirMsg(msg);
         while (!sc.hasNextDouble()) {
-            exibirMsg("Valor inválido. Tente novamente.");
+            exibirMsg("Valor inválido. Tente novamente. \n");
             sc.next();
             exibirMsg(msg);
         }
@@ -96,6 +96,10 @@ public class Main {
     }
 
     private static void exibirMsg(String msg) {
-        System.out.println(msg);
+        System.out.print(msg);
+    }
+
+    private static void exibirMsg(String format, Object... args) {
+        System.out.printf(format, args);
     }
 }
