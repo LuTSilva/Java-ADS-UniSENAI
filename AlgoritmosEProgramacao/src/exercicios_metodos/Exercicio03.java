@@ -3,6 +3,7 @@ package exercicios_metodos;
 import java.util.Scanner;
 
 public class Exercicio03 {
+	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		//  3 - Desenvolva um sistema para monitorar a temperatura de uma sala de servidores. 
@@ -13,17 +14,16 @@ public class Exercicio03 {
  		// • Calcular a diferença da temperatura atual em relação ao valor médio do limite.
  		// • Fornecer um aviso se a temperatura ultrapassar um limite crítico
 
-		Scanner sc = new Scanner(System.in);
-		double min = lerDouble("Temperatura mínima", sc);
-		double max = lerDouble("Temperatura máxima", sc);
-		double atual = lerDouble("Temperatura atual", sc);
+		double min = lerDouble("Temperatura mínima");
+		double max = lerDouble("Temperatura máxima");
+		double atual = lerDouble("Temperatura atual");
 		System.out.println(verificaLimite(max, min, atual));
 		System.out.println("Diferença em relação à média: " + diferenca(max, min, atual));
 		alerta(max, atual);
 		
 		sc.close();
 	}
-	public static double lerDouble(String msg, Scanner sc) {
+	public static double lerDouble(String msg) {
 		System.out.print(msg + ": ");
 		return sc.nextDouble();
 	}

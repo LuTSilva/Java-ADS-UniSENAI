@@ -3,6 +3,8 @@ package exercicios_metodos;
 import java.util.Scanner;
 
 public class Exercicio06 {
+    
+    static Scanner sc = new Scanner(System.in);
     // Cadastro de Funcionários e Cálculo de Salário com Bônus
     // Requisitos do Algoritmo:
     // Solicitar ao usuário as seguintes informações:
@@ -18,7 +20,18 @@ public class Exercicio06 {
     public static void main(String[] args) {
        solicitarInformacoes();
     }
-    
+    public static void solicitarInformacoes() {
+
+        String nome = lerString("Digite o nome do funcionário: ");
+        double salarioBase = lerDouble("Digite o salário base: ");
+        double percentualBonus = lerDouble("Digite o percentual de bônus (%): ");
+
+        exibirInformacoes(nome, salarioBase, percentualBonus, 
+        calcularSalarioFinal(salarioBase, percentualBonus), 
+        classificarSalario(calcularSalarioFinal(salarioBase, percentualBonus)));
+
+        sc.close();
+    }    
     public static void exibirInformacoes(String nome, double salarioBase, double percentualBonus, double salarioFinal, String classificacao) {
         System.out.println("\nInformações do Funcionário:");
         System.out.println("Nome: " + nome);
@@ -39,24 +52,12 @@ public class Exercicio06 {
             return "Baixo salário";
         }
     }
-    public static void solicitarInformacoes() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Digite o nome do funcionário: ");
-        String nome = sc.nextLine();
-
-        System.out.print("Digite o salário base: ");
-        double salarioBase = sc.nextDouble();
-
-        System.out.print("Digite o percentual de bônus (%): ");
-        double percentualBonus = sc.nextDouble();
-
-
-        exibirInformacoes(nome, 
-        salarioBase, percentualBonus, 
-        calcularSalarioFinal(salarioBase, percentualBonus), 
-        classificarSalario(calcularSalarioFinal(salarioBase, percentualBonus)));
-
-        sc.close();
+    public static double lerDouble(String msg){
+        System.out.print(msg);
+        return sc.nextDouble();
+    }
+    public static String lerString(String msg) {
+        System.out.print(msg);
+        return sc.nextLine();
     }
 }

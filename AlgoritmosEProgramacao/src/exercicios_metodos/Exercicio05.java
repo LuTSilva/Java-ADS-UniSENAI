@@ -3,6 +3,7 @@ package exercicios_metodos;
 import java.util.Scanner;
 
 public class Exercicio05 {
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
         // 5 - Desenvolva um conversor de moedas que exiba um menu para o usuário:
         // 1 – Real para Dólar
@@ -14,9 +15,14 @@ public class Exercicio05 {
         // [Alterado posteriormente para incluir a conversão de Real para Yuan e Yuan para Real.]
         iniciarConversor();
     }
-    public static double lerDouble(String msg, Scanner sc) {
-        System.out.print(msg + ": ");
-        return sc.nextDouble();
+    public static void iniciarConversor() {
+        int op;
+        do {
+            op = escolheMenu(sc);
+            realizarConversao(op);
+
+        } while (op != 7);
+        sc.close();
     }
     public static void exibirMenu() {
         System.out.println("Menu de Conversão de Moedas:");
@@ -28,12 +34,12 @@ public class Exercicio05 {
         System.out.println("6 - Yuan para Real");
         System.out.println("7 - Sair");
     }
-    public static void paraReal(double cotacao, String nome, Scanner sc) {
-        double moeda = lerDouble("Valor em " + nome, sc);
+    public static void paraReal(double cotacao, String nome) {
+        double moeda = lerDouble("Valor em " + nome);
         System.out.printf("%.2f reais%n", (moeda * cotacao));
     }
-    public static void paraOutro(double cotacao, String nome, Scanner sc) {
-        double reais = lerDouble("Reais", sc);
+    public static void paraOutro(double cotacao, String nome) {
+        double reais = lerDouble("Reais");
         System.out.printf("%.2f em %s%n", (reais / cotacao), nome);
     }
     public static int escolheMenu(Scanner sc) {
@@ -41,27 +47,21 @@ public class Exercicio05 {
         System.out.print("Escolha uma opção: ");
         return sc.nextInt();
     }
-    public static void realizarConversao(int op, Scanner sc) {
+    public static void realizarConversao(int op) {
         switch (op) {
-            case 1 -> paraOutro(5.67, "Dólar", sc);
-            case 2 -> paraReal(5.67, "Dólar", sc);
-            case 3 -> paraOutro(6.46, "Euro", sc);
-            case 4 -> paraReal(6.46, "Euro", sc);
-            case 5 -> paraOutro(0.79, "Yuan", sc);
-            case 6 -> paraReal(0.79, "Yuan", sc);
+            case 1 -> paraOutro(5.67, "Dólar");
+            case 2 -> paraReal(5.67, "Dólar");
+            case 3 -> paraOutro(6.46, "Euro");
+            case 4 -> paraReal(6.46, "Euro");
+            case 5 -> paraOutro(0.79, "Yuan");
+            case 6 -> paraReal(0.79, "Yuan");
             case 7 -> System.out.println("Saindo do conversor...");
             default -> System.out.println("Opção inválida.");
-            // feito usando lambda
+            // feito usando rule switch
         }
     }
-    public static void iniciarConversor() {
-        Scanner sc = new Scanner(System.in);
-        int op;
-        do {
-            op = escolheMenu(sc);
-            realizarConversao(op, sc);
-
-        } while (op != 7);
-        sc.close();
+    public static double lerDouble(String msg) {
+        System.out.print(msg + ": ");
+        return sc.nextDouble();
     }
 }
