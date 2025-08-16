@@ -1,4 +1,4 @@
-package cofrinhoDigital;
+package encapsulamento.cofrinhoDigital;
 
 import java.util.Scanner;
 /*

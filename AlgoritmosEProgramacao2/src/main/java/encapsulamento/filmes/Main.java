@@ -1,4 +1,4 @@
-package filmes;
+package encapsulamento.filmes;
 
 import java.util.ArrayList;
 import java.util.Scanner;

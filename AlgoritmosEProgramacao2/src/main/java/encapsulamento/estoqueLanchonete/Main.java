@@ -1,4 +1,4 @@
-package estoqueLanchonete;
+package encapsulamento.estoqueLanchonete;
 
 import java.util.Scanner;
 /*

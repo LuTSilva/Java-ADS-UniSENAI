@@ -1,4 +1,4 @@
-package filmes;
+package encapsulamento.filmes;
 
 public class Filme {
     String titulo;

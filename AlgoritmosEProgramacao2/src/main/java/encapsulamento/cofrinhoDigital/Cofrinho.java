@@ -1,4 +1,4 @@
-package cofrinhoDigital;
+package encapsulamento.cofrinhoDigital;
 /*
 Você foi contratado para criar um Cofrinho Digital para crianças aprenderem a guardar dinheiro.
 O cofrinho deve ter:

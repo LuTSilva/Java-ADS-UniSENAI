@@ -1,4 +1,4 @@
-package bilhetesOnibus;
+package encapsulamento.bilhetesOnibus;
 
 import java.util.Scanner;
 

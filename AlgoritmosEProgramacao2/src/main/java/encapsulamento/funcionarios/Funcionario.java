@@ -1,4 +1,4 @@
-package funcionarios;
+package encapsulamento.funcionarios;
 
 import java.util.Scanner;
 
