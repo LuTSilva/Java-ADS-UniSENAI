@@ -1,4 +1,4 @@
-package heranca;
+package heranca.veiculoExemplo;
 
 public class Carro extends Veiculo{
     int portas;
