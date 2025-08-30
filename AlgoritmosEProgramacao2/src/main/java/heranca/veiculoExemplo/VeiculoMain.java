@@ -1,4 +1,4 @@
-package heranca;
+package heranca.veiculoExemplo;
 
 public class VeiculoMain {
     public static void main(String[] args) {

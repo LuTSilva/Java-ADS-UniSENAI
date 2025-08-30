@@ -1,4 +1,4 @@
-package pizza;
+package heranca.pizza;
 
 public class PizzaSalgada extends Pizza {
     void preparar(){

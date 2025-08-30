@@ -1,4 +1,4 @@
-package heranca;
+package heranca.veiculoExemplo;
 
 public class Veiculo {
     String marca;

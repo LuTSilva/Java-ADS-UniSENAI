@@ -1,4 +1,4 @@
-package heranca;
+package heranca.veiculoExemplo;
 
 public class Moto extends Veiculo{
     void empinar(){

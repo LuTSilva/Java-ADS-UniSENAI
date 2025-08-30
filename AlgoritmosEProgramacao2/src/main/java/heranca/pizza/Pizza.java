@@ -1,4 +1,4 @@
-package pizza;
+package heranca.pizza;
 
 public class Pizza {
     String sabor;
