@@ -9,9 +9,11 @@ public record EmpresaDto(
         String nmFantasia,
         @NotBlank(message="Não é possível salvar a empresa sem um CNPJ")
         String nuCnpj,
+        @NotBlank(message="Não é possível salvar a empresa sem um Telefone")
         String nuTelefone,
         @NotBlank(message="Não é possível salvar a empresa sem um Endereço")
         String dsEndereco,
+        Integer nuEndereco,
         @Pattern(regexp = "^S|N$", message="Só é possível salvar a empresa com 'S' ou 'N' para indicar o status")
         String flAtivo
 

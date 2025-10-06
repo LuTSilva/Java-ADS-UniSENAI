@@ -26,6 +26,8 @@ public class EmpresaModel {
     private String nuTelefone;
     @Column(name="DSENDERECO", length=100)
     private String dsEndereco;
+    @Column(name="NUENDERECO")
+    private Integer nuEndereco;
     @Column(name="FLATIVO", length=1, nullable=false)
     private String flAtivo;
 }
