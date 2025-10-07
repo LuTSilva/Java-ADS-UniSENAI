@@ -3,6 +3,7 @@ package com.gerenciamento.estoque.service;
 import com.gerenciamento.estoque.dto.EmpresaDto;
 import com.gerenciamento.estoque.model.EmpresaModel;
 import com.gerenciamento.estoque.repository.EmpresaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +13,8 @@ import java.util.Optional;
 @Service
 public class EmpresaService {
 
-    private final EmpresaRepository empresaRepository;
-
-    public EmpresaService(EmpresaRepository empresaRepository) {
-        this.empresaRepository = empresaRepository;
-    }
+    @Autowired
+    private  EmpresaRepository empresaRepository;
 
     public EmpresaModel salvar(EmpresaDto dto) {
         EmpresaModel empresa = new EmpresaModel();

@@ -5,8 +5,10 @@ import com.gerenciamento.estoque.model.EmpresaModel;
 import com.gerenciamento.estoque.service.EmpresaService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -14,12 +16,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/empresa")
+@CrossOrigin ("*")
 public class EmpresaController {
 
-    private final EmpresaService empresaService;
-    public EmpresaController(EmpresaService empresaService){
-        this.empresaService = empresaService;
-    }
+    @Autowired
+    private EmpresaService empresaService;
 
     @PostMapping
     public ResponseEntity<EmpresaModel> criar (@Valid @RequestBody EmpresaDto dto){
