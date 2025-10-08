@@ -15,10 +15,10 @@ public class ProdutoModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="CDPRODUTO")
     private Integer cdProduto;
-    @Column(name="NMPRODUTO")
+    @Column(name="NMPRODUTO", length=100, nullable=false)
     private String nmProduto;
-    @Column(name="DSPRODUTO")
+    @Column(name="DSPRODUTO", length=100, nullable=false)
     private String dsProduto;
-    @Column(name="FLATIVO")
+    @Column(name="FLATIVO",length=1, nullable=false)
     private String flAtivo;
 }
