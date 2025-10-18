@@ -1,9 +1,12 @@
 package com.gerenciamento.mecanica.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +27,14 @@ private String nuCnpj;
 @Column(name="DSLOCAL", length = 200)
 private String dsLocal;
 @Column(name="NUTELEFONE", length = 14)
-private String nutelefone;
+private String nuTelefone;
 @Column(name="FLATIVO", length=1, nullable=false)
 private String flAtivo;
+
+@OneToMany (mappedBy = "filial", cascade = CascadeType.ALL,
+fetch = FetchType.LAZY, orphanRemoval = true)
+
+@JsonIgnore
+private List<UsuarioModel> usuarios;
+
 }
