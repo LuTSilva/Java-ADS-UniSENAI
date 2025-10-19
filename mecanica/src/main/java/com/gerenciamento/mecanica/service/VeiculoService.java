@@ -19,11 +19,11 @@ public class VeiculoService {
 
     public VeiculoModel salvar (@Valid @RequestBody VeiculoDto dto) {
         VeiculoModel veiculo = new VeiculoModel();
-        veiculo.setMarcaVeiculo(dto.marcaVeiculo());
-        veiculo.setModeloVeiculo(dto.modeloVeiculo());
-        veiculo.setTipoVeiculo(dto.tipoVeiculo());
-        veiculo.setAnoVeiculo(dto.anoVeiculo());
-        veiculo.setPlacaVeiculo(dto.placaVeiculo());
+        veiculo.setDsMarca(dto.dsMarca());
+        veiculo.setDsModelo(dto.dsModelo());
+        veiculo.setDsTipo(dto.dsTipo());
+        veiculo.setNuAno(dto.nuAno());
+        veiculo.setDsPlaca(dto.dsPlaca());
         return veiculoRepository.save(veiculo);
     }
     public List<VeiculoModel> listarTodos() {
@@ -34,17 +34,17 @@ public class VeiculoService {
         return veiculoRepository.findByCdVeiculo(cdVeiculo);
     }
 
-    public Optional<VeiculoModel> findByPlaca(String placaVeiculo) {
-        return veiculoRepository.findByPlaca(placaVeiculo);
+    public Optional<VeiculoModel> findByDsPlaca(String dsPlaca) {
+        return veiculoRepository.findByDsPlaca(dsPlaca);
     }
 
     public Optional<VeiculoModel> atualizaDados(Integer cdVeiculo, VeiculoDto veiculoDto) {
         return veiculoRepository.findByCdVeiculo(cdVeiculo).map(veiculo -> {
-            veiculo.setMarcaVeiculo(veiculoDto.marcaVeiculo());
-            veiculo.setModeloVeiculo(veiculoDto.modeloVeiculo());
-            veiculo.setTipoVeiculo(veiculoDto.tipoVeiculo());
-            veiculo.setAnoVeiculo(veiculoDto.anoVeiculo());
-            veiculo.setPlacaVeiculo(veiculoDto.placaVeiculo());
+            veiculo.setDsMarca(veiculoDto.dsMarca());
+            veiculo.setDsModelo(veiculoDto.dsModelo());
+            veiculo.setDsTipo(veiculoDto.dsTipo());
+            veiculo.setNuAno(veiculoDto.nuAno());
+            veiculo.setDsPlaca(veiculoDto.dsPlaca());
             return veiculoRepository.save(veiculo);
         });
     }

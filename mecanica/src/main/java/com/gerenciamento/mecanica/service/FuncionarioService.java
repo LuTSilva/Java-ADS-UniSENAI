@@ -19,12 +19,12 @@ public class FuncionarioService {
 
     public FuncionarioModel salvar (@Valid @RequestBody FuncionarioDto dto) {
         FuncionarioModel func = new FuncionarioModel();
-        func.setNomeFuncionario(dto.nomeFuncionario());
-        func.setCpfFuncionario(dto.cpfFuncionario());
-        func.setEmailFuncionario(dto.emailFuncionario());
-        func.setSenhaFuncionario(dto.senhaFuncionario());
-        func.setCargoFuncionario(dto.cargoFuncionario());
-        func.setSalarioFuncionario(dto.salarioFuncionario());
+        func.setNmFuncionario(dto.nmFuncionario());
+        func.setNuCpf(dto.nuCpf());
+        func.setDsEmail(dto.dsEmail());
+        func.setDsSenha(dto.dsSenha());
+        func.setDsCargo(dto.dsCargo());
+        func.setVlSalario(dto.vlSalario());
         return funcionarioRepository.save(func);
     }
     public List<FuncionarioModel> listarTodos() {
@@ -35,18 +35,18 @@ public class FuncionarioService {
         return funcionarioRepository.findByCdFuncionario(cdFuncionario);
     }
 
-    public Optional<FuncionarioModel> findByCpf(String cpfFuncionario) {
-        return funcionarioRepository.findByCpf(cpfFuncionario);
+    public Optional<FuncionarioModel> findByCpf(String nuCpf) {
+        return funcionarioRepository.findByNuCpf(nuCpf);
     }
 
     public Optional<FuncionarioModel> atualizaDados(Integer cdFuncionario, FuncionarioDto funcionarioDto) {
         return funcionarioRepository.findByCdFuncionario(cdFuncionario).map(func -> {
-            func.setNomeFuncionario(funcionarioDto.nomeFuncionario());
-            func.setCpfFuncionario(funcionarioDto.cpfFuncionario());
-            func.setEmailFuncionario(funcionarioDto.emailFuncionario());
-            func.setSenhaFuncionario(funcionarioDto.senhaFuncionario());
-            func.setCargoFuncionario(funcionarioDto.cargoFuncionario());
-            func.setSalarioFuncionario(funcionarioDto.salarioFuncionario());
+            func.setNmFuncionario(funcionarioDto.nmFuncionario());
+            func.setNuCpf(funcionarioDto.nuCpf());
+            func.setDsEmail(funcionarioDto.dsEmail());
+            func.setDsSenha(funcionarioDto.dsSenha());
+            func.setDsCargo(funcionarioDto.dsCargo());
+            func.setVlSalario(funcionarioDto.vlSalario());
             return funcionarioRepository.save(func);
         });
     }

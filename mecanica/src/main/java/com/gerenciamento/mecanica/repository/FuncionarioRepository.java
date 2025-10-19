@@ -1,7 +1,6 @@
 package com.gerenciamento.mecanica.repository;
 
 
-import com.gerenciamento.mecanica.model.FilialModel;
 import com.gerenciamento.mecanica.model.FuncionarioModel;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +11,7 @@ public interface FuncionarioRepository extends JpaRepository<FuncionarioModel, I
 
     Optional<FuncionarioModel> findByCdFuncionario(Integer cdFuncionario);
 
-    Optional<FuncionarioModel> findByCpf(String cpfFuncionario);
+    Optional<FuncionarioModel> findByNuCpf(String nuCpf);
 
     @Transactional
     Optional<FuncionarioModel> deleteByCdFuncionario(Integer cdFuncionario);

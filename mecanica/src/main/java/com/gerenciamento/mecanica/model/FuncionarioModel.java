@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,23 +20,23 @@ public class FuncionarioModel {
     @Column(name = "CDFUNCIONARIO")
     private Integer cdFuncionario;
 
-    @Column(name = "NOMEFUNCIONARIO")
-    private String nomeFuncionario;
+    @Column(name = "NMFUNCIONARIO", length = 50,  nullable = false)
+    private String nmFuncionario;
 
-    @Column(name = "CPFFUNCIONARIO", unique = true)
-    private String cpfFuncionario;
+    @Column(name = "NUCPF", length = 14, nullable = false, unique = true)
+    private String nuCpf;
 
-    @Column(name = "EMAILFUNCIONARIO", unique = true)
-    private String emailFuncionario;
+    @Column(name = "DSEMAIL", length = 100, nullable = false, unique = true)
+    private String dsEmail;
 
-    @Column(name = "SENHAFUNCIONARIO")
-    private String senhaFuncionario;
+    @Column(name = "DSSENHA", length = 50, nullable = false)
+    private String dsSenha;
 
-    @Column(name = "CARGOFUNCIONARIO")
-    private String cargoFuncionario;
+    @Column(name = "DSCARGO", length = 50, nullable = false)
+    private String dsCargo;
 
-    @Column(name = "SALARIOFUNCIONARIO")
-    private String salarioFuncionario;
+    @Column(name = "VLSALARIO", nullable = false)
+    private BigDecimal vlSalario;
 
     @OneToOne
             (mappedBy = "funcionario", cascade = CascadeType.ALL,

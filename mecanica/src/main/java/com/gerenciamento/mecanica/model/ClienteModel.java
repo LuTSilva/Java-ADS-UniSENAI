@@ -19,35 +19,17 @@ public class ClienteModel {
     @Column(name = "CDCLIENTE")
     private Integer cdCliente;
 
-    @Column(name = "NOMECLIENTE")
-    private String nomeCliente;
+    @Column(name = "NMCLIENTE", nullable = false, length = 100)
+    private String nmCliente;
 
-    @Column(name = "EMAILCLIENTE", unique = true)
-    private String emailCliente;
+    @Column(name = "DSEMAIL", length = 100, nullable = false, unique = true)
+    private String dsEmail;
 
-    @Column(name = "TELEFONECLIENTE")
-    private String telefoneCliente;
+    @Column(name = "NUTELEFONE", length = 15)
+    private String nuTelefone;
 
-    @Column(name = "SENHACLIENTE")
-    private String senhaCliente;
-
-    @Column(name = "CPFCLIENTE", unique = true)
-    private String cpfCliente;
-
-    @Column(name = "CEPCLIENTE")
-    private String cepCliente;
-
-    @Column(name = "CIDADECLIENTE")
-    private String cidadeCliente;
-
-    @Column(name = "BAIRROCLIENTE")
-    private String bairroCliente;
-
-    @Column(name = "RUACLIENTE")
-    private String ruaCliente;
-
-    @Column(name = "NUMEROENDERECOCLIENTE")
-    private String numeroEnderecoCliente;
+    @Column(name = "NUCPF", length = 14, nullable = false, unique = true)
+    private String nuCpf;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)

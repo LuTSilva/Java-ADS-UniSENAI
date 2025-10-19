@@ -16,20 +16,20 @@ public class VeiculoModel {
     @Column(name = "CDVEICULO")
     private int cdVeiculo;
 
-    @Column(name = "MARCAVEICULO")
-    private String marcaVeiculo;
+    @Column(name = "DSMARCA")
+    private String dsMarca;
 
-    @Column(name = "MODELOVEICULO")
-    private String modeloVeiculo;
+    @Column(name = "DSMODELO")
+    private String dsModelo;
 
-    @Column(name = "TIPOVEICULO")
-    private String tipoVeiculo;
+    @Column(name = "DSTIPO")
+    private String dsTipo;
 
-    @Column(name = "ANOVEICULO")
-    private int anoVeiculo;
+    @Column(name = "NUANO")
+    private int nuAno;
 
-    @Column(name = "PLACAVEICULO", unique = true)
-    private String placaVeiculo;
+    @Column(name = "DSPLACA", unique = true)
+    private String dsPlaca;
 
 
     @ManyToOne

@@ -1,6 +1,5 @@
 package com.gerenciamento.mecanica.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +19,7 @@ public class UsuarioModel {
     @Column(name = "DSLOGIN", length = 100, nullable = false, unique = true)
     private String dsLogin;
     @Column(name = "DSSENHA", length = 100, nullable = false)
-    private String DSSENHA;
+    private String dsSenha;
     @Column(name = "FLATIVO", length = 1, nullable = false)
     private String flAtivo;
 
@@ -30,6 +29,6 @@ public class UsuarioModel {
 
     @OneToOne
     @JoinColumn(name="CDFUNCIONARIO")
-    private ClienteModel cliente;
+    private FuncionarioModel funcionario;
 
 }
