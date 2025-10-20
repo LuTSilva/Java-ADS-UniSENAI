@@ -2,7 +2,6 @@ package com.gerenciamento.mecanica.controller;
 
 import com.gerenciamento.mecanica.dto.FilialDto;
 import com.gerenciamento.mecanica.model.FilialModel;
-import com.gerenciamento.mecanica.repository.FilialRepository;
 import com.gerenciamento.mecanica.service.FilialService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

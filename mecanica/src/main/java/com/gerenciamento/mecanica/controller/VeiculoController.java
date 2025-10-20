@@ -27,7 +27,7 @@ public class VeiculoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VeiculoModel>> listarTodas() {
+    public ResponseEntity<List<VeiculoModel>> listarTodos() {
         return ResponseEntity.ok(veiculoService.listarTodos());
     }
 

@@ -20,6 +20,9 @@ public class PedidoModel {
     @Column(name = "CDPEDIDO")
     private Integer cdPedido;
 
+    @Column(name="FLPGTOCONFIRMADO", length=1, nullable=false)
+    private String flPgtoConfirmado;
+
     @CreationTimestamp
     @Column(name = "DTPEDIDO", nullable = false, updatable = false)
     private LocalDateTime dtPedido;

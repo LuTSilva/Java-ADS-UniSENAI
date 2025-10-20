@@ -27,7 +27,7 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioModel>> listarTodas() {
+    public ResponseEntity<List<FuncionarioModel>> listarTodos() {
         return ResponseEntity.ok(funcionarioService.listarTodos());
     }
 

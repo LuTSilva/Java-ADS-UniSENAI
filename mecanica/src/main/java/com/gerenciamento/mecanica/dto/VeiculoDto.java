@@ -17,7 +17,7 @@ public record VeiculoDto(
 
         @NotNull(message = "O ano do veículo não pode ser null")
         @Min(1950)
-        int nuAno,
+        Integer nuAno,
 
         @NotBlank(message = "A placa do veículo não pode estar em branco")
         String dsPlaca

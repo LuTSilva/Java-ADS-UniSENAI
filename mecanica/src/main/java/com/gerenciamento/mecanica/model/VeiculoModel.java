@@ -14,7 +14,7 @@ public class VeiculoModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "CDVEICULO")
-    private int cdVeiculo;
+    private Integer cdVeiculo;
 
     @Column(name = "DSMARCA")
     private String dsMarca;
@@ -26,7 +26,7 @@ public class VeiculoModel {
     private String dsTipo;
 
     @Column(name = "NUANO")
-    private int nuAno;
+    private Integer nuAno;
 
     @Column(name = "DSPLACA", unique = true)
     private String dsPlaca;

@@ -19,13 +19,15 @@ public class PedidoService {
     
     public PedidoModel salvar (@Valid @RequestBody PedidoDto dto) {
         PedidoModel pedido = new PedidoModel();
-        pedido.setDsLogin(dto.dsLogin());
-        pedido.setDsSenha(dto.dsSenha());
-        pedido.setFlAtivo(dto.flAtivo());
+        pedido.setFlPgtoConfirmado(dto.flPgtoConfirmado());
         return pedidoRepository.save(pedido);
     }
     public List<PedidoModel> listarTodos() {
         return pedidoRepository.findAll();
+    }
+
+    public List<PedidoModel> listarConfirmados() {
+        return pedidoRepository.findAllByFlPgtoConfirmado();
     }
 
     public Optional<PedidoModel> findByCdPedido(Integer cdPedido) {
@@ -34,9 +36,7 @@ public class PedidoService {
 
     public Optional<PedidoModel> atualizaDados(Integer cdPedido, PedidoDto pedidoDto) {
         return pedidoRepository.findByCdPedido(cdPedido).map(pedido -> {
-            pedido.setDsLogin(pedidoDto.dsLogin());
-            pedido.setDsSenha(pedidoDto.dsSenha());
-            pedido.setFlAtivo(pedidoDto.flAtivo());
+            pedido.setFlPgtoConfirmado(pedidoDto.flPgtoConfirmado());
             return pedidoRepository.save(pedido);
         });
     }
