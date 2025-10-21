@@ -19,7 +19,6 @@ public class EstoqueService {
 
     public EstoqueModel salvar (@Valid @RequestBody EstoqueDto dto) {
         EstoqueModel estoque = new EstoqueModel();
-        estoque.setDsTipo(dto.dsTipo());
         estoque.setQtEstoque(dto.qtEstoque());
         return estoqueRepository.save(estoque);
     }
@@ -31,9 +30,12 @@ public class EstoqueService {
         return estoqueRepository.findByCdEstoque(cdEstoque);
     }
 
+    public Optional<EstoqueModel> buscarPorCdProduto(Integer cdProduto){
+        return  estoqueRepository.findByCdProduto(cdProduto);
+    }
+
     public Optional<EstoqueModel> atualizaDados(Integer cdEstoque, EstoqueDto estoqueDto) {
         return estoqueRepository.findByCdEstoque(cdEstoque).map(estoque -> {
-            estoque.setDsTipo(estoqueDto.dsTipo());
             estoque.setQtEstoque(estoqueDto.qtEstoque());
             return estoqueRepository.save(estoque);
         });

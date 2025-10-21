@@ -45,11 +45,5 @@ public class ProdutoModel {
     private List<ItensPedidosModel> itensPedidos;
 
      */
-    @OneToMany
-    (mappedBy = "produto", cascade = CascadeType.ALL,
-    fetch = FetchType.LAZY, orphanRemoval = true)
-
-    @JsonIgnore
-    private List<EstoqueModel> estoques;
 
 }

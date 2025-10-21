@@ -7,9 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record EstoqueDto(
 
-        @NotBlank(message = "O tipo do estoque não pode estar em branco")
-        String dsTipo,
-
         @NotNull(message = "O ano do estoque não pode ser null")
         @Min(0) @Max(999999)
         Integer qtEstoque

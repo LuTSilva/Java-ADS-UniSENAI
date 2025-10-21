@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface EstoqueRepository extends JpaRepository<EstoqueModel, Integer> {
     Optional<EstoqueModel> findByCdEstoque(Integer cdEstoque);
 
+    Optional<EstoqueModel> findByCdProduto(Integer cdProduto);
+
     @Transactional
     Optional<EstoqueModel> deleteByCdEstoque (Integer cdEstoque);
 }

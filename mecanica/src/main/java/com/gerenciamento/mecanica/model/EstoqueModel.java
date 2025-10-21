@@ -15,14 +15,10 @@ public class EstoqueModel {
     @Column(name = "CDESTOQUE")
     private Integer cdEstoque;
 
-    @Column(name = "DSTIPO")
-    private String dsTipo;
-
     @Column(name = "QTESTOQUE")
     private Integer qtEstoque;
 
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "CDPRODUTO", nullable = false)
     private ProdutoModel produto;
 

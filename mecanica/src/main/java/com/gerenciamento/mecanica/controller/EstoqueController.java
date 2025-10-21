@@ -37,4 +37,11 @@ public class EstoqueController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/{cdProduto}")
+    public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable Integer cdProduto){
+        return estoqueService.buscarPorCdProduto(cdProduto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
