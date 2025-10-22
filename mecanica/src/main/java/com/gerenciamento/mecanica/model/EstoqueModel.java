@@ -20,6 +20,6 @@ public class EstoqueModel {
 
     @OneToOne
     @JoinColumn(name = "CDPRODUTO", nullable = false)
-    private ProdutoModel produto;
+    private ProdutoModel cdProduto;
 
 }

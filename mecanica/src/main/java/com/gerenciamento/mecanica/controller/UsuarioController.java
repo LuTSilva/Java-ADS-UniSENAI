@@ -1,6 +1,8 @@
 package com.gerenciamento.mecanica.controller;
 
 import com.gerenciamento.mecanica.dto.UsuarioDto;
+import com.gerenciamento.mecanica.dto.UsuarioDto;
+import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -39,5 +41,15 @@ public class UsuarioController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    @PutMapping("/{cdUsuario}")
+    public ResponseEntity<UsuarioModel> atualizaDados(@PathVariable Integer cdUsuario, @Valid @RequestBody UsuarioDto dto) {
+        return usuarioService.atualizaDados(cdUsuario, dto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping("/{cdUsuario}")
+    public ResponseEntity<Void>deletarPorCdUsuario(@PathVariable Integer cdUsuario){
+        usuarioService.deletarUsuario(cdUsuario);
+        return ResponseEntity.noContent().build();
+    }
 }

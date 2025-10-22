@@ -21,7 +21,7 @@ public class UsuarioService {
         UsuarioModel usuario = new UsuarioModel();
         usuario.setDsLogin(dto.dsLogin());
         usuario.setDsSenha(dto.dsSenha());
-        usuario.setFlAtivo(dto.flAtivo());
+        usuario.setFlAtivo("S");
         return usuarioRepository.save(usuario);
     }
     public List<UsuarioModel> listarTodos() {

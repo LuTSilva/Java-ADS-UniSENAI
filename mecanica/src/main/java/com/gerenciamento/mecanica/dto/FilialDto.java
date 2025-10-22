@@ -15,7 +15,6 @@ public record FilialDto(
         String nuTelefone,
         String dsLocal,
         @Pattern(regexp = "^S|N$", message = "Só é possível valores 'S' ou 'N'")
-        @Value("S")
         String flAtivo
 
 ) {

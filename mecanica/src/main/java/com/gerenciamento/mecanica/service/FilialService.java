@@ -24,7 +24,7 @@ public class FilialService {
         filial.setNuCnpj(dto.nuCnpj());
         filial.setDsLocal(dto.dsLocal());
         filial.setNuTelefone(dto.nuTelefone());
-        filial.setFlAtivo(dto.flAtivo());
+        filial.setFlAtivo("S");
         return filialRepository.save(filial);
     }
     public List<FilialModel> listarTodos() {

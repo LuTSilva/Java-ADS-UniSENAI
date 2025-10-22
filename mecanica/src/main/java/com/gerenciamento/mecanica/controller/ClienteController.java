@@ -57,4 +57,10 @@ public class ClienteController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/{cdEmpresa}")
+    public ResponseEntity<Void>deletarPorCdEmpresa(@PathVariable Integer cdCliente){
+        clienteService.deletarCliente(cdCliente);
+        return ResponseEntity.noContent().build();
+    }
 }

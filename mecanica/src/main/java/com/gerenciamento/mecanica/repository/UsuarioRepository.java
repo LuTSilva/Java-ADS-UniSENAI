@@ -11,8 +11,7 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<UsuarioModel, Integer> {
 
     Optional<UsuarioModel> findByCdUsuario(Integer cdUsuario);
-    Optional<UsuarioModel>findByNuCpf(String nuCpf);
-
+    Optional<UsuarioModel> findByNuCpf(String nuCpf);
     @Query("SELECT emp FROM UsuarioModel emp WHERE emp.flAtivo = 'S'")
     List<UsuarioModel> findAllByFlAtivo();
 

@@ -44,4 +44,15 @@ public class VeiculoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @PutMapping("/{cdVeiculo}")
+    public ResponseEntity<VeiculoModel> atualizaDados(@PathVariable Integer cdVeiculo, @Valid @RequestBody VeiculoDto dto) {
+        return veiculoService.atualizaDados(cdVeiculo, dto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping("/{cdVeiculo}")
+    public ResponseEntity<Void>deletarPorCdVeiculo(@PathVariable Integer cdVeiculo){
+        veiculoService.deletarVeiculo(cdVeiculo);
+        return ResponseEntity.noContent().build();
+    }
 }

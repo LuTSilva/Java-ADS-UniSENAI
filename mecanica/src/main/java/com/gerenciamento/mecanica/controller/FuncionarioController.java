@@ -1,6 +1,7 @@
 package com.gerenciamento.mecanica.controller;
 
 import com.gerenciamento.mecanica.dto.FuncionarioDto;
+import com.gerenciamento.mecanica.dto.FuncionarioDto2;
 import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.service.FuncionarioService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @PostMapping
-    public ResponseEntity<FuncionarioModel> criar(@Valid @RequestBody FuncionarioDto dto) {
+    public ResponseEntity<FuncionarioModel> criar(@Valid @RequestBody FuncionarioDto2 dto) {
         FuncionarioModel funcionarioModel = funcionarioService.salvar(dto);
         return ResponseEntity.ok(funcionarioModel);
     }

@@ -2,6 +2,7 @@ package com.gerenciamento.mecanica.service;
 
 import com.gerenciamento.mecanica.dto.EstoqueDto;
 import com.gerenciamento.mecanica.model.EstoqueModel;
+import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.repository.EstoqueRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class EstoqueService {
         return estoqueRepository.findByCdEstoque(cdEstoque);
     }
 
-    public Optional<EstoqueModel> buscarPorCdProduto(Integer cdProduto){
+    public Optional<EstoqueModel> buscarPorCdProduto(ProdutoModel cdProduto){
         return  estoqueRepository.findByCdProduto(cdProduto);
     }
 

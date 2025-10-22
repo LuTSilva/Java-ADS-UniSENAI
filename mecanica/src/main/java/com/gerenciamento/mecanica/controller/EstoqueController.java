@@ -2,6 +2,7 @@ package com.gerenciamento.mecanica.controller;
 
 import com.gerenciamento.mecanica.dto.EstoqueDto;
 import com.gerenciamento.mecanica.model.EstoqueModel;
+import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.service.EstoqueService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class EstoqueController {
                 .orElse(ResponseEntity.notFound().build());
     }
     @GetMapping("/{cdProduto}")
-    public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable Integer cdProduto){
+    public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable ProdutoModel cdProduto){
         return estoqueService.buscarPorCdProduto(cdProduto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
