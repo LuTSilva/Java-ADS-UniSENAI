@@ -31,6 +31,19 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoService.listarTodos());
     }
 
+    @PutMapping
+    public ResponseEntity<ProdutoModel> atualizar(@PathVariable Integer cdProduto, @Valid @RequestBody ProdutoDto produtoDto) {
+        return produtoService.atualizaDados(cdProduto, produtoDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void>deletarPorCdProduto(@PathVariable Integer cdProduto){
+        produtoService.deletarProduto(cdProduto);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{cdProduto}")
     public ResponseEntity<ProdutoModel> listarPorCdProduto(@PathVariable Integer cdProduto){
         return produtoService.findByCdProduto(cdProduto)

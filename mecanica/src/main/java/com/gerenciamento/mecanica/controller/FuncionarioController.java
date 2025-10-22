@@ -31,6 +31,19 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.listarTodos());
     }
 
+    @PutMapping
+    public ResponseEntity<FuncionarioModel> atualizar(@PathVariable Integer cdFuncionario, @Valid @RequestBody FuncionarioDto funcionarioDto) {
+        return funcionarioService.atualizaDados(cdFuncionario, funcionarioDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void>deletarPorCdFuncionario(@PathVariable Integer cdFuncionario){
+        funcionarioService.deletarFuncionario(cdFuncionario);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{cdFuncionario}")
     public ResponseEntity<FuncionarioModel> listarPorCdFuncionario(@PathVariable Integer cdFuncionario){
         return funcionarioService.findByCdFuncionario(cdFuncionario)

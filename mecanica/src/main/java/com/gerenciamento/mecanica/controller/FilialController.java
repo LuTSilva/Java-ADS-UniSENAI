@@ -33,6 +33,20 @@ public class FilialController {
     public ResponseEntity<List<FilialModel>> listarAtivas(){
         return ResponseEntity.ok(filialService.listarFiliaisAtivas());
     }
+
+    @PutMapping
+    public ResponseEntity<FilialModel> atualizar(@PathVariable Integer cdFilial, @Valid @RequestBody FilialDto filialDto) {
+        return filialService.atualizaDados(cdFilial, filialDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void>deletarPorCdFilial(@PathVariable Integer cdFilial){
+        filialService.deletarFilial(cdFilial);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{cdFilial}")
     public ResponseEntity<FilialModel> listarPorCdFilial(@PathVariable Integer cdFilial){
         return filialService.findByCdFilial(cdFilial)

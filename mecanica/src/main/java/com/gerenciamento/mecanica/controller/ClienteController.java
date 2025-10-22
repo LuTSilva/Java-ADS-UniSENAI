@@ -31,6 +31,19 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
+    @PutMapping
+    public ResponseEntity<ClienteModel> atualizar(@PathVariable Integer cdCliente, @Valid @RequestBody ClienteDto clienteDto) {
+        return clienteService.atualizaDados(cdCliente, clienteDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void>deletarPorCdCliente(@PathVariable Integer cdCliente){
+        clienteService.deletarCliente(cdCliente);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{cdCliente}")
     public ResponseEntity<ClienteModel> listarPorCdCliente(@PathVariable Integer cdCliente){
         return clienteService.findByCdCliente(cdCliente)

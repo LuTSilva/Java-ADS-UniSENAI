@@ -1,6 +1,8 @@
 package com.gerenciamento.mecanica.controller;
 
+import com.gerenciamento.mecanica.dto.FuncionarioDto;
 import com.gerenciamento.mecanica.dto.PedidoDto;
+import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
 import com.gerenciamento.mecanica.service.PedidoService;
 import jakarta.validation.Valid;
@@ -29,6 +31,20 @@ public class PedidoController {
     public ResponseEntity<List<PedidoModel>> listarTodos(){
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
+
+    @PutMapping
+    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer cdPedido, @Valid @RequestBody PedidoDto pedidoDto) {
+        return pedidoService.atualizaDados(cdPedido, pedidoDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void>deletarPorCdPedido(@PathVariable Integer cdPedido){
+        pedidoService.deletarPedido(cdPedido);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/confirmados")
     public ResponseEntity<List<PedidoModel>> listarConfirmados(){
         return ResponseEntity.ok(pedidoService.listarConfirmados());
