@@ -19,9 +19,10 @@ public class UsuarioService {
 
     public UsuarioModel salvar (@Valid @RequestBody UsuarioDto dto) {
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setDsLogin(dto.dsLogin());
+        usuario.setDsEmail(dto.dsEmail());
         usuario.setDsSenha(dto.dsSenha());
         usuario.setFlAtivo("S");
+        usuario.setFlAdministrador("N");
         return usuarioRepository.save(usuario);
     }
     public List<UsuarioModel> listarTodos() {
@@ -36,15 +37,12 @@ public class UsuarioService {
         return usuarioRepository.findByCdUsuario(cdUsuario);
     }
 
-    public Optional<UsuarioModel> findByNuCpf(String nuCpf) {
-        return usuarioRepository.findByNuCpf(nuCpf);
-    }
-
     public Optional<UsuarioModel> atualizaDados(Integer cdUsuario, UsuarioDto usuarioDto) {
         return usuarioRepository.findByCdUsuario(cdUsuario).map(usuario -> {
-            usuario.setDsLogin(usuarioDto.dsLogin());
+            usuario.setDsEmail(usuarioDto.dsEmail());
             usuario.setDsSenha(usuarioDto.dsSenha());
             usuario.setFlAtivo(usuarioDto.flAtivo());
+            usuario.setFlAdministrador(usuarioDto.flAdministrador());
             return usuarioRepository.save(usuario);
         });
     }

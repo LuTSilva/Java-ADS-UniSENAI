@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Value;
 
 public record UsuarioDto(
 
-        @NotBlank(message="Não é possível salvar o usuário sem informar login")
-        String dsLogin,
+        @NotBlank(message="Não é possível salvar o usuário sem informar email")
+        String dsEmail,
         @NotBlank(message="Não é possível salvar o usuário sem informar senha")
         String dsSenha,
-        @NotBlank(message="Não é possível salvar o usuário sem informar CPF")
-        String nuCpf,
+
         @Pattern(regexp = "^S|N$", message = "Só é possível valores 'S' ou 'N'")
         @Value("S")
-        String flAtivo
+        String flAtivo,
+
+        @Pattern(regexp = "^S|N$", message = "Só é possível valores 'S' ou 'N'")
+        @Value("N")
+        String flAdministrador
 
 ) {
 }

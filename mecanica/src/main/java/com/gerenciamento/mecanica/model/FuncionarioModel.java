@@ -26,12 +26,6 @@ public class FuncionarioModel {
     @Column(name = "NUCPF", length = 14, nullable = false, unique = true)
     private String nuCpf;
 
-    @Column(name = "DSEMAIL", length = 100, nullable = false, unique = true)
-    private String dsEmail;
-
-    @Column(name = "DSSENHA", length = 50, nullable = false)
-    private String dsSenha;
-
     @Column(name = "DSCARGO", length = 50, nullable = false)
     private String dsCargo;
 
@@ -41,7 +35,10 @@ public class FuncionarioModel {
     @OneToOne
             (mappedBy = "funcionario", cascade = CascadeType.ALL,
                     fetch = FetchType.LAZY, orphanRemoval = true)
-
     @JsonIgnore
     private UsuarioModel usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "CDFILIAL", nullable = false)
+    private FilialModel filial;
 }

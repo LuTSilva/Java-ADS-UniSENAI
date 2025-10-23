@@ -1,7 +1,7 @@
 package com.gerenciamento.mecanica.service;
 
 import com.gerenciamento.mecanica.dto.FuncionarioDto;
-import com.gerenciamento.mecanica.dto.FuncionarioDto2;
+import com.gerenciamento.mecanica.dto.UsuarioFuncionarioDto;
 import com.gerenciamento.mecanica.dto.UsuarioDto;
 import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.model.UsuarioModel;
@@ -23,24 +23,21 @@ public class FuncionarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public FuncionarioModel salvar (@Valid @RequestBody FuncionarioDto2 dto2) {
+    public FuncionarioModel salvar (@Valid @RequestBody UsuarioFuncionarioDto dto2) {
         FuncionarioDto dto = dto2.funcionario();
         UsuarioDto usuarioDto = dto2.usuario();
 
         FuncionarioModel func = new FuncionarioModel();
         func.setNmFuncionario(dto.nmFuncionario());
         func.setNuCpf(dto.nuCpf());
-        func.setDsEmail(dto.dsEmail());
-        func.setDsSenha(dto.dsSenha());
         func.setDsCargo(dto.dsCargo());
         func.setVlSalario(dto.vlSalario());
 
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setDsLogin(usuarioDto.dsLogin());
+        usuario.setDsEmail(usuarioDto.dsEmail());
         usuario.setDsSenha(usuarioDto.dsSenha());
-        usuario.setNuCpf(usuarioDto.nuCpf());
         usuario.setFlAtivo("S");
-
+        usuario.setFlAdministrador("N");
 
         usuario.setFuncionario(func);
         func.setUsuario(usuario);
@@ -63,8 +60,6 @@ public class FuncionarioService {
         return funcionarioRepository.findByCdFuncionario(cdFuncionario).map(func -> {
             func.setNmFuncionario(funcionarioDto.nmFuncionario());
             func.setNuCpf(funcionarioDto.nuCpf());
-            func.setDsEmail(funcionarioDto.dsEmail());
-            func.setDsSenha(funcionarioDto.dsSenha());
             func.setDsCargo(funcionarioDto.dsCargo());
             func.setVlSalario(funcionarioDto.vlSalario());
             return funcionarioRepository.save(func);

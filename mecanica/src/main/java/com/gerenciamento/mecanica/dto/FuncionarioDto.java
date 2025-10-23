@@ -15,12 +15,6 @@ public record FuncionarioDto(
         @NotBlank(message = "O CPF do funcionário não pode ser vazio")
         String nuCpf,
 
-        @NotBlank(message = "O email do funcionário não pode ser vazio")
-        String dsEmail,
-
-        @NotBlank(message = "A senha do funcionário não pode ser vazio")
-        String dsSenha,
-
         @NotBlank(message = "O cargo do funcionário não pode ser vazio")
         String dsCargo,
 

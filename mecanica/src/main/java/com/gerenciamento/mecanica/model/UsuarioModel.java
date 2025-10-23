@@ -16,18 +16,14 @@ public class UsuarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CDUSUARIO")
     private Integer cdUsuario;
-    @Column(name = "DSLOGIN", length = 100, nullable = false, unique = true)
-    private String dsLogin;
+    @Column(name = "DSEMAIL", length = 100, nullable = false, unique = true)
+    private String dsEmail;
     @Column(name = "DSSENHA", length = 100, nullable = false)
     private String dsSenha;
-    @Column(name = "NUCPF", length = 14, nullable = false, unique = true)
-    private String nuCpf;
     @Column(name = "FLATIVO", length = 1, nullable = false)
     private String flAtivo;
-
-    @ManyToOne
-    @JoinColumn(name = "CDFILIAL", nullable = false)
-    private FilialModel cdFilial;
+    @Column(name = "FLADMINISTRADOR", length = 1, nullable = false)
+    private String flAdministrador;
 
     @OneToOne
     @JoinColumn(name="CDFUNCIONARIO")
