@@ -32,9 +32,12 @@ public class ClienteModel {
     private String nuCpf;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL,
-    fetch = FetchType.LAZY, orphanRemoval = true)
-
+            fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
     private List<VeiculoModel> veiculos;
 
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
+    private List<PedidoModel> pedidos;
 }
