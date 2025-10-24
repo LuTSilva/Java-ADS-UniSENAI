@@ -35,6 +35,6 @@ private String flAtivo;
 fetch = FetchType.LAZY, orphanRemoval = true)
 
 @JsonIgnore
-private List<UsuarioModel> usuarios;
+private List<FuncionarioModel> funcionarios;
 
 }

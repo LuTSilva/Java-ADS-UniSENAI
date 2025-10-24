@@ -2,7 +2,6 @@ package com.gerenciamento.mecanica.service;
 
 import com.gerenciamento.mecanica.dto.FuncionarioDto;
 import com.gerenciamento.mecanica.dto.UsuarioFuncionarioDto;
-import com.gerenciamento.mecanica.dto.UsuarioDto;
 import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.repository.FuncionarioRepository;
@@ -22,20 +21,21 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private FilialService filialService;
 
-    public FuncionarioModel salvar (@Valid @RequestBody UsuarioFuncionarioDto dto2) {
-        FuncionarioDto dto = dto2.funcionario();
-        UsuarioDto usuarioDto = dto2.usuario();
+    public FuncionarioModel salvar (@Valid @RequestBody UsuarioFuncionarioDto dto) {
 
         FuncionarioModel func = new FuncionarioModel();
         func.setNmFuncionario(dto.nmFuncionario());
         func.setNuCpf(dto.nuCpf());
         func.setDsCargo(dto.dsCargo());
         func.setVlSalario(dto.vlSalario());
+        func.setFilial(filialService.findByCdFilial(dto.cdFilial()).get());
 
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setDsEmail(usuarioDto.dsEmail());
-        usuario.setDsSenha(usuarioDto.dsSenha());
+        usuario.setDsEmail(dto.dsEmail());
+        usuario.setDsSenha(dto.dsSenha());
         usuario.setFlAtivo("S");
         usuario.setFlAdministrador("N");
 
