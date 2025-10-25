@@ -33,6 +33,6 @@ public class PedidoModel {
 
     @ManyToOne
     @JoinColumn(name = "CDCLIENTE", nullable = false)
-    private FilialModel cliente;
+    private ClienteModel cliente;
 
 }

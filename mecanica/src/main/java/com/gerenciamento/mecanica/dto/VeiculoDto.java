@@ -20,6 +20,10 @@ public record VeiculoDto(
         Integer nuAno,
 
         @NotBlank(message = "A placa do veículo não pode estar em branco")
-        String dsPlaca
+        String dsPlaca,
+
+        Integer cdCliente,
+
+        String nuCpf
 ) {
 }

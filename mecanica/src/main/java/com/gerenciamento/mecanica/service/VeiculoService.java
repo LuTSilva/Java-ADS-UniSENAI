@@ -16,6 +16,8 @@ public class VeiculoService {
 
     @Autowired
     private VeiculoRepository veiculoRepository;
+    @Autowired
+    private ClienteService clienteService;
 
     public VeiculoModel salvar (@Valid @RequestBody VeiculoDto dto) {
         VeiculoModel veiculo = new VeiculoModel();
@@ -24,6 +26,7 @@ public class VeiculoService {
         veiculo.setDsTipo(dto.dsTipo());
         veiculo.setNuAno(dto.nuAno());
         veiculo.setDsPlaca(dto.dsPlaca());
+        veiculo.setCliente(clienteService.findByNuCpf(dto.nuCpf()).get());
         return veiculoRepository.save(veiculo);
     }
     public List<VeiculoModel> listarTodos() {

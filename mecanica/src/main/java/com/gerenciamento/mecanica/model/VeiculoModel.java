@@ -35,5 +35,7 @@ public class VeiculoModel {
     @ManyToOne
     @JoinColumn(name = "CDCLIENTE", nullable = false)
     private ClienteModel cliente;
-
+    @ManyToOne
+    @JoinColumn(name= "NUCPF", nullable = false)
+    private ClienteModel nuCpf;
 }
