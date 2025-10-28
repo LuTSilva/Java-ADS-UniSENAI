@@ -36,14 +36,9 @@ public class ProdutoModel {
     @Column(name = "VLPRODUTO", nullable = false)
     private BigDecimal vlProduto;
 
-    /*
-    @OneToMany
-    (mappedBy = "produto", cascade = CascadeType.ALL,
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)
-
     @JsonIgnore
-    private List<ItensPedidosModel> itensPedidos;
-
-     */
+    private List<ItensPedidoModel> itensPedidos;
 
 }

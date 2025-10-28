@@ -31,6 +31,7 @@ public class FuncionarioService {
         func.setNuCpf(dto.nuCpf());
         func.setDsCargo(dto.dsCargo());
         func.setVlSalario(dto.vlSalario());
+        func.setFlAtivo("S"); // Por padrão, funcionário é criado como ativo
         func.setFilial(filialService.findByCdFilial(dto.cdFilial()).get());
 
         UsuarioModel usuario = new UsuarioModel();
@@ -62,6 +63,7 @@ public class FuncionarioService {
             func.setNuCpf(funcionarioDto.nuCpf());
             func.setDsCargo(funcionarioDto.dsCargo());
             func.setVlSalario(funcionarioDto.vlSalario());
+            func.setFlAtivo(funcionarioDto.flAtivo());
             return funcionarioRepository.save(func);
         });
     }

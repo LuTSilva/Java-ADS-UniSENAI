@@ -46,4 +46,44 @@ public class EstoqueService {
         estoqueRepository.deleteByCdEstoque(cdEstoque);
     }
 
+    public boolean validarEstoqueDisponivel(ProdutoModel produto, Integer quantidadeSolicitada) {
+        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        
+        if (estoqueOpt.isEmpty()) {
+            return false; // Produto não possui estoque cadastrado
+        }
+        
+        EstoqueModel estoque = estoqueOpt.get();
+        return estoque.getQtEstoque() >= quantidadeSolicitada;
+    }
+
+    public boolean atualizarEstoqueAposVenda(ProdutoModel produto, Integer quantidadeVendida) {
+        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        
+        if (estoqueOpt.isEmpty()) {
+            return false; // Produto não possui estoque cadastrado
+        }
+        
+        EstoqueModel estoque = estoqueOpt.get();
+
+        if (!validarEstoqueDisponivel(produto, quantidadeVendida)) {
+            return false;
+        }
+
+        estoque.setQtEstoque(estoque.getQtEstoque() - quantidadeVendida);
+        estoqueRepository.save(estoque);
+        
+        return true;
+    }
+
+    public Integer obterQuantidadeDisponivel(ProdutoModel produto) {
+        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        
+        if (estoqueOpt.isEmpty()) {
+            return 0; // Produto não possui estoque cadastrado
+        }
+        
+        return estoqueOpt.get().getQtEstoque();
+    }
+
 }

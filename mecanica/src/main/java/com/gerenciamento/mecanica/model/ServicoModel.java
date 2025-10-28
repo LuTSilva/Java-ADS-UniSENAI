@@ -34,6 +34,10 @@ public class ServicoModel {
     @Column(name = "VLSERVICO", nullable = false)
     private BigDecimal vlServico;
 
+    @ManyToOne
+    @JoinColumn(name = "CDFUNCIONARIO", nullable = false)
+    private FuncionarioModel funcionario;
+
     /*
     @OneToMany
     (mappedBy = "servico", cascade = CascadeType.ALL,

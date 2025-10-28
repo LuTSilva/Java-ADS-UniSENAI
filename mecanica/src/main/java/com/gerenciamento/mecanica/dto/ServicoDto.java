@@ -22,7 +22,10 @@ public record ServicoDto(
         @NotNull(message = "O valor do servico não pode ser null")
         @DecimalMin(value="0.05", message = "O valor do servico não pode ser inferior à R$ 0,05")
         @DecimalMax(value="999999")
-        BigDecimal vlServico
+        BigDecimal vlServico,
+
+        @NotNull(message = "O funcionário responsável pelo serviço não pode ser null")
+        Integer cdFuncionario
         ) {
 
 }

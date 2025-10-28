@@ -29,7 +29,7 @@ private String dsLocal;
 @Column(name="NUTELEFONE", length = 14)
 private String nuTelefone;
 @Column(name="FLATIVO", length=1, nullable=false)
-private String flAtivo;
+private String flAtivo;  // "S" = ativo, "N" = inativo
 
 @OneToMany (mappedBy = "filial", cascade = CascadeType.ALL,
 fetch = FetchType.LAZY, orphanRemoval = true)

@@ -17,6 +17,9 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
     
+    @Autowired
+    private ItensPedidoService itensPedidoService;
+    
     public PedidoModel salvar (@Valid @RequestBody PedidoDto dto) {
         PedidoModel pedido = new PedidoModel();
         pedido.setFlPgtoConfirmado(dto.flPgtoConfirmado());
@@ -43,5 +46,36 @@ public class PedidoService {
 
     public void deletarPedido(Integer cdPedido){
         pedidoRepository.deleteByCdPedido(cdPedido);
+    }
+
+    /**
+     * Confirma o pedido e processa a venda
+     * Implementa RN004 e RN006 através do ItensPedidoService
+     */
+    public boolean confirmarPedido(Integer cdPedido) {
+        Optional<PedidoModel> pedidoOpt = findByCdPedido(cdPedido);
+        
+        if (pedidoOpt.isEmpty()) {
+            return false; // Pedido não encontrado
+        }
+        
+        PedidoModel pedido = pedidoOpt.get();
+        
+        // Verifica se o pedido já foi confirmado
+        if ("S".equals(pedido.getFlPgtoConfirmado())) {
+            return true; // Pedido já confirmado
+        }
+        
+        // Processa a venda (valida estoque e atualiza automaticamente)
+        boolean vendaProcessada = itensPedidoService.processarVenda(pedido);
+        
+        if (vendaProcessada) {
+            // Marca o pedido como confirmado
+            pedido.setFlPgtoConfirmado("S");
+            pedidoRepository.save(pedido);
+            return true;
+        }
+        
+        return false;
     }
 }

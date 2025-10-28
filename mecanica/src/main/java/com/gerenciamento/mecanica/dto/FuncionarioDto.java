@@ -21,7 +21,9 @@ public record FuncionarioDto(
         @NotNull(message = "O salário do funcionário não pode ser null")
         @DecimalMin(value = "1000", message = "O salário do funcionário não deve ser inferior à R$ 1000,00")
         @DecimalMax(value = "999999")
-        BigDecimal vlSalario
+        BigDecimal vlSalario,
+
+        String flAtivo
         ) {
 
 }

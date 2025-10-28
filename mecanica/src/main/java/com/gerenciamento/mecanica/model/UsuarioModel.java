@@ -21,9 +21,9 @@ public class UsuarioModel {
     @Column(name = "DSSENHA", length = 100, nullable = false)
     private String dsSenha;
     @Column(name = "FLATIVO", length = 1, nullable = false)
-    private String flAtivo;
+    private String flAtivo;  // "S" = ativo, "N" = inativo
     @Column(name = "FLADMINISTRADOR", length = 1, nullable = false)
-    private String flAdministrador;
+    private String flAdministrador; // "S" = ativo, "N" = inativo
 
     @OneToOne
     @JoinColumn(name="CDFUNCIONARIO")

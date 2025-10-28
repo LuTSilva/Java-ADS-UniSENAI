@@ -32,6 +32,9 @@ public class FuncionarioModel {
     @Column(name = "VLSALARIO", nullable = false)
     private BigDecimal vlSalario;
 
+    @Column(name = "FLATIVO", nullable = false)
+    private String flAtivo; // "S" = ativo, "N" = inativo
+
     @OneToOne
             (mappedBy = "funcionario", cascade = CascadeType.ALL,
                     fetch = FetchType.LAZY, orphanRemoval = true)

@@ -1,5 +1,6 @@
 package com.gerenciamento.mecanica.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,5 +36,10 @@ public class PedidoModel {
     @ManyToOne
     @JoinColumn(name = "CDCLIENTE", nullable = false)
     private ClienteModel cliente;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
+    private List<ItensPedidoModel> itensPedidos;
 
 }

@@ -1,7 +1,9 @@
 package com.gerenciamento.mecanica.service;
 
 import com.gerenciamento.mecanica.dto.ServicoDto;
+import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
+import com.gerenciamento.mecanica.repository.FuncionarioRepository;
 import com.gerenciamento.mecanica.repository.ServicoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,25 @@ public class ServicoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+
     public ServicoModel salvar (@Valid @RequestBody ServicoDto dto) {
+        // RN009: Validar se o funcionário está ativo
+        FuncionarioModel funcionario = funcionarioRepository.findByCdFuncionario(dto.cdFuncionario())
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com ID: " + dto.cdFuncionario()));
+        
+        if (funcionario.getFlAtivo() == null || !"S".equals(funcionario.getFlAtivo())) {
+            throw new IllegalArgumentException("RN009: Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + dto.cdFuncionario() + " está inativo.");
+        }
+        
         ServicoModel servico = new ServicoModel();
         servico.setNmServico(dto.nmServico());
         servico.setDsServico(dto.dsServico());
         servico.setDsTipo(dto.dsTipo());
         servico.setQtDuracao(dto.qtDuracao());
         servico.setVlServico(dto.vlServico());
+        servico.setFuncionario(funcionario);
         return servicoRepository.save(servico);
     }
     public List<ServicoModel> listarTodos() {
@@ -40,11 +54,20 @@ public class ServicoService {
 
     public Optional<ServicoModel> atualizaDados(Integer cdServico, ServicoDto servicoDto) {
         return servicoRepository.findByCdServico(cdServico).map(servico -> {
+            // RN009: Validar se o funcionário está ativo
+            FuncionarioModel funcionario = funcionarioRepository.findByCdFuncionario(servicoDto.cdFuncionario())
+                    .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com ID: " + servicoDto.cdFuncionario()));
+            
+            if (funcionario.getFlAtivo() == null || !"S".equals(funcionario.getFlAtivo())) {
+                throw new IllegalArgumentException("RN009: Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + servicoDto.cdFuncionario() + " está inativo.");
+            }
+            
             servico.setNmServico(servicoDto.nmServico());
             servico.setDsServico(servicoDto.dsServico());
             servico.setDsTipo(servicoDto.dsTipo());
             servico.setQtDuracao(servicoDto.qtDuracao());
             servico.setVlServico(servicoDto.vlServico());
+            servico.setFuncionario(funcionario);
             return servicoRepository.save(servico);
         });
     }
