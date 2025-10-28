@@ -13,6 +13,10 @@ public record PedidoDto(
         LocalDateTime dtPedido,
 
         @Pattern(regexp = "^S|N$", message = "Só é possível valores 'S' ou 'N'")
-        String flPgtoConfirmado
+        String flPgtoConfirmado,
+
+        Integer usuario,
+        Integer cliente,
+        Integer itensPedido
 ) {
 }

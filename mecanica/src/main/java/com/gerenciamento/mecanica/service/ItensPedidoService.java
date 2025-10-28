@@ -26,12 +26,7 @@ public class ItensPedidoService {
     @Autowired
     private EstoqueService estoqueService;
 
-    /**
-     * Adiciona um item ao pedido com validação de estoque
-     * Implementa RN006: Não é permitido vender produtos sem estoque disponível
-     */
     public ItensPedidoModel adicionarItemAoPedido(@Valid @RequestBody ItensPedidoDto dto, PedidoModel pedido) {
-        // Busca o produto
         Optional<ProdutoModel> produtoOpt = produtoService.findByCdProduto(dto.cdProduto());
         if (produtoOpt.isEmpty()) {
             throw new IllegalArgumentException("Produto não encontrado com código: " + dto.cdProduto());
@@ -39,7 +34,6 @@ public class ItensPedidoService {
 
         ProdutoModel produto = produtoOpt.get();
 
-        // Valida se há estoque disponível (RN006)
         if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
             Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(produto);
             throw new IllegalArgumentException(
@@ -48,7 +42,6 @@ public class ItensPedidoService {
             );
         }
 
-        // Cria o item do pedido
         ItensPedidoModel item = new ItensPedidoModel();
         item.setQtProduto(dto.qtProduto());
         item.setVlUnitario(dto.vlUnitario());
@@ -59,10 +52,6 @@ public class ItensPedidoService {
         return itensPedidoRepository.save(item);
     }
 
-    /**
-     * Processa a venda e atualiza o estoque automaticamente
-     * Implementa RN004: O estoque deve ser atualizado automaticamente após uma venda
-     */
     public boolean processarVenda(PedidoModel pedido) {
         List<ItensPedidoModel> itens = itensPedidoRepository.findByPedido(pedido);
         
@@ -70,7 +59,6 @@ public class ItensPedidoService {
             return false; // Pedido sem itens
         }
 
-        // Valida estoque para todos os itens antes de processar qualquer venda
         for (ItensPedidoModel item : itens) {
             if (!estoqueService.validarEstoqueDisponivel(item.getProduto(), item.getQtProduto())) {
                 Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(item.getProduto());
@@ -81,7 +69,6 @@ public class ItensPedidoService {
             }
         }
 
-        // Atualiza o estoque para todos os itens (RN004)
         for (ItensPedidoModel item : itens) {
             boolean sucesso = estoqueService.atualizarEstoqueAposVenda(item.getProduto(), item.getQtProduto());
             if (!sucesso) {

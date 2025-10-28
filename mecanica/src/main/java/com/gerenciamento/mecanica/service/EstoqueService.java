@@ -17,10 +17,13 @@ public class EstoqueService {
 
     @Autowired
     private EstoqueRepository estoqueRepository;
+    @Autowired
+    private ProdutoService produtoService;
 
     public EstoqueModel salvar (@Valid @RequestBody EstoqueDto dto) {
         EstoqueModel estoque = new EstoqueModel();
         estoque.setQtEstoque(dto.qtEstoque());
+        estoque.setCdProduto(produtoService.findByCdProduto(dto.cdProduto()).get());
         return estoqueRepository.save(estoque);
     }
     public List<EstoqueModel> listarTodos() {
