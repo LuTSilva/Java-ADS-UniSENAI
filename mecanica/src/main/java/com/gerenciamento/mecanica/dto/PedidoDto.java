@@ -16,7 +16,6 @@ public record PedidoDto(
         String flPgtoConfirmado,
 
         Integer usuario,
-        Integer cliente,
-        Integer itensPedido
+        Integer cliente
 ) {
 }

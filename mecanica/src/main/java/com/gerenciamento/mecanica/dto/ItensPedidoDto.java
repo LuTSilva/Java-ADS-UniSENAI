@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record ItensPedidoDto(
-        @NotNull(message = "A quantidade do produto não pode ser nula")
         @Min(value = 1, message = "A quantidade deve ser maior que zero")
         Integer qtProduto,
 
@@ -15,7 +14,9 @@ public record ItensPedidoDto(
         @Positive(message = "O valor unitário deve ser positivo")
         BigDecimal vlUnitario,
 
-        @NotNull(message = "O código do produto não pode ser nulo")
-        Integer cdProduto
+        Integer cdProduto,
+
+        Integer cdServico,
+        Integer cdPedido
 ) {
 }

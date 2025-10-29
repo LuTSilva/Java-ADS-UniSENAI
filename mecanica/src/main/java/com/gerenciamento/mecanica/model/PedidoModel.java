@@ -35,7 +35,4 @@ public class PedidoModel {
     @JoinColumn(name = "CDCLIENTE", nullable = false)
     private ClienteModel cliente;
 
-    @ManyToOne
-    @JoinColumn(name= "CDITENSPEDIDO", nullable = false)
-    private ItensPedidoModel itensPedido;
 }

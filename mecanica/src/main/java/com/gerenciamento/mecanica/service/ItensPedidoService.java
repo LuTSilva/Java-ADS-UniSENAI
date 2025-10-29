@@ -4,6 +4,7 @@ import com.gerenciamento.mecanica.dto.ItensPedidoDto;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
 import com.gerenciamento.mecanica.model.ProdutoModel;
+import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.repository.ItensPedidoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +25,65 @@ public class ItensPedidoService {
     private ProdutoService produtoService;
 
     @Autowired
+    private ServicoService servicoService;
+
+    @Autowired
     private EstoqueService estoqueService;
 
     public ItensPedidoModel adicionarItemAoPedido(@Valid @RequestBody ItensPedidoDto dto, PedidoModel pedido) {
-        Optional<ProdutoModel> produtoOpt = produtoService.findByCdProduto(dto.cdProduto());
-        if (produtoOpt.isEmpty()) {
-            throw new IllegalArgumentException("Produto não encontrado com código: " + dto.cdProduto());
-        }
-
-        ProdutoModel produto = produtoOpt.get();
-
-        if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
-            Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(produto);
-            throw new IllegalArgumentException(
-                String.format("Estoque insuficiente para o produto %s. Disponível: %d, Solicitado: %d", 
-                    produto.getNmProduto(), quantidadeDisponivel, dto.qtProduto())
-            );
-        }
-
         ItensPedidoModel item = new ItensPedidoModel();
-        item.setQtProduto(dto.qtProduto());
+        /**
+         * PedidoModel pedido = new PedidoModel();
+         */
         item.setVlUnitario(dto.vlUnitario());
-        item.setVlSubtotal(dto.vlUnitario().multiply(BigDecimal.valueOf(dto.qtProduto())));
         item.setPedido(pedido);
-        item.setProduto(produto);
 
+        BigDecimal subtotal = BigDecimal.ZERO;
+
+        // Processar produto se informado
+        if (dto.cdProduto() != null) {
+            if (dto.qtProduto() == null || dto.qtProduto() <= 0) {
+                throw new IllegalArgumentException("Quantidade do produto é obrigatória e deve ser maior que zero");
+            }
+
+            Optional<ProdutoModel> produtoOpt = produtoService.findByCdProduto(dto.cdProduto());
+            if (produtoOpt.isEmpty()) {
+                throw new IllegalArgumentException("Produto não encontrado com código: " + dto.cdProduto());
+            }
+
+            ProdutoModel produto = produtoOpt.get();
+
+            if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
+                Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(produto);
+                throw new IllegalArgumentException(
+                    String.format("Estoque insuficiente para o produto %s. Disponível: %d, Solicitado: %d", 
+                        produto.getNmProduto(), quantidadeDisponivel, dto.qtProduto())
+                );
+            }
+
+            item.setQtProduto(dto.qtProduto());
+            item.setProduto(produto);
+            subtotal = subtotal.add(dto.vlUnitario().multiply(BigDecimal.valueOf(dto.qtProduto())));
+        }
+
+        // Processar serviço se informado
+        if (dto.cdServico() != null) {
+            Optional<ServicoModel> servicoOpt = servicoService.findByCdServico(dto.cdServico());
+            if (servicoOpt.isEmpty()) {
+                throw new IllegalArgumentException("Serviço não encontrado com código: " + dto.cdServico());
+            }
+
+            ServicoModel servico = servicoOpt.get();
+            item.setServico(servico);
+            subtotal = subtotal.add(dto.vlUnitario());
+        }
+
+        // Validar se pelo menos um foi informado
+        if (dto.cdProduto() == null && dto.cdServico() == null) {
+            throw new IllegalArgumentException("Informe o código do produto e/ou o código do serviço");
+        }
+
+        item.setVlSubtotal(subtotal);
         return itensPedidoRepository.save(item);
     }
 
@@ -59,20 +94,26 @@ public class ItensPedidoService {
             return false; // Pedido sem itens
         }
 
+        // Validar estoque apenas para produtos (identificados pela presença do campo produto)
         for (ItensPedidoModel item : itens) {
-            if (!estoqueService.validarEstoqueDisponivel(item.getProduto(), item.getQtProduto())) {
-                Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(item.getProduto());
-                throw new IllegalArgumentException(
-                    String.format("Estoque insuficiente para o produto %s. Disponível: %d, Solicitado: %d", 
-                        item.getProduto().getNmProduto(), quantidadeDisponivel, item.getQtProduto())
-                );
+            if (item.getProduto() != null) {
+                if (!estoqueService.validarEstoqueDisponivel(item.getProduto(), item.getQtProduto())) {
+                    Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(item.getProduto());
+                    throw new IllegalArgumentException(
+                        String.format("Estoque insuficiente para o produto %s. Disponível: %d, Solicitado: %d", 
+                            item.getProduto().getNmProduto(), quantidadeDisponivel, item.getQtProduto())
+                    );
+                }
             }
         }
 
+        // Atualizar estoque apenas para produtos (identificados pela presença do campo produto)
         for (ItensPedidoModel item : itens) {
-            boolean sucesso = estoqueService.atualizarEstoqueAposVenda(item.getProduto(), item.getQtProduto());
-            if (!sucesso) {
-                throw new RuntimeException("Erro ao atualizar estoque para o produto: " + item.getProduto().getNmProduto());
+            if (item.getProduto() != null) {
+                boolean sucesso = estoqueService.atualizarEstoqueAposVenda(item.getProduto(), item.getQtProduto());
+                if (!sucesso) {
+                    throw new RuntimeException("Erro ao atualizar estoque para o produto: " + item.getProduto().getNmProduto());
+                }
             }
         }
 
@@ -89,6 +130,10 @@ public class ItensPedidoService {
 
     public List<ItensPedidoModel> findByPedido(PedidoModel pedido) {
         return itensPedidoRepository.findByPedido(pedido);
+    }
+
+    public ItensPedidoModel atualizarItem(ItensPedidoModel item) {
+        return itensPedidoRepository.save(item);
     }
 
     public void deletarItem(Integer cdItensPedido) {

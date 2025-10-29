@@ -14,5 +14,5 @@ public interface ItensPedidoRepository extends JpaRepository<ItensPedidoModel, I
     List<ItensPedidoModel> findByPedido(PedidoModel pedido);
 
     @Transactional
-    Optional<ItensPedidoModel> deleteByCdItensPedido(Integer cdItensPedido);
+    void deleteByCdItensPedido(Integer cdItensPedido);
 }

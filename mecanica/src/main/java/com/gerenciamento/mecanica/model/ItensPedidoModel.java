@@ -18,7 +18,7 @@ public class ItensPedidoModel {
     @Column(name = "CDITENSPEDIDO")
     private Integer cdItensPedido;
 
-    @Column(name = "QTPRODUTO", nullable = false)
+    @Column(name = "QTPRODUTO")
     private Integer qtProduto;
 
     @Column(name = "VLUNITARIO", nullable = false)
@@ -32,6 +32,10 @@ public class ItensPedidoModel {
     private PedidoModel pedido;
 
     @ManyToOne
-    @JoinColumn(name = "CDPRODUTO", nullable = false)
+    @JoinColumn(name = "CDPRODUTO")
     private ProdutoModel produto;
+
+    @ManyToOne
+    @JoinColumn(name = "CDSERVICO")
+    private ServicoModel servico;
 }

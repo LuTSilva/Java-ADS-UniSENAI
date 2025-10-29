@@ -16,6 +16,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/itens-pedido")
+/*
+@RequestMapping("/itenspedido")
+* */
 public class ItensPedidoController {
 
     @Autowired
@@ -23,6 +26,15 @@ public class ItensPedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    /*
+    *
+    @PostMapping
+    public ResponseEntity<ItensPedidoModel> criar (@Valid @RequestBody ItensPedidoDto dto) {
+        ItensPedidoModel item = new ItensPedidoModel();
+        return ResponseEntity.ok(item);
+    }
+    * */
 
     @PostMapping("/pedido/{cdPedido}")
     public ResponseEntity<?> adicionarItemAoPedido(

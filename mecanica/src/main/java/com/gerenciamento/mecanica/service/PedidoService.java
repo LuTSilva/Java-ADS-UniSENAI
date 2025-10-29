@@ -16,7 +16,6 @@ public class PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
-    
     @Autowired
     private ItensPedidoService itensPedidoService;
     @Autowired
@@ -29,7 +28,6 @@ public class PedidoService {
         pedido.setFlPgtoConfirmado(dto.flPgtoConfirmado());
         pedido.setCliente(clienteService.findByCdCliente(dto.cliente()).get());
         pedido.setUsuario(usuarioService.findByCdUsuario(dto.usuario()).get());
-        pedido.setItensPedido(itensPedidoService.findByCdItensPedido(dto.itensPedido()).get());
         return pedidoRepository.save(pedido);
     }
     public List<PedidoModel> listarTodos() {
@@ -57,11 +55,11 @@ public class PedidoService {
 
     public boolean confirmarPedido(Integer cdPedido) {
         Optional<PedidoModel> pedidoOpt = findByCdPedido(cdPedido);
-        
+
         if (pedidoOpt.isEmpty()) {
             return false; // Pedido não encontrado
         }
-        
+
         PedidoModel pedido = pedidoOpt.get();
 
         if ("S".equals(pedido.getFlPgtoConfirmado())) {
@@ -69,13 +67,13 @@ public class PedidoService {
         }
 
         boolean vendaProcessada = itensPedidoService.processarVenda(pedido);
-        
+
         if (vendaProcessada) {
             pedido.setFlPgtoConfirmado("S");
             pedidoRepository.save(pedido);
             return true;
         }
-        
+
         return false;
     }
 }
