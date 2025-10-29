@@ -6,6 +6,7 @@ import com.gerenciamento.mecanica.model.PedidoModel;
 import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.repository.ItensPedidoRepository;
+import com.gerenciamento.mecanica.repository.PedidoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,22 @@ public class ItensPedidoService {
 
     @Autowired
     private EstoqueService estoqueService;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    public ItensPedidoModel criar(@Valid @RequestBody ItensPedidoDto dto) {
+        if (dto.cdPedido() == null) {
+            throw new IllegalArgumentException("Código do pedido é obrigatório");
+        }
+
+        Optional<PedidoModel> pedidoOpt = pedidoRepository.findByCdPedido(dto.cdPedido());
+        if (pedidoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Pedido não encontrado com código: " + dto.cdPedido());
+        }
+
+        return adicionarItemAoPedido(dto, pedidoOpt.get());
+    }
 
     public ItensPedidoModel adicionarItemAoPedido(@Valid @RequestBody ItensPedidoDto dto, PedidoModel pedido) {
         ItensPedidoModel item = new ItensPedidoModel();

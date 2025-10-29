@@ -27,14 +27,11 @@ public class ItensPedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    /*
-    *
     @PostMapping
-    public ResponseEntity<ItensPedidoModel> criar (@Valid @RequestBody ItensPedidoDto dto) {
-        ItensPedidoModel item = new ItensPedidoModel();
-        return ResponseEntity.ok(item);
+    public ResponseEntity<ItensPedidoModel> criar(@Valid @RequestBody ItensPedidoDto dto) {
+        ItensPedidoModel item = itensPedidoService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
-    * */
 
     @PostMapping("/pedido/{cdPedido}")
     public ResponseEntity<?> adicionarItemAoPedido(

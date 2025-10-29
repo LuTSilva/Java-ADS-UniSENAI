@@ -6,6 +6,7 @@ import com.gerenciamento.mecanica.repository.PedidoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -53,6 +54,7 @@ public class PedidoService {
         pedidoRepository.deleteByCdPedido(cdPedido);
     }
 
+    @Transactional
     public boolean confirmarPedido(Integer cdPedido) {
         Optional<PedidoModel> pedidoOpt = findByCdPedido(cdPedido);
 
