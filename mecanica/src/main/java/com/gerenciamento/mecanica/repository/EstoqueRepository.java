@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface EstoqueRepository extends JpaRepository<EstoqueModel, Integer>{
     Optional<EstoqueModel> findByCdEstoque(Integer cdEstoque);
 
-    Optional<EstoqueModel> findByCdProduto(ProdutoModel cdProduto);
+    Optional<EstoqueModel> findByProduto(ProdutoModel produto);
 
     @Transactional
     Optional<EstoqueModel> deleteByCdEstoque (Integer cdEstoque);

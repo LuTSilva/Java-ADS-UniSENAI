@@ -32,11 +32,13 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
 
-    @PutMapping
-    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer cdPedido, @Valid @RequestBody PedidoDto pedidoDto) {
+    @PutMapping("/{cdPedido}")
+    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer cdPedido,
+                                                 @Valid @RequestBody PedidoDto pedidoDto) {
         return pedidoService.atualizaDados(cdPedido, pedidoDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    
     }
 
     @DeleteMapping

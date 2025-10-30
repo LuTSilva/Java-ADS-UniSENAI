@@ -1,6 +1,8 @@
 package com.gerenciamento.mecanica.service;
 
 import com.gerenciamento.mecanica.dto.ProdutoDto;
+import com.gerenciamento.mecanica.dto.ProdutoEstoqueDto;
+import com.gerenciamento.mecanica.model.EstoqueModel;
 import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.repository.ProdutoRepository;
 import jakarta.validation.Valid;
@@ -17,13 +19,21 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public ProdutoModel salvar (@Valid @RequestBody ProdutoDto dto) {
+    public ProdutoModel salvar (@Valid @RequestBody ProdutoEstoqueDto dto) {
         ProdutoModel produto = new ProdutoModel();
         produto.setNmProduto(dto.nmProduto());
         produto.setDsProduto(dto.dsProduto());
         produto.setDsCategoria(dto.dsCategoria());
         produto.setDsMarca(dto.dsMarca());
         produto.setVlProduto(dto.vlProduto());
+
+        EstoqueModel estoque = new EstoqueModel();
+        // Se estoque não for informado, será 0
+        estoque.setQtEstoque(dto.qtEstoque() != null ? dto.qtEstoque() : 0);
+
+        estoque.setProduto(produto);
+        produto.setEstoque(estoque);
+
         return produtoRepository.save(produto);
     }
     public List<ProdutoModel> listarTodos() {

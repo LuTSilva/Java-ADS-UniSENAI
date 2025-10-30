@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,9 +35,14 @@ public class ProdutoModel {
     @Column(name = "VLPRODUTO", nullable = false)
     private BigDecimal vlProduto;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL,
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
-    private List<ItensPedidoModel> itensPedidos;
+    private ItensPedidoModel itensPedido;
+
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
+    private EstoqueModel estoque;
 
 }

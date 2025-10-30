@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/itens-pedido")
+@RequestMapping("api/v1/itenspedido")
 /*
 @RequestMapping("/itenspedido")
 * */
@@ -53,7 +53,7 @@ public class ItensPedidoController {
         }
     }
 
-    @PostMapping("/confirmar-pedido/{cdPedido}")
+    @PostMapping("/confirmarpedido/{cdPedido}")
     public ResponseEntity<?> confirmarPedido(@PathVariable Integer cdPedido) {
         try {
             boolean confirmado = pedidoService.confirmarPedido(cdPedido);

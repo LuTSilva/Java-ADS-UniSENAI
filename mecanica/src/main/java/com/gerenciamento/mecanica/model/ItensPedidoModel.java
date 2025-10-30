@@ -31,11 +31,11 @@ public class ItensPedidoModel {
     @JoinColumn(name = "CDPEDIDO", nullable = false)
     private PedidoModel pedido;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "CDPRODUTO")
     private ProdutoModel produto;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "CDSERVICO")
     private ServicoModel servico;
 }

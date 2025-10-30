@@ -1,5 +1,6 @@
 package com.gerenciamento.mecanica.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,13 +39,11 @@ public class ServicoModel {
     @JoinColumn(name = "CDFUNCIONARIO", nullable = false)
     private FuncionarioModel funcionario;
 
-    /*
-    @OneToMany
+
+    @OneToOne
     (mappedBy = "servico", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)
 
     @JsonIgnore
-    private List<ItensPedidosModel> itensPedidos;
-
-     */
+    private ItensPedidoModel itensPedido;
 }

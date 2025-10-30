@@ -21,26 +21,26 @@ public class EstoqueController {
     @Autowired
     private EstoqueService estoqueService;
 
-    @PostMapping
-    public ResponseEntity<EstoqueModel> criar(@Valid @RequestBody EstoqueDto dto) {
-        EstoqueModel estoqueModel = estoqueService.salvar(dto);
-        return ResponseEntity.ok(estoqueModel);
-    }
-
     @GetMapping
     public ResponseEntity<List<EstoqueModel>> listarTodos() {
         return ResponseEntity.ok(estoqueService.listarTodos());
     }
 
-    @GetMapping("/{cdEstoque}")
+    @GetMapping("/estoque/{cdEstoque}")
     public ResponseEntity<EstoqueModel> listarPorCdEstoque(@PathVariable Integer cdEstoque){
-        return estoqueService.findByCdEstoque(cdEstoque)
+        return estoqueService.buscarPorCdEstoque(cdEstoque)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/{cdProduto}")
+    @GetMapping("/produto/{cdProduto}")
     public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable ProdutoModel cdProduto){
         return estoqueService.buscarPorCdProduto(cdProduto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping
+    public ResponseEntity<EstoqueModel> atualizar(@PathVariable Integer cdEstoque, @Valid @RequestBody EstoqueDto estoqueDto) {
+        return estoqueService.atualizaDados(cdEstoque, estoqueDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
