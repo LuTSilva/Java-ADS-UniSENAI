@@ -1,8 +1,6 @@
 package com.gerenciamento.mecanica.controller;
 
-import com.gerenciamento.mecanica.dto.ProdutoDto;
 import com.gerenciamento.mecanica.dto.ServicoDto;
-import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.service.ServicoService;
 import jakarta.validation.Valid;
@@ -46,11 +44,12 @@ public class ServicoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{cdServico}")
+    @GetMapping("/servico/{cdServico}")
     public ResponseEntity<ServicoModel> listarPorCdServico(@PathVariable Integer cdServico){
         return servicoService.findByCdServico(cdServico)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
 }

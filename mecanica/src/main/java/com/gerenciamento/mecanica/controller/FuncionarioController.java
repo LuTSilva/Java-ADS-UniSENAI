@@ -45,11 +45,16 @@ public class FuncionarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{cdFuncionario}")
+    @GetMapping("/funcionario/{cdFuncionario}")
     public ResponseEntity<FuncionarioModel> listarPorCdFuncionario(@PathVariable Integer cdFuncionario){
         return funcionarioService.findByCdFuncionario(cdFuncionario)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    @GetMapping("/cpf/{nuCpf}")
+    public ResponseEntity<FuncionarioModel> listarPorNuCpf(@PathVariable String nuCpf) {
+        return funcionarioService.findByNuCpf(nuCpf)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

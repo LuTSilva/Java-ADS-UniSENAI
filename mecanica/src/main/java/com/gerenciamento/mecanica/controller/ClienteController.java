@@ -44,14 +44,14 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{cdCliente}")
+    @GetMapping("/cliente/{cdCliente}")
     public ResponseEntity<ClienteModel> listarPorCdCliente(@PathVariable Integer cdCliente){
         return clienteService.findByCdCliente(cdCliente)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{nuCpf}")
+    @GetMapping("/cpf/{nuCpf}")
     public ResponseEntity<ClienteModel> listarPorNuCpf(@PathVariable String nuCpf){
         return clienteService.findByNuCpf(nuCpf)
                 .map(ResponseEntity::ok)

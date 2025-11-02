@@ -24,8 +24,7 @@ public record ServicoDto(
         @DecimalMax(value="999999")
         BigDecimal vlServico,
 
-        @NotNull(message = "O funcionário responsável pelo serviço não pode ser null")
-        Integer cdFuncionario
+        Integer cdFuncionario,
+        String nuCpf
         ) {
-
 }

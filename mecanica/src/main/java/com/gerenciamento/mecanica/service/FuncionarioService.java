@@ -53,7 +53,7 @@ public class FuncionarioService {
         return funcionarioRepository.findByCdFuncionario(cdFuncionario);
     }
 
-    public Optional<FuncionarioModel> findByCpf(String nuCpf) {
+    public Optional<FuncionarioModel> findByNuCpf(String nuCpf) {
         return funcionarioRepository.findByNuCpf(nuCpf);
     }
 

@@ -1,5 +1,13 @@
 package com.gerenciamento.mecanica.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.gerenciamento.mecanica.dto.ItensPedidoDto;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
@@ -7,14 +15,8 @@ import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.repository.ItensPedidoRepository;
 import com.gerenciamento.mecanica.repository.PedidoRepository;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 @Service
 public class ItensPedidoService {
@@ -49,13 +51,10 @@ public class ItensPedidoService {
 
     public ItensPedidoModel adicionarItemAoPedido(@Valid @RequestBody ItensPedidoDto dto, PedidoModel pedido) {
         ItensPedidoModel item = new ItensPedidoModel();
-        /**
-         * PedidoModel pedido = new PedidoModel();
-         */
-        item.setVlUnitario(dto.vlUnitario());
         item.setPedido(pedido);
 
         BigDecimal subtotal = BigDecimal.ZERO;
+        BigDecimal valorUnitario = dto.vlUnitario(); // Pode ser null
 
         // Processar produto se informado
         if (dto.cdProduto() != null) {
@@ -70,6 +69,11 @@ public class ItensPedidoService {
 
             ProdutoModel produto = produtoOpt.get();
 
+            // Se vlUnitario não foi informado, usa o preço do produto
+            if (valorUnitario == null) {
+                valorUnitario = produto.getVlProduto();
+            }
+
             if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
                 Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(produto);
                 throw new IllegalArgumentException(
@@ -80,7 +84,7 @@ public class ItensPedidoService {
 
             item.setQtProduto(dto.qtProduto());
             item.setProduto(produto);
-            subtotal = subtotal.add(dto.vlUnitario().multiply(BigDecimal.valueOf(dto.qtProduto())));
+            subtotal = subtotal.add(valorUnitario.multiply(BigDecimal.valueOf(dto.qtProduto())));
         }
 
         // Processar serviço se informado
@@ -91,8 +95,14 @@ public class ItensPedidoService {
             }
 
             ServicoModel servico = servicoOpt.get();
+            
+            // Se vlUnitario não foi informado, usa o preço do serviço
+            if (valorUnitario == null) {
+                valorUnitario = servico.getVlServico();
+            }
+
             item.setServico(servico);
-            subtotal = subtotal.add(dto.vlUnitario());
+            subtotal = subtotal.add(valorUnitario);
         }
 
         // Validar se pelo menos um foi informado
@@ -100,6 +110,12 @@ public class ItensPedidoService {
             throw new IllegalArgumentException("Informe o código do produto e/ou o código do serviço");
         }
 
+        // Validar se valor unitário foi definido (do DTO ou do produto/serviço)
+        if (valorUnitario == null) {
+            throw new IllegalArgumentException("Valor unitário não foi informado e não foi possível obter do produto/serviço");
+        }
+
+        item.setVlUnitario(valorUnitario);
         item.setVlSubtotal(subtotal);
         return itensPedidoRepository.save(item);
     }

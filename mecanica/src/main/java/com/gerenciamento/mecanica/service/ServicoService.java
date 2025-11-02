@@ -21,14 +21,16 @@ public class ServicoService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private FuncionarioService funcionarioService;
 
     public ServicoModel salvar (@Valid @RequestBody ServicoDto dto) {
-        // RN009: Validar se o funcionário está ativo
-        FuncionarioModel funcionario = funcionarioRepository.findByCdFuncionario(dto.cdFuncionario())
-                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com ID: " + dto.cdFuncionario()));
+        //Validar se o funcionário está ativo
+        FuncionarioModel funcionario = funcionarioRepository.findByNuCpf(dto.nuCpf())
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com o CPF: " + dto.nuCpf()));
         
         if (funcionario.getFlAtivo() == null || !"S".equals(funcionario.getFlAtivo())) {
-            throw new IllegalArgumentException("RN009: Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + dto.cdFuncionario() + " está inativo.");
+            throw new IllegalArgumentException("Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + dto.cdFuncionario() + " está inativo.");
         }
         
         ServicoModel servico = new ServicoModel();
@@ -37,7 +39,7 @@ public class ServicoService {
         servico.setDsTipo(dto.dsTipo());
         servico.setQtDuracao(dto.qtDuracao());
         servico.setVlServico(dto.vlServico());
-        servico.setFuncionario(funcionario);
+        servico.setFuncionario(funcionarioService.findByNuCpf(dto.nuCpf()).get());
         return servicoRepository.save(servico);
     }
     public List<ServicoModel> listarTodos() {
