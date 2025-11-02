@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,10 +41,10 @@ public class ServicoModel {
     private FuncionarioModel funcionario;
 
 
-    @OneToOne
+    @OneToMany
     (mappedBy = "servico", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)
 
     @JsonIgnore
-    private ItensPedidoModel itensPedido;
+    private List<ItensPedidoModel> itensPedidos;
 }

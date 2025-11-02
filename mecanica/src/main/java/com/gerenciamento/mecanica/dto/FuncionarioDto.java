@@ -1,5 +1,7 @@
 package com.gerenciamento.mecanica.dto;
 
+import com.gerenciamento.mecanica.model.FilialModel;
+import com.gerenciamento.mecanica.model.FuncionarioModel;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 
 public record FuncionarioDto(
 
+        Integer cdFuncionario,
         @NotBlank(message = "O nome do funcionário não pode ser vazio")
         String nmFuncionario,
 
@@ -23,7 +26,18 @@ public record FuncionarioDto(
         @DecimalMax(value = "999999")
         BigDecimal vlSalario,
 
-        String flAtivo
+        String flAtivo,
+        FilialModel filial
         ) {
-
+    public static FuncionarioDto completo(FuncionarioModel funcionario) {
+        return new FuncionarioDto(
+                funcionario.getCdFuncionario(),
+                funcionario.getNmFuncionario(),
+                funcionario.getNuCpf(),
+                funcionario.getDsCargo(),
+                funcionario.getVlSalario(),
+                funcionario.getFlAtivo(),
+                funcionario.getFilial()
+        );
+    }
 }

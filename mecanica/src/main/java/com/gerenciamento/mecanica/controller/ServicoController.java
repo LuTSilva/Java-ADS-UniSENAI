@@ -31,14 +31,14 @@ public class ServicoController {
         return ResponseEntity.ok(servicoService.listarTodos());
     }
 
-    @PutMapping
+    @PutMapping("/{cdServico}")
     public ResponseEntity<ServicoModel> atualizar(@PathVariable Integer cdServico, @Valid @RequestBody ServicoDto servicoDto) {
         return servicoService.atualizaDados(cdServico, servicoDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{cdServico}")
     public ResponseEntity<Void>deletarPorCdServico(@PathVariable Integer cdServico) {
         servicoService.deletarServico(cdServico);
         return ResponseEntity.noContent().build();
@@ -51,5 +51,10 @@ public class ServicoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
+    @GetMapping("/servico/{nmServico}")
+    public ResponseEntity<ServicoModel> listarPorCdServico(@PathVariable String nmServico){
+        return servicoService.findByNmServico(nmServico)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

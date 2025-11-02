@@ -1,8 +1,6 @@
 package com.gerenciamento.mecanica.controller;
 
 import com.gerenciamento.mecanica.dto.UsuarioDto;
-import com.gerenciamento.mecanica.dto.UsuarioDto;
-import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -12,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -31,9 +30,23 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioModel>> listarTodos(){
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
-    @GetMapping("/ativas")
-    public ResponseEntity<List<UsuarioModel>> listarAtivas(){
+    @GetMapping("/completo")
+    public ResponseEntity<List<UsuarioDto>> listarTodosCompleto(){
+        List<UsuarioDto> usuarios = usuarioService.listarTodos().stream()
+                .map(UsuarioDto::completo)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(usuarios);
+    }
+    @GetMapping("/ativos")
+    public ResponseEntity<List<UsuarioModel>> listarAtivos(){
         return ResponseEntity.ok(usuarioService.listarUsuariosAtivos());
+    }
+    @GetMapping("/ativos/completo")
+    public ResponseEntity<List<UsuarioDto>> listarAtivosCompleto(){
+        List<UsuarioDto> usuarios = usuarioService.listarUsuariosAtivos().stream()
+                .map(UsuarioDto::completo)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(usuarios);
     }
     @GetMapping("/{cdUsuario}")
     public ResponseEntity<UsuarioModel> listarPorCdUsuario(@PathVariable Integer cdUsuario){

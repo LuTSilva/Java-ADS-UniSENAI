@@ -31,14 +31,14 @@ public class VeiculoController {
         return ResponseEntity.ok(veiculoService.listarTodos());
     }
 
-    @GetMapping("/{cdVeiculo}")
+    @GetMapping("/veiculo/{cdVeiculo}")
     public ResponseEntity<VeiculoModel> listarPorCdVeiculo(@PathVariable Integer cdVeiculo){
         return veiculoService.findByCdVeiculo(cdVeiculo)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{dsPlaca}")
+    @GetMapping("/placa/{dsPlaca}")
     public ResponseEntity<VeiculoModel> findByDsPlaca(@PathVariable String dsPlaca){
         return veiculoService.findByDsPlaca(dsPlaca)
                 .map(ResponseEntity::ok)

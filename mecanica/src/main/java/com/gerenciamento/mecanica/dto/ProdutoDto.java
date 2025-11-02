@@ -1,5 +1,6 @@
 package com.gerenciamento.mecanica.dto;
 
+import com.gerenciamento.mecanica.model.ProdutoModel;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record ProdutoDto(
-
+        Integer cdProduto,
         @NotBlank(message = "O nome do produto não pode ser vazio")
         String nmProduto,
 
@@ -26,5 +27,14 @@ public record ProdutoDto(
         @DecimalMax(value="999999")
         BigDecimal vlProduto
         ) {
-
+    public static ProdutoDto completo(ProdutoModel produto) {
+        return new ProdutoDto(
+                produto.getCdProduto(),
+                produto.getNmProduto(),
+                produto.getDsProduto(),
+                produto.getDsCategoria(),
+                produto.getDsMarca(),
+                produto.getVlProduto()
+        );
+    }
 }

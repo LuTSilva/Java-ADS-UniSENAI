@@ -30,7 +30,7 @@ public class ServicoService {
                 .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com o CPF: " + dto.nuCpf()));
         
         if (funcionario.getFlAtivo() == null || !"S".equals(funcionario.getFlAtivo())) {
-            throw new IllegalArgumentException("Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + dto.cdFuncionario() + " está inativo.");
+            throw new IllegalArgumentException("Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + dto.funcionario() + " está inativo.");
         }
         
         ServicoModel servico = new ServicoModel();
@@ -56,14 +56,12 @@ public class ServicoService {
 
     public Optional<ServicoModel> atualizaDados(Integer cdServico, ServicoDto servicoDto) {
         return servicoRepository.findByCdServico(cdServico).map(servico -> {
-            // RN009: Validar se o funcionário está ativo
-            FuncionarioModel funcionario = funcionarioRepository.findByCdFuncionario(servicoDto.cdFuncionario())
-                    .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com ID: " + servicoDto.cdFuncionario()));
+            FuncionarioModel funcionario = funcionarioRepository.findByCdFuncionario(servicoDto.funcionario().getCdFuncionario())
+                    .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado com ID: " + servicoDto.funcionario()));
             
             if (funcionario.getFlAtivo() == null || !"S".equals(funcionario.getFlAtivo())) {
-                throw new IllegalArgumentException("RN009: Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + servicoDto.cdFuncionario() + " está inativo.");
+                throw new IllegalArgumentException("Todo serviço deve estar vinculado a um funcionário ativo. Funcionário ID " + servicoDto.funcionario() + " está inativo.");
             }
-            
             servico.setNmServico(servicoDto.nmServico());
             servico.setDsServico(servicoDto.dsServico());
             servico.setDsTipo(servicoDto.dsTipo());

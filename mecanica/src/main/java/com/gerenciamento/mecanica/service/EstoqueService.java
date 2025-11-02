@@ -15,8 +15,6 @@ public class EstoqueService {
 
     @Autowired
     private EstoqueRepository estoqueRepository;
-    @Autowired
-    private ProdutoService produtoService;
 
     public List<EstoqueModel> listarTodos() {
         return estoqueRepository.findAll();

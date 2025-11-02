@@ -38,7 +38,7 @@ public class EstoqueController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @PutMapping
+    @PutMapping("/{cdEstoque}")
     public ResponseEntity<EstoqueModel> atualizar(@PathVariable Integer cdEstoque, @Valid @RequestBody EstoqueDto estoqueDto) {
         return estoqueService.atualizaDados(cdEstoque, estoqueDto)
                 .map(ResponseEntity::ok)

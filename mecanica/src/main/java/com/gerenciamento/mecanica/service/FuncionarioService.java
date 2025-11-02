@@ -5,7 +5,6 @@ import com.gerenciamento.mecanica.dto.UsuarioFuncionarioDto;
 import com.gerenciamento.mecanica.model.FuncionarioModel;
 import com.gerenciamento.mecanica.model.UsuarioModel;
 import com.gerenciamento.mecanica.repository.FuncionarioRepository;
-import com.gerenciamento.mecanica.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
     @Autowired
     private FilialService filialService;
 

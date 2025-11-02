@@ -1,13 +1,5 @@
 package com.gerenciamento.mecanica.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.gerenciamento.mecanica.dto.ItensPedidoDto;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
@@ -15,8 +7,14 @@ import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.repository.ItensPedidoRepository;
 import com.gerenciamento.mecanica.repository.PedidoRepository;
-
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItensPedidoService {
@@ -54,7 +52,8 @@ public class ItensPedidoService {
         item.setPedido(pedido);
 
         BigDecimal subtotal = BigDecimal.ZERO;
-        BigDecimal valorUnitario = dto.vlUnitario(); // Pode ser null
+        BigDecimal valorUnitarioProduto = dto.vlUnitario(); // Pode ser null
+        BigDecimal valorUnitarioServico = dto.vlUnitario(); // Também pode ser null
 
         // Processar produto se informado
         if (dto.cdProduto() != null) {
@@ -70,8 +69,8 @@ public class ItensPedidoService {
             ProdutoModel produto = produtoOpt.get();
 
             // Se vlUnitario não foi informado, usa o preço do produto
-            if (valorUnitario == null) {
-                valorUnitario = produto.getVlProduto();
+            if (valorUnitarioProduto == null) {
+                valorUnitarioProduto = produto.getVlProduto();
             }
 
             if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
@@ -84,7 +83,7 @@ public class ItensPedidoService {
 
             item.setQtProduto(dto.qtProduto());
             item.setProduto(produto);
-            subtotal = subtotal.add(valorUnitario.multiply(BigDecimal.valueOf(dto.qtProduto())));
+            subtotal = subtotal.add(valorUnitarioProduto.multiply(BigDecimal.valueOf(dto.qtProduto())));
         }
 
         // Processar serviço se informado
@@ -97,12 +96,12 @@ public class ItensPedidoService {
             ServicoModel servico = servicoOpt.get();
             
             // Se vlUnitario não foi informado, usa o preço do serviço
-            if (valorUnitario == null) {
-                valorUnitario = servico.getVlServico();
+            if (valorUnitarioServico == null) {
+                valorUnitarioServico = servico.getVlServico();
             }
 
             item.setServico(servico);
-            subtotal = subtotal.add(valorUnitario);
+            subtotal = subtotal.add(valorUnitarioServico);
         }
 
         // Validar se pelo menos um foi informado
@@ -111,11 +110,12 @@ public class ItensPedidoService {
         }
 
         // Validar se valor unitário foi definido (do DTO ou do produto/serviço)
-        if (valorUnitario == null) {
+        if (valorUnitarioProduto == null && valorUnitarioServico == null) {
             throw new IllegalArgumentException("Valor unitário não foi informado e não foi possível obter do produto/serviço");
         }
 
-        item.setVlUnitario(valorUnitario);
+
+        item.setVlUnitario(valorUnitarioProduto);
         item.setVlSubtotal(subtotal);
         return itensPedidoRepository.save(item);
     }
@@ -163,10 +163,6 @@ public class ItensPedidoService {
 
     public List<ItensPedidoModel> findByPedido(PedidoModel pedido) {
         return itensPedidoRepository.findByPedido(pedido);
-    }
-
-    public ItensPedidoModel atualizarItem(ItensPedidoModel item) {
-        return itensPedidoRepository.save(item);
     }
 
     public void deletarItem(Integer cdItensPedido) {

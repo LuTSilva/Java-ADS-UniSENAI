@@ -1,11 +1,11 @@
 package com.gerenciamento.mecanica.dto;
 
+import com.gerenciamento.mecanica.model.FuncionarioModel;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
 public record ServicoDto(
-
         @NotBlank(message = "O nome do servico não pode ser vazio")
         String nmServico,
 
@@ -24,7 +24,7 @@ public record ServicoDto(
         @DecimalMax(value="999999")
         BigDecimal vlServico,
 
-        Integer cdFuncionario,
+        FuncionarioModel funcionario,
         String nuCpf
         ) {
 }

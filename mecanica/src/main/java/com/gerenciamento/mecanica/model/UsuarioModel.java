@@ -1,5 +1,6 @@
 package com.gerenciamento.mecanica.model;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name= "TBUSUARIO")
+@JsonIncludeProperties({"cdUsuario", "dsEmail", "flAtivo", "funcionario"})
 public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

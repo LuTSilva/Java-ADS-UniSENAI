@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -32,14 +33,22 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.listarTodos());
     }
 
-    @PutMapping
+    @GetMapping("/completo")
+    public ResponseEntity<List<FuncionarioDto>> listarTodosCompleto(){
+        List<FuncionarioDto> funcionarios = funcionarioService.listarTodos().stream()
+                .map(FuncionarioDto::completo)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(funcionarios);
+    }
+
+    @PutMapping("/{cdFuncionario}")
     public ResponseEntity<FuncionarioModel> atualizar(@PathVariable Integer cdFuncionario, @Valid @RequestBody FuncionarioDto funcionarioDto) {
         return funcionarioService.atualizaDados(cdFuncionario, funcionarioDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{cdFuncionario}")
     public ResponseEntity<Void>deletarPorCdFuncionario(@PathVariable Integer cdFuncionario){
         funcionarioService.deletarFuncionario(cdFuncionario);
         return ResponseEntity.noContent().build();
@@ -51,9 +60,25 @@ public class FuncionarioController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/funcionario/{cdFuncionario}/completo")
+    public ResponseEntity<FuncionarioDto> listarPorCdFuncionarioCompleto(@PathVariable Integer cdFuncionario){
+        return funcionarioService.findByCdFuncionario(cdFuncionario)
+                .map(FuncionarioDto::completo)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/cpf/{nuCpf}")
     public ResponseEntity<FuncionarioModel> listarPorNuCpf(@PathVariable String nuCpf) {
         return funcionarioService.findByNuCpf(nuCpf)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/cpf/{nuCpf}/completo")
+    public ResponseEntity<FuncionarioDto> listarPorNuCpfCompleto(@PathVariable String nuCpf) {
+        return funcionarioService.findByNuCpf(nuCpf)
+                .map(FuncionarioDto::completo)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -31,15 +32,23 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoModel>> listarTodos() {
         return ResponseEntity.ok(produtoService.listarTodos());
     }
+    
+    @GetMapping("/completo")
+    public ResponseEntity<List<ProdutoDto>> listarTodosCompleto(){
+        List<ProdutoDto> produtos = produtoService.listarTodos().stream()
+                .map(ProdutoDto::completo)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(produtos);
+    }
 
-    @PutMapping
+    @PutMapping("/{cdProduto}")
     public ResponseEntity<ProdutoModel> atualizar(@PathVariable Integer cdProduto, @Valid @RequestBody ProdutoDto produtoDto) {
         return produtoService.atualizaDados(cdProduto, produtoDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{cdProduto}")
     public ResponseEntity<Void>deletarPorCdProduto(@PathVariable Integer cdProduto){
         produtoService.deletarProduto(cdProduto);
         return ResponseEntity.noContent().build();

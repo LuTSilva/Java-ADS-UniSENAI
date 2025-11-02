@@ -1,18 +1,21 @@
 package com.gerenciamento.mecanica.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "TBPRODUTO")
+@JsonIncludeProperties({"cdProduto", "nmProduto"})
 public class ProdutoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,10 @@ public class ProdutoModel {
     @Column(name = "VLPRODUTO", nullable = false)
     private BigDecimal vlProduto;
 
-    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL,
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL,
     fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
-    private ItensPedidoModel itensPedido;
+    private List<ItensPedidoModel> itensPedidos;
 
     @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)

@@ -1,6 +1,7 @@
 package com.gerenciamento.mecanica.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name= "TBFILIAL")
+@JsonIncludeProperties({"cdFilial", "nmRazao"})
 public class FilialModel {
 @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 @Column(name = "CDFILIAL")
