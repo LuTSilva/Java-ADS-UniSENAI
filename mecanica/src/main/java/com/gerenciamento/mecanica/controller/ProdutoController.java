@@ -54,11 +54,17 @@ public class ProdutoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{cdProduto}")
+    @GetMapping("/produto/{cdProduto}")
     public ResponseEntity<ProdutoModel> listarPorCdProduto(@PathVariable Integer cdProduto){
         return produtoService.findByCdProduto(cdProduto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/nome/{nmProduto}")
+    public ResponseEntity<ProdutoModel> listarPorNmProduto(@PathVariable String nmProduto){
+        return produtoService.findByNmProduto(nmProduto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
