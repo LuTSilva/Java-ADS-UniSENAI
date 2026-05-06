@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -22,8 +24,15 @@ public class ServicoController {
 
     @PostMapping
     public ResponseEntity<ServicoModel> criar(@Valid @RequestBody ServicoDto dto) {
-        ServicoModel servicoModel = servicoService.salvar(dto);
-        return ResponseEntity.ok(servicoModel);
+        ServicoModel servico = servicoService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(servico.getCdServico())
+                .toUri();
+
+        return ResponseEntity.created(location).body(servico);
     }
 
     @GetMapping
@@ -31,30 +40,36 @@ public class ServicoController {
         return ResponseEntity.ok(servicoService.listarTodos());
     }
 
-    @PutMapping("/{cdServico}")
-    public ResponseEntity<ServicoModel> atualizar(@PathVariable Integer cdServico, @Valid @RequestBody ServicoDto servicoDto) {
-        return servicoService.atualizaDados(cdServico, servicoDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<ServicoModel> listarPorCdServico(@PathVariable Integer id){
+        ServicoModel servico = servicoService.findByCdServico(id)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(servico);
     }
 
-    @DeleteMapping("/{cdServico}")
-    public ResponseEntity<Void>deletarPorCdServico(@PathVariable Integer cdServico) {
-        servicoService.deletarServico(cdServico);
+    @GetMapping("/nome/{nmServico}")
+    public ResponseEntity<ServicoModel> listarPorNmServico(@PathVariable String nmServico){
+        ServicoModel servico = servicoService.findByNmServico(nmServico)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com o nome: " + nmServico));
+
+        return ResponseEntity.ok(servico);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ServicoModel> atualizar(@PathVariable Integer id, @Valid @RequestBody ServicoDto dto) {
+        ServicoModel servico = servicoService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(servico);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdServico(@PathVariable Integer id) {
+        servicoService.findByCdServico(id)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com o código: " + id));
+
+        servicoService.deletarServico(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/servico/{cdServico}")
-    public ResponseEntity<ServicoModel> listarPorCdServico(@PathVariable Integer cdServico){
-        return servicoService.findByCdServico(cdServico)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/servico/{nmServico}")
-    public ResponseEntity<ServicoModel> listarPorCdServico(@PathVariable String nmServico){
-        return servicoService.findByNmServico(nmServico)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 }

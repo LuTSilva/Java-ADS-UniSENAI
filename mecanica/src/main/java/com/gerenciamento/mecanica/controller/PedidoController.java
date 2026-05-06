@@ -1,16 +1,20 @@
 package com.gerenciamento.mecanica.controller;
 
-import com.gerenciamento.mecanica.dto.FuncionarioDto;
+import com.gerenciamento.mecanica.dto.ItensPedidoDto;
 import com.gerenciamento.mecanica.dto.PedidoDto;
-import com.gerenciamento.mecanica.model.FuncionarioModel;
+import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
+import com.gerenciamento.mecanica.service.ItensPedidoService;
 import com.gerenciamento.mecanica.service.PedidoService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -22,40 +26,70 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private ItensPedidoService itensPedidoService;
+
     @PostMapping
     public ResponseEntity<PedidoModel> criar (@Valid @RequestBody PedidoDto dto) {
-        PedidoModel pedidoModel = pedidoService.salvar(dto);
-        return ResponseEntity.ok(pedidoModel);
+        PedidoModel pedido = pedidoService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(pedido.getCdPedido())
+                .toUri();
+
+        return ResponseEntity.created(location).body(pedido);
     }
+
+    @PostMapping("/{id}/itens")
+    public ResponseEntity<ItensPedidoModel> adicionarItemAoPedido(
+            @PathVariable Integer id, @Valid @RequestBody ItensPedidoDto dto) {
+
+        PedidoModel pedido = pedidoService.findByCdPedido(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
+
+        ItensPedidoModel item = itensPedidoService.adicionarItemAoPedido(dto, pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(item);
+    }
+
     @GetMapping
     public ResponseEntity<List<PedidoModel>> listarTodos(){
         return ResponseEntity.ok(pedidoService.listarTodos());
-    }
-
-    @PutMapping("/{cdPedido}")
-    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer cdPedido,
-                                                 @Valid @RequestBody PedidoDto pedidoDto) {
-        return pedidoService.atualizaDados(cdPedido, pedidoDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void>deletarPorCdPedido(@PathVariable Integer cdPedido){
-        pedidoService.deletarPedido(cdPedido);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/confirmados")
     public ResponseEntity<List<PedidoModel>> listarConfirmados(){
         return ResponseEntity.ok(pedidoService.listarConfirmados());
     }
-    @GetMapping("/{cdPedido}")
-    public ResponseEntity<PedidoModel> listarPorCdPedido(@PathVariable Integer cdPedido){
-        return pedidoService.findByCdPedido(cdPedido)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoModel> listarPorCdPedido(@PathVariable Integer id){
+        PedidoModel pedido = pedidoService.findByCdPedido(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(pedido);
     }
 
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<Void> confirmarPedido(@PathVariable Integer id) {
+        pedidoService.confirmarPedido(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer id, @Valid @RequestBody PedidoDto dto) {
+        PedidoModel pedido = pedidoService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(pedido);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdPedido(@PathVariable Integer id){
+        pedidoService.findByCdPedido(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
+
+        pedidoService.deletarPedido(id);
+        return ResponseEntity.noContent().build();
+    }
 }

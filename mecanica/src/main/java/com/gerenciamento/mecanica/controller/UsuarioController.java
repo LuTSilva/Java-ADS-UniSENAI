@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +25,15 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioModel> criar (@Valid @RequestBody UsuarioDto dto) {
-        UsuarioModel usuarioModel = usuarioService.salvar(dto);
-        return ResponseEntity.ok(usuarioModel);
+        UsuarioModel usuario = usuarioService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(usuario.getCdUsuario())
+                .toUri();
+
+        return ResponseEntity.created(location).body(usuario);
     }
     @GetMapping
     public ResponseEntity<List<UsuarioModel>> listarTodos(){
@@ -48,21 +57,26 @@ public class UsuarioController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(usuarios);
     }
-    @GetMapping("/{cdUsuario}")
-    public ResponseEntity<UsuarioModel> listarPorCdUsuario(@PathVariable Integer cdUsuario){
-        return usuarioService.findByCdUsuario(cdUsuario)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioModel> listarPorCdUsuario(@PathVariable Integer id){
+        UsuarioModel usuario = usuarioService.findByCdUsuario(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(usuario);
     }
-    @PutMapping("/{cdUsuario}")
-    public ResponseEntity<UsuarioModel> atualizaDados(@PathVariable Integer cdUsuario, @Valid @RequestBody UsuarioDto dto) {
-        return usuarioService.atualizaDados(cdUsuario, dto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioModel> atualizaDados(@PathVariable Integer id, @Valid @RequestBody UsuarioDto dto) {
+        UsuarioModel usuario = usuarioService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(usuario);
     }
-    @DeleteMapping("/{cdUsuario}")
-    public ResponseEntity<Void>deletarPorCdUsuario(@PathVariable Integer cdUsuario){
-        usuarioService.deletarUsuario(cdUsuario);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdUsuario(@PathVariable Integer id){
+        usuarioService.findByCdUsuario(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o código: " + id));
+
+        usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 }

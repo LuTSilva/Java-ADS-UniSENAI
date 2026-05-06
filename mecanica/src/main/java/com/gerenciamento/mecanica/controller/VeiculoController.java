@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -22,8 +24,15 @@ public class VeiculoController {
 
     @PostMapping
     public ResponseEntity<VeiculoModel> criar(@Valid @RequestBody VeiculoDto dto) {
-        VeiculoModel veiculoModel = veiculoService.salvar(dto);
-        return ResponseEntity.ok(veiculoModel);
+        VeiculoModel veiculo = veiculoService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(veiculo.getCdVeiculo())
+                .toUri();
+
+        return ResponseEntity.created(location).body(veiculo);
     }
 
     @GetMapping
@@ -31,28 +40,34 @@ public class VeiculoController {
         return ResponseEntity.ok(veiculoService.listarTodos());
     }
 
-    @GetMapping("/veiculo/{cdVeiculo}")
-    public ResponseEntity<VeiculoModel> listarPorCdVeiculo(@PathVariable Integer cdVeiculo){
-        return veiculoService.findByCdVeiculo(cdVeiculo)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<VeiculoModel> listarPorCdVeiculo(@PathVariable Integer id){
+        VeiculoModel veiculo = veiculoService.findByCdVeiculo(id)
+                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com o código: " + id));
+
+        return ResponseEntity.ok(veiculo);
     }
 
     @GetMapping("/placa/{dsPlaca}")
     public ResponseEntity<VeiculoModel> findByDsPlaca(@PathVariable String dsPlaca){
-        return veiculoService.findByDsPlaca(dsPlaca)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        VeiculoModel veiculo = veiculoService.findByDsPlaca(dsPlaca)
+                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com a placa: " + dsPlaca));
+
+        return ResponseEntity.ok(veiculo);
     }
-    @PutMapping("/{cdVeiculo}")
-    public ResponseEntity<VeiculoModel> atualizaDados(@PathVariable Integer cdVeiculo, @Valid @RequestBody VeiculoDto dto) {
-        return veiculoService.atualizaDados(cdVeiculo, dto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @PutMapping("/{id}")
+    public ResponseEntity<VeiculoModel> atualizaDados(@PathVariable Integer id, @Valid @RequestBody VeiculoDto dto) {
+        VeiculoModel veiculo = veiculoService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com o código: " + id));
+
+        return ResponseEntity.ok(veiculo);
     }
-    @DeleteMapping("/{cdVeiculo}")
-    public ResponseEntity<Void>deletarPorCdVeiculo(@PathVariable Integer cdVeiculo){
-        veiculoService.deletarVeiculo(cdVeiculo);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdVeiculo(@PathVariable Integer id){
+        veiculoService.findByCdVeiculo(id)
+                .orElseThrow(() -> new RuntimeException("Filial não localizada com código: " + id));
+
+        veiculoService.deletarVeiculo(id);
         return ResponseEntity.noContent().build();
     }
 }

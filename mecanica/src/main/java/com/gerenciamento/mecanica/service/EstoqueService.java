@@ -20,11 +20,11 @@ public class EstoqueService {
         return estoqueRepository.findAll();
     }
 
-    public Optional<EstoqueModel> buscarPorCdEstoque(Integer cdEstoque) {
+    public Optional<EstoqueModel> findByCdEstoque(Integer cdEstoque) {
         return estoqueRepository.findByCdEstoque(cdEstoque);
     }
 
-    public Optional<EstoqueModel> buscarPorCdProduto(ProdutoModel cdProduto){
+    public Optional<EstoqueModel> findByCdProduto(ProdutoModel cdProduto){
         return  estoqueRepository.findByProduto(cdProduto);
     }
 
@@ -36,7 +36,7 @@ public class EstoqueService {
     }
 
     public boolean validarEstoqueDisponivel(ProdutoModel produto, Integer quantidadeSolicitada) {
-        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        Optional<EstoqueModel> estoqueOpt = findByCdProduto(produto);
         
         if (estoqueOpt.isEmpty()) {
             return false; // Produto não possui estoque cadastrado
@@ -47,7 +47,7 @@ public class EstoqueService {
     }
 
     public boolean atualizarEstoqueAposVenda(ProdutoModel produto, Integer quantidadeVendida) {
-        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        Optional<EstoqueModel> estoqueOpt = findByCdProduto(produto);
         
         if (estoqueOpt.isEmpty()) {
             return false; // Produto não possui estoque cadastrado
@@ -66,7 +66,7 @@ public class EstoqueService {
     }
 
     public Integer obterQuantidadeDisponivel(ProdutoModel produto) {
-        Optional<EstoqueModel> estoqueOpt = buscarPorCdProduto(produto);
+        Optional<EstoqueModel> estoqueOpt = findByCdProduto(produto);
         
         if (estoqueOpt.isEmpty()) {
             return 0; // Produto não possui estoque cadastrado

@@ -55,27 +55,17 @@ public class PedidoService {
     }
 
     @Transactional
-    public boolean confirmarPedido(Integer cdPedido) {
-        Optional<PedidoModel> pedidoOpt = findByCdPedido(cdPedido);
-
-        if (pedidoOpt.isEmpty()) {
-            return false; // Pedido não encontrado
-        }
-
-        PedidoModel pedido = pedidoOpt.get();
+    public void confirmarPedido(Integer cdPedido) {
+        PedidoModel pedido = findByCdPedido(cdPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + cdPedido));
 
         if ("S".equals(pedido.getFlPgtoConfirmado())) {
-            return true; // Pedido já confirmado
+            return; // já confirmado, nada a fazer
         }
 
-        boolean vendaProcessada = itensPedidoService.processarVenda(pedido);
+        itensPedidoService.processarVenda(pedido);
 
-        if (vendaProcessada) {
-            pedido.setFlPgtoConfirmado("S");
-            pedidoRepository.save(pedido);
-            return true;
-        }
-
-        return false;
+        pedido.setFlPgtoConfirmado("S");
+        pedidoRepository.save(pedido);
     }
 }

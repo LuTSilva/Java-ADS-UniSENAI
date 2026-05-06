@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +25,15 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteModel> criar(@Valid @RequestBody ClienteDto dto) {
-        ClienteModel clienteModel = clienteService.salvar(dto);
-        return ResponseEntity.ok(clienteModel);
+        ClienteModel cliente = clienteService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(cliente.getCdCliente())
+                .toUri();
+
+        return ResponseEntity.created(location).body(cliente);
     }
 
     @GetMapping
@@ -40,30 +49,36 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
     
-    @PutMapping("/{cdCliente}")
-    public ResponseEntity<ClienteModel> atualizar(@PathVariable Integer cdCliente, @Valid @RequestBody ClienteDto clienteDto) {
-        return clienteService.atualizaDados(cdCliente, clienteDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-    
-    @DeleteMapping("/{cdCliente}")
-    public ResponseEntity<Void>deletarPorCdCliente(@PathVariable Integer cdCliente){
-        clienteService.deletarCliente(cdCliente);
-        return ResponseEntity.noContent().build();
-    }
-    
-    @GetMapping("/cliente/{cdCliente}")
-    public ResponseEntity<ClienteModel> listarPorCdCliente(@PathVariable Integer cdCliente){
-        return clienteService.findByCdCliente(cdCliente)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteModel> listarPorCdCliente(@PathVariable Integer id){
+        ClienteModel cliente = clienteService.findByCdCliente(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(cliente);
     }
 
     @GetMapping("/cpf/{nuCpf}")
     public ResponseEntity<ClienteModel> listarPorNuCpf(@PathVariable String nuCpf){
-        return clienteService.findByNuCpf(nuCpf)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ClienteModel cliente = clienteService.findByNuCpf(nuCpf)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o CPF: " + nuCpf));
+
+        return ResponseEntity.ok(cliente);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteModel> atualizar(@PathVariable Integer id, @Valid @RequestBody ClienteDto dto) {
+        ClienteModel cliente = clienteService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(cliente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdCliente(@PathVariable Integer id){
+        clienteService.findByCdCliente(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o código: " + id));
+
+        clienteService.deletarCliente(id);
+        return ResponseEntity.noContent().build();
     }
 }

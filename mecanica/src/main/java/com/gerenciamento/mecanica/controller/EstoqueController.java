@@ -26,23 +26,26 @@ public class EstoqueController {
         return ResponseEntity.ok(estoqueService.listarTodos());
     }
 
-    @GetMapping("/estoque/{cdEstoque}")
-    public ResponseEntity<EstoqueModel> listarPorCdEstoque(@PathVariable Integer cdEstoque){
-        return estoqueService.buscarPorCdEstoque(cdEstoque)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<EstoqueModel> listarPorCdEstoque(@PathVariable Integer id){
+        EstoqueModel estoque = estoqueService.findByCdEstoque(id)
+                .orElseThrow(() -> new RuntimeException("Estoque não localizado com o código: " + id));
+
+        return ResponseEntity.ok(estoque);
     }
-    @GetMapping("/produto/{cdProduto}")
-    public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable ProdutoModel cdProduto){
-        return estoqueService.buscarPorCdProduto(cdProduto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/produto/{id}")
+    public ResponseEntity<EstoqueModel> buscarPorCdProduto(@PathVariable ProdutoModel id){
+        EstoqueModel estoque = estoqueService.findByCdProduto(id)
+                .orElseThrow(() -> new RuntimeException("Produto não localizado com o código: " + id));
+
+        return ResponseEntity.ok(estoque);
     }
-    @PutMapping("/{cdEstoque}")
-    public ResponseEntity<EstoqueModel> atualizar(@PathVariable Integer cdEstoque, @Valid @RequestBody EstoqueDto estoqueDto) {
-        return estoqueService.atualizaDados(cdEstoque, estoqueDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @PutMapping("/{id}")
+    public ResponseEntity<EstoqueModel> atualizar(@PathVariable Integer id, @Valid @RequestBody EstoqueDto dto) {
+        EstoqueModel estoque = estoqueService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Estoque não localizado com o código: " + id));
+
+        return ResponseEntity.ok(estoque);
     }
 
 }

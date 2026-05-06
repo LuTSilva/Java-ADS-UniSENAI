@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +26,15 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<ProdutoModel> criar(@Valid @RequestBody ProdutoEstoqueDto dto) {
-        ProdutoModel produtoModel = produtoService.salvar(dto);
-        return ResponseEntity.ok(produtoModel);
+        ProdutoModel produto = produtoService.salvar(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(produto.getCdProduto())
+                .toUri();
+
+        return ResponseEntity.created(location).body(produto);
     }
 
     @GetMapping
@@ -41,30 +50,36 @@ public class ProdutoController {
         return ResponseEntity.ok(produtos);
     }
 
-    @PutMapping("/{cdProduto}")
-    public ResponseEntity<ProdutoModel> atualizar(@PathVariable Integer cdProduto, @Valid @RequestBody ProdutoDto produtoDto) {
-        return produtoService.atualizaDados(cdProduto, produtoDto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoModel> listarPorCdProduto(@PathVariable Integer id){
+        ProdutoModel produto = produtoService.findByCdProduto(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o código: " + id));
 
-    @DeleteMapping("/{cdProduto}")
-    public ResponseEntity<Void>deletarPorCdProduto(@PathVariable Integer cdProduto){
-        produtoService.deletarProduto(cdProduto);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/produto/{cdProduto}")
-    public ResponseEntity<ProdutoModel> listarPorCdProduto(@PathVariable Integer cdProduto){
-        return produtoService.findByCdProduto(cdProduto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(produto);
     }
 
     @GetMapping("/nome/{nmProduto}")
     public ResponseEntity<ProdutoModel> listarPorNmProduto(@PathVariable String nmProduto){
-        return produtoService.findByNmProduto(nmProduto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ProdutoModel produto = produtoService.findByNmProduto(nmProduto)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o nome: " + nmProduto));
+
+        return ResponseEntity.ok(produto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoModel> atualizar(@PathVariable Integer id, @Valid @RequestBody ProdutoDto dto) {
+        ProdutoModel produto = produtoService.atualizaDados(id, dto)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o código: " + id));
+
+        return ResponseEntity.ok(produto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletarPorCdProduto(@PathVariable Integer id){
+        produtoService.findByCdProduto(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o código: " + id));
+
+        produtoService.deletarProduto(id);
+        return ResponseEntity.noContent().build();
     }
 }
