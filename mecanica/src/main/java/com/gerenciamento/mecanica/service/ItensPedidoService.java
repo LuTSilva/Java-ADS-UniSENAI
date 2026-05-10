@@ -1,16 +1,14 @@
 package com.gerenciamento.mecanica.service;
 
-import com.gerenciamento.mecanica.dto.ItensPedidoDto;
+import com.gerenciamento.mecanica.dto.AdicionarProdutoDto;
+import com.gerenciamento.mecanica.dto.AdicionarServicoDto;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
 import com.gerenciamento.mecanica.model.ProdutoModel;
 import com.gerenciamento.mecanica.model.ServicoModel;
 import com.gerenciamento.mecanica.repository.ItensPedidoRepository;
-import com.gerenciamento.mecanica.repository.PedidoRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,92 +29,42 @@ public class ItensPedidoService {
     @Autowired
     private EstoqueService estoqueService;
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+    public ItensPedidoModel adicionarProduto(AdicionarProdutoDto dto, PedidoModel pedido) {
+        ProdutoModel produto = produtoService.findByCdProduto(dto.cdProduto())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com código: " + dto.cdProduto()));
 
-    public ItensPedidoModel criar(@Valid @RequestBody ItensPedidoDto dto) {
-        if (dto.cdPedido() == null) {
-            throw new IllegalArgumentException("Código do pedido é obrigatório");
+        if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
+            Integer disponivel = estoqueService.obterQuantidadeDisponivel(produto);
+            throw new IllegalArgumentException(String.format(
+                    "Estoque insuficiente para %s. Disponível: %d, Solicitado: %d",
+                    produto.getNmProduto(), disponivel, dto.qtProduto()));
         }
 
-        Optional<PedidoModel> pedidoOpt = pedidoRepository.findByCdPedido(dto.cdPedido());
-        if (pedidoOpt.isEmpty()) {
-            throw new IllegalArgumentException("Pedido não encontrado com código: " + dto.cdPedido());
-        }
+        BigDecimal vlUnitario = dto.vlUnitario() != null ? dto.vlUnitario() : produto.getVlProduto();
+        BigDecimal subtotal = vlUnitario.multiply(BigDecimal.valueOf(dto.qtProduto()));
 
-        return adicionarItemAoPedido(dto, pedidoOpt.get());
-    }
-
-    public ItensPedidoModel adicionarItemAoPedido(@Valid @RequestBody ItensPedidoDto dto, PedidoModel pedido) {
         ItensPedidoModel item = new ItensPedidoModel();
         item.setPedido(pedido);
-
-        BigDecimal subtotal = BigDecimal.ZERO;
-        BigDecimal valorUnitarioProduto = dto.vlUnitario(); // Pode ser null
-        BigDecimal valorUnitarioServico = dto.vlUnitario(); // Também pode ser null
-
-        // Processar produto se informado
-        if (dto.cdProduto() != null) {
-            if (dto.qtProduto() == null || dto.qtProduto() <= 0) {
-                throw new IllegalArgumentException("Quantidade do produto é obrigatória e deve ser maior que zero");
-            }
-
-            Optional<ProdutoModel> produtoOpt = produtoService.findByCdProduto(dto.cdProduto());
-            if (produtoOpt.isEmpty()) {
-                throw new IllegalArgumentException("Produto não encontrado com código: " + dto.cdProduto());
-            }
-
-            ProdutoModel produto = produtoOpt.get();
-
-            // Se vlUnitario não foi informado, usa o preço do produto
-            if (valorUnitarioProduto == null) {
-                valorUnitarioProduto = produto.getVlProduto();
-            }
-
-            if (!estoqueService.validarEstoqueDisponivel(produto, dto.qtProduto())) {
-                Integer quantidadeDisponivel = estoqueService.obterQuantidadeDisponivel(produto);
-                throw new IllegalArgumentException(
-                    String.format("Estoque insuficiente para o produto %s. Disponível: %d, Solicitado: %d", 
-                        produto.getNmProduto(), quantidadeDisponivel, dto.qtProduto())
-                );
-            }
-
-            item.setQtProduto(dto.qtProduto());
-            item.setProduto(produto);
-            subtotal = subtotal.add(valorUnitarioProduto.multiply(BigDecimal.valueOf(dto.qtProduto())));
-        }
-
-        // Processar serviço se informado
-        if (dto.cdServico() != null) {
-            Optional<ServicoModel> servicoOpt = servicoService.findByCdServico(dto.cdServico());
-            if (servicoOpt.isEmpty()) {
-                throw new IllegalArgumentException("Serviço não encontrado com código: " + dto.cdServico());
-            }
-
-            ServicoModel servico = servicoOpt.get();
-            
-            // Se vlUnitario não foi informado, usa o preço do serviço
-            if (valorUnitarioServico == null) {
-                valorUnitarioServico = servico.getVlServico();
-            }
-
-            item.setServico(servico);
-            subtotal = subtotal.add(valorUnitarioServico);
-        }
-
-        // Validar se pelo menos um foi informado
-        if (dto.cdProduto() == null && dto.cdServico() == null) {
-            throw new IllegalArgumentException("Informe o código do produto e/ou o código do serviço");
-        }
-
-        // Validar se valor unitário foi definido (do DTO ou do produto/serviço)
-        if (valorUnitarioProduto == null && valorUnitarioServico == null) {
-            throw new IllegalArgumentException("Valor unitário não foi informado e não foi possível obter do produto/serviço");
-        }
-
-
-        item.setVlUnitario(valorUnitarioProduto);
+        item.setProduto(produto);
+        item.setQtProduto(dto.qtProduto());
+        item.setVlUnitario(vlUnitario);
         item.setVlSubtotal(subtotal);
+
+        return itensPedidoRepository.save(item);
+    }
+
+    public ItensPedidoModel adicionarServico(AdicionarServicoDto dto, PedidoModel pedido) {
+        ServicoModel servico = servicoService.findByCdServico(dto.cdServico())
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com código: " + dto.cdServico()));
+
+        BigDecimal vlUnitario = dto.vlUnitario() != null ? dto.vlUnitario() : servico.getVlServico();
+
+        ItensPedidoModel item = new ItensPedidoModel();
+        item.setPedido(pedido);
+        item.setServico(servico);
+        item.setVlUnitario(vlUnitario);
+        item.setVlSubtotal(vlUnitario);
+
         return itensPedidoRepository.save(item);
     }
 

@@ -1,6 +1,7 @@
 package com.gerenciamento.mecanica.controller;
 
-import com.gerenciamento.mecanica.dto.ItensPedidoDto;
+import com.gerenciamento.mecanica.dto.AdicionarProdutoDto;
+import com.gerenciamento.mecanica.dto.AdicionarServicoDto;
 import com.gerenciamento.mecanica.dto.PedidoDto;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
@@ -42,14 +43,27 @@ public class PedidoController {
         return ResponseEntity.created(location).body(pedido);
     }
 
-    @PostMapping("/{id}/itens")
-    public ResponseEntity<ItensPedidoModel> adicionarItemAoPedido(
-            @PathVariable Integer id, @Valid @RequestBody ItensPedidoDto dto) {
+    @PostMapping("/{id}/incluir-produto")
+    public ResponseEntity<ItensPedidoModel> adicionarProduto(
+            @PathVariable Integer id,
+            @Valid @RequestBody AdicionarProdutoDto dto) {
 
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
 
-        ItensPedidoModel item = itensPedidoService.adicionarItemAoPedido(dto, pedido);
+        ItensPedidoModel item = itensPedidoService.adicionarProduto(dto, pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(item);
+    }
+
+    @PostMapping("{id}/incluir-servico")
+    public ResponseEntity<ItensPedidoModel> adicionarServico(
+            @PathVariable Integer id,
+            @Valid @RequestBody AdicionarServicoDto dto) {
+
+        PedidoModel pedido = pedidoService.findByCdPedido(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
+
+        ItensPedidoModel item = itensPedidoService.adicionarServico(dto, pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
@@ -62,12 +76,22 @@ public class PedidoController {
     public ResponseEntity<List<PedidoModel>> listarConfirmados(){
         return ResponseEntity.ok(pedidoService.listarConfirmados());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PedidoModel> listarPorCdPedido(@PathVariable Integer id){
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
 
         return ResponseEntity.ok(pedido);
+    }
+
+    @GetMapping("/{id}/itens")
+    public ResponseEntity<List<ItensPedidoModel>> listarItens(@PathVariable Integer id) {
+        PedidoModel pedido = pedidoService.findByCdPedido(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
+
+        List<ItensPedidoModel> itens = itensPedidoService.findByPedido(pedido);
+        return ResponseEntity.ok(itens);
     }
 
     @PatchMapping("/{id}/confirmar")
