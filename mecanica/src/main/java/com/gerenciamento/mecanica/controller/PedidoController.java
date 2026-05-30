@@ -1,8 +1,6 @@
 package com.gerenciamento.mecanica.controller;
 
-import com.gerenciamento.mecanica.dto.AdicionarProdutoDto;
-import com.gerenciamento.mecanica.dto.AdicionarServicoDto;
-import com.gerenciamento.mecanica.dto.PedidoDto;
+import com.gerenciamento.mecanica.dto.*;
 import com.gerenciamento.mecanica.model.ItensPedidoModel;
 import com.gerenciamento.mecanica.model.PedidoModel;
 import com.gerenciamento.mecanica.service.ItensPedidoService;
@@ -15,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -86,12 +85,18 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}/itens")
-    public ResponseEntity<List<ItensPedidoModel>> listarItens(@PathVariable Integer id) {
+    public ResponseEntity<PedidoItensResponseDto> listarItens(@PathVariable Integer id) {
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
 
-        List<ItensPedidoModel> itens = itensPedidoService.findByPedido(pedido);
-        return ResponseEntity.ok(itens);
+        List<ItensPedidoResponseDto> itens = itensPedidoService.findByPedido(pedido)
+                .stream()
+                .map(ItensPedidoResponseDto::from)
+                .toList();
+
+        BigDecimal total = itensPedidoService.calcularTotalPedido(id);
+
+        return ResponseEntity.ok(new PedidoItensResponseDto(id, total, itens));
     }
 
     @PatchMapping("/{id}/confirmar")

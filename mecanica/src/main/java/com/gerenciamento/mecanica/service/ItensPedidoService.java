@@ -113,6 +113,10 @@ public class ItensPedidoService {
         return itensPedidoRepository.findByPedido(pedido);
     }
 
+    public BigDecimal calcularTotalPedido(Integer cdPedido) {
+        return itensPedidoRepository.calcularTotalPedido(cdPedido);
+    }
+
     public void deletarItem(Integer cdItensPedido) {
         itensPedidoRepository.deleteByCdItensPedido(cdItensPedido);
     }
