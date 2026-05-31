@@ -58,7 +58,7 @@ public class ProdutoController {
         return ResponseEntity.ok(produto);
     }
 
-    @GetMapping("/nome/{nmProduto}")
+    @GetMapping("/{nmProduto}/nome")
     public ResponseEntity<ProdutoModel> listarPorNmProduto(@PathVariable String nmProduto){
         ProdutoModel produto = produtoService.findByNmProduto(nmProduto)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado com o nome: " + nmProduto));

@@ -43,29 +43,29 @@ public class VeiculoController {
     @GetMapping("/{id}")
     public ResponseEntity<VeiculoModel> listarPorCdVeiculo(@PathVariable Integer id){
         VeiculoModel veiculo = veiculoService.findByCdVeiculo(id)
-                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Veiculo não encontrado com o código: " + id));
 
         return ResponseEntity.ok(veiculo);
     }
 
-    @GetMapping("/placa/{dsPlaca}")
+    @GetMapping("/{dsPlaca}/placa")
     public ResponseEntity<VeiculoModel> findByDsPlaca(@PathVariable String dsPlaca){
         VeiculoModel veiculo = veiculoService.findByDsPlaca(dsPlaca)
-                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com a placa: " + dsPlaca));
+                .orElseThrow(() -> new RuntimeException("Veiculo não encontrado com a placa: " + dsPlaca));
 
         return ResponseEntity.ok(veiculo);
     }
     @PutMapping("/{id}")
     public ResponseEntity<VeiculoModel> atualizaDados(@PathVariable Integer id, @Valid @RequestBody VeiculoDto dto) {
         VeiculoModel veiculo = veiculoService.atualizaDados(id, dto)
-                .orElseThrow(() -> new RuntimeException("Veiculo não localizado com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Veiculo não encontrado com o código: " + id));
 
         return ResponseEntity.ok(veiculo);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>deletarPorCdVeiculo(@PathVariable Integer id){
         veiculoService.findByCdVeiculo(id)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com código: " + id));
+                .orElseThrow(() -> new RuntimeException("Veiculo não encontrado com código: " + id));
 
         veiculoService.deletarVeiculo(id);
         return ResponseEntity.noContent().build();

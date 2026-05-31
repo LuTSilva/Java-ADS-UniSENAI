@@ -54,7 +54,7 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
-    @PostMapping("{id}/incluir-servico")
+    @PostMapping("/{id}/incluir-servico")
     public ResponseEntity<ItensPedidoModel> adicionarServico(
             @PathVariable Integer id,
             @Valid @RequestBody AdicionarServicoDto dto) {

@@ -53,7 +53,7 @@ public class FuncionarioController {
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioModel> listarPorCdFuncionario(@PathVariable Integer id){
         FuncionarioModel funcionario = funcionarioService.findByCdFuncionario(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o código: " + id));
 
         return ResponseEntity.ok(funcionario);
     }
@@ -61,24 +61,24 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioDto> listarPorCdFuncionarioCompleto(@PathVariable Integer id){
         FuncionarioDto funcionario = funcionarioService.findByCdFuncionario(id)
                 .map(FuncionarioDto::completo)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o código: " + id));
 
         return ResponseEntity.ok(funcionario);
     }
 
-    @GetMapping("/cpf/{nuCpf}")
+    @GetMapping("/{nuCpf}/cpf")
     public ResponseEntity<FuncionarioModel> listarPorNuCpf(@PathVariable String nuCpf) {
         FuncionarioModel funcionario = funcionarioService.findByNuCpf(nuCpf)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com o CPF: " + nuCpf));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o CPF: " + nuCpf));
 
         return ResponseEntity.ok(funcionario);
     }
 
-    @GetMapping("/cpf/{nuCpf}/completo")
+    @GetMapping("/{nuCpf}/cpf/completo")
     public ResponseEntity<FuncionarioDto> listarPorNuCpfCompleto(@PathVariable String nuCpf) {
         FuncionarioDto funcionario = funcionarioService.findByNuCpf(nuCpf)
                 .map(FuncionarioDto::completo)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com o CPF: " + nuCpf));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o CPF: " + nuCpf));
 
         return ResponseEntity.ok(funcionario);
     }
@@ -86,7 +86,7 @@ public class FuncionarioController {
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioModel> atualizar(@PathVariable Integer id, @Valid @RequestBody FuncionarioDto dto) {
         FuncionarioModel funcionario = funcionarioService.atualizaDados(id, dto)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o código: " + id));
 
         return ResponseEntity.ok(funcionario);
     }
@@ -94,7 +94,7 @@ public class FuncionarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>deletarPorCdFuncionario(@PathVariable Integer id){
         funcionarioService.findByCdFuncionario(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não localizado com código: " + id));
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com código: " + id));
 
         funcionarioService.deletarFuncionario(id);
         return ResponseEntity.noContent().build();

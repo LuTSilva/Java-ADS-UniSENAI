@@ -63,7 +63,7 @@ public class FilialController {
     @GetMapping("/{id}")
     public ResponseEntity<FilialModel> listarPorCdFilial(@PathVariable Integer id){
         FilialModel filial = filialService.findByCdFilial(id)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Filial não encontrada com o código: " + id));
 
         return ResponseEntity.ok(filial);
     }
@@ -72,15 +72,15 @@ public class FilialController {
     public ResponseEntity<FilialDto> listarPorCdFilialCompleto(@PathVariable Integer id){
         FilialDto filial = filialService.findByCdFilial(id)
                 .map(FilialDto::completo)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com código: " + id));
+                .orElseThrow(() -> new RuntimeException("Filial não encontrada com código: " + id));
 
         return ResponseEntity.ok(filial);
     }
 
-    @GetMapping("/cnpj/{nuCnpj}")
+    @GetMapping("/{nuCnpj}/cnpj")
     public ResponseEntity<FilialModel> listarporNuCnpj(@PathVariable String nuCnpj){
         FilialModel filial = filialService.findByNuCnpj(nuCnpj)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com o CNPJ: " + nuCnpj));
+                .orElseThrow(() -> new RuntimeException("Filial não encontrada com o CNPJ: " + nuCnpj));
 
         return ResponseEntity.ok(filial);
     }
@@ -88,7 +88,7 @@ public class FilialController {
     @PutMapping("/{id}")
     public ResponseEntity<FilialModel> atualizar(@PathVariable Integer id, @Valid @RequestBody FilialDto dto) {
         FilialModel filial = filialService.atualizaDados(id, dto)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com o código: " + id));
+                .orElseThrow(() -> new RuntimeException("Filial não encontrada com o código: " + id));
 
         return ResponseEntity.ok(filial);
     }
@@ -96,7 +96,7 @@ public class FilialController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>deletarPorCdFilial(@PathVariable Integer id){
         filialService.findByCdFilial(id)
-                .orElseThrow(() -> new RuntimeException("Filial não localizada com código: " + id));
+                .orElseThrow(() -> new RuntimeException("Filial não encontrada com código: " + id));
 
         filialService.deletarFilial(id);
         return ResponseEntity.noContent().build();

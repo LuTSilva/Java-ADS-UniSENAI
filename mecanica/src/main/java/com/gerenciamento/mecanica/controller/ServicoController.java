@@ -48,7 +48,7 @@ public class ServicoController {
         return ResponseEntity.ok(servico);
     }
 
-    @GetMapping("/nome/{nmServico}")
+    @GetMapping("/{nmServico}/nome")
     public ResponseEntity<ServicoModel> listarPorNmServico(@PathVariable String nmServico){
         ServicoModel servico = servicoService.findByNmServico(nmServico)
                 .orElseThrow(() -> new RuntimeException("Serviço não encontrado com o nome: " + nmServico));

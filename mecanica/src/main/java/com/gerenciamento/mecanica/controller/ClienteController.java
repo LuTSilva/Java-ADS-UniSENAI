@@ -57,9 +57,18 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
-    @GetMapping("/cpf/{nuCpf}")
+    @GetMapping("/{nuCpf}/cpf")
     public ResponseEntity<ClienteModel> listarPorNuCpf(@PathVariable String nuCpf){
         ClienteModel cliente = clienteService.findByNuCpf(nuCpf)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o CPF: " + nuCpf));
+
+        return ResponseEntity.ok(cliente);
+    }
+
+    @GetMapping("/{nuCpf}/cpf/completo")
+    public ResponseEntity<ClienteDto> listarPorNuCpfCompleto(@PathVariable String nuCpf){
+        ClienteDto cliente = clienteService.findByNuCpf(nuCpf)
+                .map(ClienteDto::completo)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com o CPF: " + nuCpf));
 
         return ResponseEntity.ok(cliente);
