@@ -1,13 +1,12 @@
 package com.gerenciamento.mecanica.dto;
 
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 
 public record PedidoDto(
+        @NotNull(message = "O código do cliente é obrigatório")
+        Integer cliente,
 
-        @Pattern(regexp = "^S|N$", message = "Só é possível valores 'S' ou 'N'")
-        String flPgtoConfirmado,
-
-        Integer usuario,
-        Integer cliente
+        @NotNull(message = "O código do usuário é obrigatório")
+        Integer usuario
 ) {
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,12 +21,24 @@ public class PedidoModel {
     @Column(name = "CDPEDIDO")
     private Integer cdPedido;
 
-    @Column(name="FLPGTOCONFIRMADO", length=1, nullable=false)
-    private String flPgtoConfirmado;
+    @Column(name = "STATUS", length = 20, nullable = false)
+    private String status; // ABERTO, CONFIRMADO, PAGO
+
+    @Column(name = "FORMAPAGAMENTO", length = 30)
+    private String formaPagamento; // DINHEIRO, PIX, CARTAO_CREDITO, CARTAO_DEBITO
+
+    @Column(name = "VLPAGAMENTO")
+    private BigDecimal vlPagamento;
+
+    @Column(name = "VLTROCADO")
+    private BigDecimal vlTrocado;
 
     @CreationTimestamp
     @Column(name = "DTPEDIDO", nullable = false, updatable = false)
     private LocalDateTime dtPedido;
+
+    @Column(name = "DTPAGAMENTO")
+    private LocalDateTime dtPagamento;
 
     @ManyToOne
     @JoinColumn(name = "CDUSUARIO", nullable = false)

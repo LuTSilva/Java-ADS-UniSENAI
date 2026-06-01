@@ -30,7 +30,7 @@ public class PedidoController {
     private ItensPedidoService itensPedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoModel> criar (@Valid @RequestBody PedidoDto dto) {
+    public ResponseEntity<PedidoModel> criar(@Valid @RequestBody PedidoDto dto) {
         PedidoModel pedido = pedidoService.salvar(dto);
 
         URI location = ServletUriComponentsBuilder
@@ -50,6 +50,10 @@ public class PedidoController {
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
 
+        if (!"ABERTO".equals(pedido.getStatus())) {
+            throw new IllegalArgumentException("Itens só podem ser adicionados a pedidos com status ABERTO. Status atual: " + pedido.getStatus());
+        }
+
         ItensPedidoModel item = itensPedidoService.adicionarProduto(dto, pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
@@ -62,25 +66,28 @@ public class PedidoController {
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com código: " + id));
 
+        if (!"ABERTO".equals(pedido.getStatus())) {
+            throw new IllegalArgumentException("Itens só podem ser adicionados a pedidos com status ABERTO. Status atual: " + pedido.getStatus());
+        }
+
         ItensPedidoModel item = itensPedidoService.adicionarServico(dto, pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoModel>> listarTodos(){
+    public ResponseEntity<List<PedidoModel>> listarTodos() {
         return ResponseEntity.ok(pedidoService.listarTodos());
     }
 
-    @GetMapping("/confirmados")
-    public ResponseEntity<List<PedidoModel>> listarConfirmados(){
-        return ResponseEntity.ok(pedidoService.listarConfirmados());
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<PedidoModel>> listarPorStatus(@PathVariable String status) {
+        return ResponseEntity.ok(pedidoService.listarPorStatus(status));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoModel> listarPorCdPedido(@PathVariable Integer id){
+    public ResponseEntity<PedidoModel> listarPorCdPedido(@PathVariable Integer id) {
         PedidoModel pedido = pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
-
         return ResponseEntity.ok(pedido);
     }
 
@@ -105,19 +112,18 @@ public class PedidoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PedidoModel> atualizar(@PathVariable Integer id, @Valid @RequestBody PedidoDto dto) {
-        PedidoModel pedido = pedidoService.atualizaDados(id, dto)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
-
+    @PatchMapping("/{id}/pagar")
+    public ResponseEntity<PedidoModel> registrarPagamento(
+            @PathVariable Integer id,
+            @Valid @RequestBody PagamentoDto dto) {
+        PedidoModel pedido = pedidoService.registrarPagamento(id, dto);
         return ResponseEntity.ok(pedido);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>deletarPorCdPedido(@PathVariable Integer id){
+    public ResponseEntity<Void> deletarPorCdPedido(@PathVariable Integer id) {
         pedidoService.findByCdPedido(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o código: " + id));
-
         pedidoService.deletarPedido(id);
         return ResponseEntity.noContent().build();
     }
